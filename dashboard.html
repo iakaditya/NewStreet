@@ -1,0 +1,3085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Street — Digital Civic Operating System</title>
+  <meta name="description" content="Manage public services, report complaints, track development budgets, engage with your community, and access emergency services." />
+  <!-- Leaflet.js Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <!-- Design System -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <!-- Google Fonts: Outfit + Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Chart.js — local copy for offline/sandbox support -->
+  <script src="chart.min.js"></script>
+
+</head>
+<body class="dash-body">
+
+  <!-- ── TOP NAVIGATION BAR ────────────────────────────────────── -->
+  <nav class="dash-top-nav">
+    <div class="dash-top-left">
+      <div class="dash-brand">
+        <div class="dash-brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <span class="dash-brand-text">New <span>Street</span></span>
+      </div>
+      <div class="dash-divider"></div>
+      <div class="dash-loc-context" id="navLocContext">
+        <span class="dash-loc-pin">📍</span>
+        <div class="dash-loc-details">
+          <span class="dash-loc-city" id="navCityLabel">Bengaluru, KA</span>
+          <span class="dash-loc-ward" id="navWardLabel">Ward 14 (Vasanth Nagar)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-top-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" placeholder="Search services, schemes, complaints, or funds..." aria-label="Search platform" id="globalSearch" />
+    </div>
+
+    <div class="dash-top-right">
+      <!-- Real-time GPS location indicator -->
+      <div class="dash-gps-live searching" id="gpsLiveIndicator" title="Real-time GPS location">
+        <span class="gps-dot"></span>
+        <span id="gpsCoordDisplay">Locating...</span>
+      </div>
+      <div class="dash-divider"></div>
+      <div class="dash-weather-widget" title="Current weather in Bengaluru">
+        <span class="weather-icon">☀️</span>
+        <span class="weather-temp">29°C</span>
+        <span class="weather-desc">Sunny</span>
+      </div>
+      <div class="dash-divider"></div>
+      
+      <!-- Language Selector -->
+      <div class="dash-lang-dropdown">
+        <button class="dash-lang-btn" aria-label="Choose language" id="langSelectorBtn">
+          <span>🌐</span> English <span class="arrow-down">▼</span>
+        </button>
+        <div class="dash-lang-menu" id="langDropdownMenu">
+          <button class="lang-opt active" data-lang="en">English</button>
+          <button class="lang-opt" data-lang="hi">हिंदी (Hindi)</button>
+          <button class="lang-opt" data-lang="kn">ಕನ್ನಡ (Kannada)</button>
+          <button class="lang-opt" data-lang="ta">தமிழ் (Tamil)</button>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <button class="dash-nav-icon-btn" aria-label="Open notifications" id="topNotifBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="dash-notif-badge" id="notifBadgeCount">3</span>
+      </button>
+
+      <!-- Profile Avatar -->
+      <div class="dash-user-profile" id="userMenuBtn" role="button" aria-haspopup="true" tabindex="0">
+        <div class="dash-user-avatar">RS</div>
+        <div class="dash-user-info">
+          <span class="dash-user-name">Rahul Sharma</span>
+          <span class="dash-user-id" id="headerRepXP">XP: 420</span>
+        </div>
+        <span class="arrow-down">▼</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── LAYOUT WRAPPER ────────────────────────────────────────── -->
+  <div class="dash-container">
+
+    <!-- ── LEFT SIDEBAR NAVIGATION ────────────────────────────── -->
+        <!-- ── LEFT SIDEBAR NAV ────────────────────────────── -->
+    <aside class="dash-sidebar-nav">
+      <nav aria-label="Sidebar Navigation">
+        <ul class="sidebar-menu">
+          <li>
+            <button class="sidebar-item active" data-tab="dashboard">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              Dashboard
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="community">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Community Hub
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="complaints">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              My Complaints
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="map">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              Live Map
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="services">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/></svg>
+              Gov Services
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="transparency">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Fund Transparency
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="projects">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              Development Projects
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="ai">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.1 12a10 10 0 0 0 9.9 10V12z"/><path d="M12 12V2a10 10 0 0 1 10 10H12z"/></svg>
+              Sahayak AI
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item text-danger-hover" data-tab="emergency">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Emergency Center
+            </button>
+          </li>
+        </ul>
+
+        <div class="sidebar-divider"></div>
+
+        <ul class="sidebar-menu secondary-menu">
+          <li>
+            <button class="sidebar-item" data-tab="notifications">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              Notifications <span class="sidebar-badge" style="margin-left:auto; background:#2563EB; color:white; font-size:0.65rem; padding:2px 7px; border-radius:10px; font-weight:700;">3</span>
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="profile">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Profile &amp; Documents
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="settings">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Settings
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" data-tab="help">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Help Center
+            </button>
+          </li>
+          <li>
+            <button class="sidebar-item" id="sidebarLogout">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Logout
+            </button>
+          </li>
+        </ul>
+      </nav>
+      
+      <!-- Bottom Card: Be a Civic Champion! -->
+      <div class="sidebar-champion-card" style="margin: 16px 12px; background: linear-gradient(135deg, #1E40AF, #3B82F6); border-radius: 14px; padding: 14px; color: white; text-align: center; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
+        <div style="font-size: 0.88rem; font-weight: 800; margin-bottom: 4px;">Be a Civic Champion!</div>
+        <div style="font-size: 0.68rem; opacity: 0.9; margin-bottom: 10px; line-height: 1.35;">Help your community, earn points and unlock badges.</div>
+        <button class="btn" id="viewProgressBtn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; width: 100%; padding: 6px; font-size: 0.72rem; font-weight: 700; cursor: pointer; backdrop-filter: blur(4px);">View My Progress</button>
+      </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT AREA ────────────────────────────────────── -->
+    <main class="dash-main-content">
+      
+      <!-- ACTIVE ALERTS BANNER -->
+      <div class="dash-active-alerts" id="alertsBannerContainer">
+        <div class="alert-banner alert-danger">
+          <div class="alert-banner-left">
+            <span class="alert-emoji">⚠️</span>
+            <div>
+              <strong>Emergency Warning:</strong> Severe precipitation forecast for Vasanth Nagar. Disaster teams on standby.
+            </div>
+          </div>
+          <button class="alert-banner-close" aria-label="Dismiss Alert">✕</button>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: DASHBOARD OVERVIEW -->
+      <!-- ========================================== -->
+      <div class="dash-view-tab active" id="view-dashboard">
+
+        <!-- ── 5-COLUMN STATS BAR (ICON ON RIGHT) ─────────────────── -->
+        <div class="dash-stats-5-grid">
+
+          <div class="stat5-card clickable-stat" data-target-tab="complaints">
+            <div class="stat5-body">
+              <div class="stat5-label">Total Complaints</div>
+              <div class="stat5-val" id="statActiveComplaintsCount">214</div>
+              <div class="stat5-sub">This year</div>
+            </div>
+            <div class="stat5-icon-wrap" style="background:#EFF6FF; color:#2563EB;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+          </div>
+
+          <div class="stat5-card clickable-stat" data-target-tab="complaints">
+            <div class="stat5-body">
+              <div class="stat5-label">In Progress</div>
+              <div class="stat5-val" style="color:#0F172A">37</div>
+              <div class="stat5-sub">Active now</div>
+            </div>
+            <div class="stat5-icon-wrap" style="background:#FFFBEB; color:#D97706;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><polyline points="12 11 12 16 14 14"/></svg>
+            </div>
+          </div>
+
+          <div class="stat5-card clickable-stat" data-target-tab="complaints">
+            <div class="stat5-body">
+              <div class="stat5-label">Resolved</div>
+              <div class="stat5-val" style="color:#0F172A">162</div>
+              <div class="stat5-sub stat5-sub-up">+12 this month</div>
+            </div>
+            <div class="stat5-icon-wrap" style="background:#ECFDF5; color:#10B981;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+
+          <div class="stat5-card clickable-stat" data-target-tab="services">
+            <div class="stat5-body">
+              <div class="stat5-label">Services Used</div>
+              <div class="stat5-val" id="statServicesUsedCount">23</div>
+              <div class="stat5-sub">This year</div>
+            </div>
+            <div class="stat5-icon-wrap" style="background:#F3E8FF; color:#7C3AED;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+          </div>
+
+          <div class="stat5-card clickable-stat" data-target-tab="community">
+            <div class="stat5-body">
+              <div class="stat5-label">Community Score</div>
+              <div class="stat5-val" id="statXPCount">4.8<span class="stat5-unit">/5</span></div>
+              <div class="stat5-sub stat5-sub-up">Excellent</div>
+            </div>
+            <div class="stat5-icon-wrap" style="background:#ECFDF5; color:#10B981;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+          </div>
+
+        </div><!-- /stats -->
+
+        <!-- ── FEED TABS BAR ────────────────────────────────────────── -->
+        <div class="feed-tabs-wrap">
+          <div class="feed-tabs-nav" id="feedTabsNav">
+            <button class="feed-tab active" data-feed-cat="all">All Updates</button>
+            <button class="feed-tab" data-feed-cat="roads">Roads</button>
+            <button class="feed-tab" data-feed-cat="water">Water</button>
+            <button class="feed-tab" data-feed-cat="electricity">Electricity</button>
+            <button class="feed-tab" data-feed-cat="traffic">Traffic</button>
+            <button class="feed-tab" data-feed-cat="events">Events</button>
+            <button class="feed-tab" data-feed-cat="govt">Govt. Notices</button>
+            <button class="feed-tab" data-feed-cat="emergency">Emergency</button>
+          </div>
+          <button class="feed-filter-icon-btn" id="feedFilterBtn" aria-label="Filter feed">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          </button>
+        </div>
+
+        <!-- ── FEED CARDS LIST ──────────────────────────────────────── -->
+        <div class="feed-cards-list" id="dashboardFeedList">
+
+          <!-- Card 1: Roads Urgent -->
+          <div class="feed-v2-card" data-cat="roads" id="feedItem1">
+            <div class="feed-v2-vote">
+              <button class="feed-v2-vote-btn" aria-label="Upvote">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+              </button>
+              <span class="feed-v2-vote-count">214</span>
+            </div>
+
+            <div class="feed-v2-body-main">
+              <div class="feed-v2-header-row">
+                <div class="feed-v2-content">
+                  <div class="feed-v2-chips">
+                    <span class="feed-chip feed-chip-roads">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19L10 5"/><path d="M20 19L14 5"/><line x1="12" y1="8" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="16"/></svg>
+                      Roads
+                    </span>
+                    <span class="feed-chip feed-chip-urgent">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                      Urgent
+                    </span>
+                  </div>
+                  <h3 class="feed-v2-title">Massive crater-sized pothole at 8th Cross / Main Road junction — 3 vehicles damaged this week</h3>
+                  <p class="feed-v2-desc">The pothole has been there for over 3 months. It is now over 2 feet wide and 6 inches deep. Autorickshaw lost a wheel yesterday. Multiple complaints filed but no action taken by PWD.</p>
+                </div>
+                <div class="feed-v2-img-container">
+                  <img src="pothole.jpg" alt="Pothole Damage" class="feed-v2-img-src" />
+                  <span class="feed-img-badge">3 Photos</span>
+                </div>
+              </div>
+
+              <div class="feed-v2-meta">
+                <span class="feed-meta-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Ward 14, Vasanth Nagar
+                </span>
+                <span class="feed-v2-sep">·</span>
+                <span>Posted by Ravi Kumar</span>
+                <span class="feed-v2-sep">·</span>
+                <span>2 hours ago</span>
+              </div>
+
+              <!-- Official Response Box -->
+              <div class="official-resp-box">
+                <div class="official-resp-top">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/><path d="M8 14v4"/><path d="M12 14v4"/><path d="M16 14v4"/></svg>
+                  <span class="official-resp-from">Official Response</span>
+                  <span class="official-resp-sep">·</span>
+                  <span class="official-resp-name">Anil Sharma — PWD Division Engineer</span>
+                  <span class="official-resp-ack">✓ Acknowledged</span>
+                </div>
+                <p class="official-resp-text">Complaint acknowledged. Repair crew will visit by Aug 7 evening. Asphalt patch work scheduled for the same night.</p>
+                <span class="official-resp-time">2 hours ago</span>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="feed-v2-actions">
+                <button class="feed-act-btn" id="feedComment1">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 3 Comments
+                </button>
+                <button class="feed-act-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share
+                </button>
+                <button class="feed-act-btn" id="feedFileComplaint1">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg> File Complaint
+                </button>
+                <button class="feed-act-btn feed-act-report">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> Report
+                </button>
+                <button class="feed-act-follow" id="feedFollow1">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Follow Update
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Card 2: Electricity Medium -->
+          <div class="feed-v2-card" data-cat="electricity" id="feedItem2">
+            <div class="feed-v2-vote">
+              <button class="feed-v2-vote-btn" aria-label="Upvote">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+              </button>
+              <span class="feed-v2-vote-count">203</span>
+            </div>
+
+            <div class="feed-v2-body-main">
+              <div class="feed-v2-header-row">
+                <div class="feed-v2-content">
+                  <div class="feed-v2-chips">
+                    <span class="feed-chip feed-chip-electricity">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                      Electricity
+                    </span>
+                    <span class="feed-chip feed-chip-medium">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      Medium
+                    </span>
+                  </div>
+                  <h3 class="feed-v2-title">Street light not working near 5th Main Road for more than a week</h3>
+                  <p class="feed-v2-desc">Dark area causing safety issue for students and senior citizens during night.</p>
+                </div>
+                <div class="feed-v2-img-container">
+                  <img src="dark_street.jpg" alt="Streetlight Issue" class="feed-v2-img-src" />
+                  <span class="feed-img-badge">1 Photo</span>
+                </div>
+              </div>
+
+              <div class="feed-v2-meta">
+                <span class="feed-meta-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Ward 14, Vasanth Nagar
+                </span>
+                <span class="feed-v2-sep">·</span>
+                <span>Posted by Priya Nair</span>
+                <span class="feed-v2-sep">·</span>
+                <span>1 hour ago</span>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="feed-v2-actions">
+                <button class="feed-act-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 2 Comments
+                </button>
+                <button class="feed-act-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share
+                </button>
+                <button class="feed-act-btn" id="feedFileComplaint2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg> File Complaint
+                </button>
+                <button class="feed-act-btn feed-act-report">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> Report
+                </button>
+                <button class="feed-act-follow">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Follow Update
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /feed-cards-list -->
+
+          <!-- ── COMPLAINT TREND CHART ──────────────────────────── -->
+          <div class="dash-chart-card">
+            <div class="dash-chart-header">
+              <div>
+                <h3 class="dash-chart-title">Complaint Trends</h3>
+                <p class="dash-chart-sub">Monthly complaints filed vs resolved (2026)</p>
+              </div>
+              <div class="dash-chart-controls">
+                <button class="dash-chart-btn active" data-trend-range="6m">6M</button>
+                <button class="dash-chart-btn" data-trend-range="3m">3M</button>
+                <button class="dash-chart-btn" data-trend-range="1m">1M</button>
+              </div>
+            </div>
+            <canvas id="complaintTrendChart" height="220"></canvas>
+          </div>
+
+          <!-- ── CATEGORY BREAKDOWN CHART ──────────────────────────── -->
+          <div class="dash-chart-card">
+            <div class="dash-chart-header">
+              <div>
+                <h3 class="dash-chart-title">Issues by Category</h3>
+                <p class="dash-chart-sub">Distribution of active complaints</p>
+              </div>
+              <div class="dash-chart-controls">
+                <button class="dash-chart-btn active" data-cat-view="doughnut">Doughnut</button>
+                <button class="dash-chart-btn" data-cat-view="bar">Bar</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+              <div style="width:180px;height:180px;flex-shrink:0;position:relative;">
+                <canvas id="categoryDonutChart"></canvas>
+              </div>
+              <div class="cat-legend" id="catChartLegend"></div>
+            </div>
+          </div>
+
+          <!-- ── RESOLUTION TIME TREND ─────────────────────────────── -->
+          <div class="dash-chart-card">
+            <div class="dash-chart-header">
+              <div>
+                <h3 class="dash-chart-title">Avg. Resolution Time</h3>
+                <p class="dash-chart-sub">Days taken to resolve per category</p>
+              </div>
+            </div>
+            <canvas id="resolutionBarChart" height="200"></canvas>
+          </div>
+
+          <!-- ── WARD ACTIVITY HEATMAP ─────────────────────────────── -->
+          <div class="dash-chart-card">
+            <div class="dash-chart-header">
+              <div>
+                <h3 class="dash-chart-title">Weekly Activity</h3>
+                <p class="dash-chart-sub">Complaints submitted per day this week</p>
+              </div>
+            </div>
+            <canvas id="weeklyActivityChart" height="160"></canvas>
+          </div>
+
+
+        <!-- Hidden compat elements for JS -->
+        <div id="miniMapContainer" style="display:none;"></div>
+        <span id="miniMapStatusText" style="display:none;"></span>
+        <button id="miniMapExpandBtn" style="display:none;"></button>
+        <button id="viewAllCommunityBtn" style="display:none;"></button>
+
+      </div><!-- /view-dashboard -->
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: MY COMPLAINTS -->
+      <!-- ========================================== -->
+            <!-- ========================================== -->
+      <!-- VIEW 2: COMMUNITY HUB (EXACT SCREENSHOT MATCH) -->
+      <!-- ========================================== -->
+            <!-- ========================================== -->
+      <!-- VIEW 2: COMMUNITY HUB (EXACT SCREENSHOT MATCH) -->
+      <!-- ========================================== -->
+      <div class="dash-view-tab" id="view-community" hidden>
+
+        <!-- View Header -->
+        <div class="view-header">
+          <div>
+            <h1 class="text-h1" style="font-size: 1.6rem; font-weight: 800; color: #0F172A; margin-bottom: 2px;">Community Hub</h1>
+            <p class="text-md text-secondary" style="font-size: 0.82rem; color: #64748B;">Connect, discuss and make our city better together.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" id="startDiscussionBtn" style="background: #2563EB; color: white; border: none; border-radius: 8px; padding: 9px 16px; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Start a Discussion
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Stat Cards Row -->
+        <div class="ch-stats-grid">
+          <div class="ch-stat-card">
+            <div class="ch-stat-info">
+              <div class="ch-stat-lbl">Active Discussions</div>
+              <div class="ch-stat-val">128</div>
+              <div class="ch-stat-sub" style="color: #10B981;">+12 this week</div>
+            </div>
+            <div class="ch-stat-icon-wrap" style="background: #EFF6FF; color: #2563EB;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+          </div>
+
+          <div class="ch-stat-card">
+            <div class="ch-stat-info">
+              <div class="ch-stat-lbl">Active Citizens</div>
+              <div class="ch-stat-val">2,456</div>
+              <div class="ch-stat-sub" style="color: #10B981;">+98 this week</div>
+            </div>
+            <div class="ch-stat-icon-wrap" style="background: #ECFDF5; color: #10B981;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+          </div>
+
+          <div class="ch-stat-card">
+            <div class="ch-stat-info">
+              <div class="ch-stat-lbl">Issues Resolved</div>
+              <div class="ch-stat-val">348</div>
+              <div class="ch-stat-sub" style="color: #10B981;">+34 this month</div>
+            </div>
+            <div class="ch-stat-icon-wrap" style="background: #FFFBEB; color: #D97706;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+
+          <div class="ch-stat-card">
+            <div class="ch-stat-info">
+              <div class="ch-stat-lbl">Community Score</div>
+              <div class="ch-stat-val">4.8<span style="font-size:0.8rem; color:#94A3B8;">/5</span></div>
+              <div class="ch-stat-sub" style="color: #10B981;">Excellent</div>
+            </div>
+            <div class="ch-stat-icon-wrap" style="background: #F3E8FF; color: #8B5CF6;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Sub-Nav Bar -->
+        <div class="ch-subnav-bar">
+          <div class="ch-subnav-tabs">
+            <button class="ch-tab active">All Discussions</button>
+            <button class="ch-tab">My Ward</button>
+            <button class="ch-tab">Roads</button>
+            <button class="ch-tab">Water</button>
+            <button class="ch-tab">Electricity</button>
+            <button class="ch-tab">Garbage</button>
+            <button class="ch-tab">Traffic</button>
+            <button class="ch-tab">Safety</button>
+            <button class="ch-tab">Parks</button>
+            <button class="ch-tab">More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg></button>
+          </div>
+          <button class="ch-filter-btn" aria-label="Filter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          </button>
+        </div>
+
+        <!-- 2-Column Main Body Layout -->
+        <div class="ch-body-grid">
+
+          <!-- Left Column: Discussions List & Categories -->
+          <div class="ch-left-col">
+
+            <div class="ch-discussions-list">
+
+              <!-- Card 1: Roads Urgent -->
+              <div class="ch-disc-card">
+                <div class="ch-disc-img-wrap">
+                  <img src="pothole.jpg" alt="Pothole" class="ch-disc-img" />
+                </div>
+                <div class="ch-disc-body">
+                  <div class="ch-disc-chips">
+                    <span class="ch-chip ch-chip-roads">Roads</span>
+                    <span class="ch-chip ch-chip-urgent">Urgent</span>
+                  </div>
+                  <h3 class="ch-disc-title">Massive pothole at 8th Cross / Main Road junction</h3>
+                  <p class="ch-disc-excerpt">The pothole has been there for over 3 months. It is now over 2 feet wide and 6 inches deep. Autorickshaw lost a wheel yesterday.</p>
+                  <div class="ch-disc-meta">
+                    <span class="ch-meta-loc">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Ward 14, Vasanth Nagar
+                    </span>
+                    <span>·</span>
+                    <span>Posted by Ravi Kumar</span>
+                    <span>·</span>
+                    <span>2 hours ago</span>
+                  </div>
+                  <div class="ch-disc-footer">
+                    <div class="ch-disc-stats">
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 23</span>
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 145</span>
+                    </div>
+                    <button class="ch-btn-follow">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      Follow
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Garbage -->
+              <div class="ch-disc-card">
+                <div class="ch-disc-img-wrap">
+                  <img src="garbage.jpg" alt="Garbage Dump" class="ch-disc-img" />
+                </div>
+                <div class="ch-disc-body">
+                  <div class="ch-disc-chips">
+                    <span class="ch-chip ch-chip-garbage">Garbage</span>
+                  </div>
+                  <h3 class="ch-disc-title">Garbage not collected near 5th Main, 2nd Block</h3>
+                  <p class="ch-disc-excerpt">Garbage is piling up since last 5 days. Requesting BBMP to take immediate action.</p>
+                  <div class="ch-disc-meta">
+                    <span class="ch-meta-loc">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Ward 14, Vasanth Nagar
+                    </span>
+                    <span>·</span>
+                    <span>Posted by Priya Nair</span>
+                    <span>·</span>
+                    <span>4 hours ago</span>
+                  </div>
+                  <div class="ch-disc-footer">
+                    <div class="ch-disc-stats">
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 15</span>
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 98</span>
+                    </div>
+                    <button class="ch-btn-follow">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      Follow
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3: Electricity -->
+              <div class="ch-disc-card">
+                <div class="ch-disc-img-wrap">
+                  <img src="dark_street.jpg" alt="Dark Street" class="ch-disc-img" />
+                </div>
+                <div class="ch-disc-body">
+                  <div class="ch-disc-chips">
+                    <span class="ch-chip ch-chip-electricity">Electricity</span>
+                  </div>
+                  <h3 class="ch-disc-title">Street light not working near Park Road</h3>
+                  <p class="ch-disc-excerpt">There are 3 street lights not working from last 1 week. It becomes very dark at night.</p>
+                  <div class="ch-disc-meta">
+                    <span class="ch-meta-loc">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Ward 14, Vasanth Nagar
+                    </span>
+                    <span>·</span>
+                    <span>Posted by Suresh Anand</span>
+                    <span>·</span>
+                    <span>6 hours ago</span>
+                  </div>
+                  <div class="ch-disc-footer">
+                    <div class="ch-disc-stats">
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 12</span>
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 76</span>
+                    </div>
+                    <button class="ch-btn-follow">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      Follow
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4: Water -->
+              <div class="ch-disc-card">
+                <div class="ch-disc-img-wrap">
+                  <img src="water_tap.jpg" alt="Water Tap" class="ch-disc-img" />
+                </div>
+                <div class="ch-disc-body">
+                  <div class="ch-disc-chips">
+                    <span class="ch-chip ch-chip-water">Water</span>
+                  </div>
+                  <h3 class="ch-disc-title">Low water pressure in 3rd Block</h3>
+                  <p class="ch-disc-excerpt">Water pressure is very low in the mornings. Please check the main valve.</p>
+                  <div class="ch-disc-meta">
+                    <span class="ch-meta-loc">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Ward 14, Vasanth Nagar
+                    </span>
+                    <span>·</span>
+                    <span>Posted by Anitha R.</span>
+                    <span>·</span>
+                    <span>1 day ago</span>
+                  </div>
+                  <div class="ch-disc-footer">
+                    <div class="ch-disc-stats">
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 18</span>
+                      <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 102</span>
+                    </div>
+                    <button class="ch-btn-follow">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      Follow
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /ch-discussions-list -->
+
+            <div class="ch-load-more">
+              <button class="btn-text-link" style="color: #2563EB; font-weight: 700; font-size: 0.8rem;">
+                Load More Discussions ↓
+              </button>
+            </div>
+
+            <!-- Explore by Category Grid -->
+            <div class="ch-cat-section">
+              <h3 class="ch-section-title">Explore by Category</h3>
+              <div class="ch-cat-grid">
+                <div class="ch-cat-card">
+                  <div class="ch-cat-icon" style="background:#F1F5F9; color:#475569;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19L10 5"/><path d="M20 19L14 5"/><line x1="12" y1="8" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="16"/></svg>
+                  </div>
+                  <div>
+                    <div class="ch-cat-name">Roads</div>
+                    <div class="ch-cat-sub">24 Discussions</div>
+                  </div>
+                </div>
+
+                <div class="ch-cat-card">
+                  <div class="ch-cat-icon" style="background:#E0F2FE; color:#0284C7;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                  </div>
+                  <div>
+                    <div class="ch-cat-name">Water</div>
+                    <div class="ch-cat-sub">18 Discussions</div>
+                  </div>
+                </div>
+
+                <div class="ch-cat-card">
+                  <div class="ch-cat-icon" style="background:#FEF3C7; color:#D97706;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </div>
+                  <div>
+                    <div class="ch-cat-name">Electricity</div>
+                    <div class="ch-cat-sub">16 Discussions</div>
+                  </div>
+                </div>
+
+                <div class="ch-cat-card">
+                  <div class="ch-cat-icon" style="background:#DCFCE7; color:#16A34A;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  </div>
+                  <div>
+                    <div class="ch-cat-name">Garbage</div>
+                    <div class="ch-cat-sub">22 Discussions</div>
+                  </div>
+                </div>
+
+                <div class="ch-cat-card">
+                  <div class="ch-cat-icon" style="background:#F3E8FF; color:#9333EA;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                  </div>
+                  <div>
+                    <div class="ch-cat-name">Traffic</div>
+                    <div class="ch-cat-sub">14 Discussions</div>
+                  </div>
+                </div>
+
+                <div class="ch-cat-card">
+                  <div class="ch-cat-icon" style="background:#FEE2E2; color:#DC2626;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  </div>
+                  <div>
+                    <div class="ch-cat-name">Safety</div>
+                    <div class="ch-cat-sub">9 Discussions</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /ch-left-col -->
+
+          <!-- Right Column: Sidebar Panels -->
+          <div class="ch-right-col">
+
+            <!-- Nearby Citizens Card -->
+            <div class="rp-card">
+              <div class="rp-card-header">
+                <h3 class="rp-card-title">Nearby Citizens</h3>
+                <button class="btn-text-link">View All</button>
+              </div>
+              <div class="ch-citizens-list">
+                <div class="ch-citizen-item">
+                  <div class="ch-cit-avatar">AR</div>
+                  <div class="ch-cit-info">
+                    <div class="ch-cit-name">Arjun Reddy <span class="ch-verified-badge">Verified</span></div>
+                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">1.2 km away · Community Score 875</div>
+                  </div>
+                  <button class="ch-btn-msg">Message</button>
+                </div>
+
+                <div class="ch-citizen-item">
+                  <div class="ch-cit-avatar" style="background:#ECFDF5;color:#10B981;">PN</div>
+                  <div class="ch-cit-info">
+                    <div class="ch-cit-name">Priya Nair <span class="ch-verified-badge">Verified</span></div>
+                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">0.8 km away · Community Score 642</div>
+                  </div>
+                  <button class="ch-btn-msg">Message</button>
+                </div>
+
+                <div class="ch-citizen-item">
+                  <div class="ch-cit-avatar" style="background:#FEF3C7;color:#D97706;">SA</div>
+                  <div class="ch-cit-info">
+                    <div class="ch-cit-name">Suresh Anand <span class="ch-verified-badge">Verified</span></div>
+                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">1.5 km away · Community Score 590</div>
+                  </div>
+                  <button class="ch-btn-msg">Message</button>
+                </div>
+
+                <div class="ch-citizen-item">
+                  <div class="ch-cit-avatar" style="background:#F3E8FF;color:#9333EA;">MI</div>
+                  <div class="ch-cit-info">
+                    <div class="ch-cit-name">Meghana Iyer <span class="ch-verified-badge">Verified</span></div>
+                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">2.1 km away · Community Score 512</div>
+                  </div>
+                  <button class="ch-btn-msg">Message</button>
+                </div>
+              </div>
+              <div style="margin-top:10px; border-top:1px solid #F1F5F9; padding-top:8px;">
+                <button class="btn-text-link" style="font-size:0.75rem;">More citizens in your area →</button>
+              </div>
+            </div>
+
+            <!-- Community Polls Card -->
+            <div class="rp-card">
+              <div class="rp-card-header">
+                <h3 class="rp-card-title">Community Polls</h3>
+                <button class="btn-text-link">View All</button>
+              </div>
+              <p class="rp-poll-question">Which road in Ward 14 needs urgent repair?</p>
+              <div class="rp-poll-options">
+                <div class="rp-poll-opt">
+                  <div class="rp-poll-opt-top">
+                    <span class="rp-poll-opt-name">8th Cross / Main Road</span>
+                    <span class="rp-poll-opt-pct" style="color:#2563EB">62% (82 votes)</span>
+                  </div>
+                  <div class="rp-poll-bar-track"><div class="rp-poll-bar-fill" style="width:62%;background:#2563EB"></div></div>
+                </div>
+
+                <div class="rp-poll-opt">
+                  <div class="rp-poll-opt-top">
+                    <span class="rp-poll-opt-name">Park Road</span>
+                    <span class="rp-poll-opt-pct">18% (24 votes)</span>
+                  </div>
+                  <div class="rp-poll-bar-track"><div class="rp-poll-bar-fill" style="width:18%;background:#CBD5E1"></div></div>
+                </div>
+
+                <div class="rp-poll-opt">
+                  <div class="rp-poll-opt-top">
+                    <span class="rp-poll-opt-name">5th Block Road</span>
+                    <span class="rp-poll-opt-pct">12% (16 votes)</span>
+                  </div>
+                  <div class="rp-poll-bar-track"><div class="rp-poll-bar-fill" style="width:12%;background:#CBD5E1"></div></div>
+                </div>
+
+                <div class="rp-poll-opt">
+                  <div class="rp-poll-opt-top">
+                    <span class="rp-poll-opt-name">7th Main / 4th Cross</span>
+                    <span class="rp-poll-opt-pct">8% (10 votes)</span>
+                  </div>
+                  <div class="rp-poll-bar-track"><div class="rp-poll-bar-fill" style="width:8%;background:#CBD5E1"></div></div>
+                </div>
+              </div>
+              <div class="rp-poll-footer" style="display:flex; justify-content:space-between; margin-top:10px;">
+                <span>Total votes: 132</span>
+                <span style="color:#10B981; font-weight:700;">2 days left</span>
+              </div>
+            </div>
+
+            <!-- Bottom Row: 2 Side-by-Side Cards -->
+            <div class="ch-bottom-2cards">
+
+              <!-- Upcoming Event -->
+              <div class="rp-card" style="padding:10px;">
+                <div class="rp-card-header" style="margin-bottom:6px;">
+                  <h4 style="font-size:0.75rem; font-weight:800;">Upcoming Event</h4>
+                  <button class="btn-text-link" style="font-size:0.65rem;">View All</button>
+                </div>
+                <div style="font-size:0.72rem; font-weight:700; color:#0F172A; margin-bottom:4px;">
+                  📅 Clean Vasanth Nagar Drive
+                </div>
+                <div style="font-size:0.63rem; color:#64748B; margin-bottom:2px;">🕒 Aug 10, 2025 · 7:00 AM</div>
+                <div style="font-size:0.63rem; color:#64748B; margin-bottom:8px;">📍 Central Park, Ward 14</div>
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <span style="font-size:0.62rem; color:#64748B; font-weight:700;">👥 +23 joined</span>
+                  <button class="btn btn-primary btn-sm" style="font-size:0.65rem; padding:3px 8px;">Join</button>
+                </div>
+              </div>
+
+              <!-- Top Contributors -->
+              <div class="rp-card" style="padding:10px;">
+                <div class="rp-card-header" style="margin-bottom:6px;">
+                  <h4 style="font-size:0.75rem; font-weight:800;">Top Contributors</h4>
+                  <span style="font-size:0.6rem; color:#94A3B8;">This Month</span>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:4px; font-size:0.68rem; margin-bottom:6px;">
+                  <div style="display:flex; justify-content:space-between;"><span>🥇 Ravi Kumar</span><span style="font-weight:700;">1,250 pts</span></div>
+                  <div style="display:flex; justify-content:space-between;"><span>🥈 Priya Nair</span><span style="font-weight:700;">980 pts</span></div>
+                  <div style="display:flex; justify-content:space-between;"><span>🥉 Suresh Anand</span><span style="font-weight:700;">760 pts</span></div>
+                </div>
+                <button class="btn-text-link" style="font-size:0.65rem; width:100%; text-align:center;">View Leaderboard</button>
+              </div>
+
+            </div>
+
+          </div><!-- /ch-right-col -->
+
+        </div><!-- /ch-body-grid -->
+
+      </div><!-- /view-community -->
+
+
+            <div class="dash-view-tab" id="view-complaints" hidden>
+        <div class="view-header" style="margin-bottom: 24px;">
+          <div>
+            <h1 class="text-h1">My Complaints</h1>
+            <p class="text-md text-secondary">Track, review and stay updated on all complaints you've raised.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" id="openComplaintFormModalBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Register New Complaint
+            </button>
+          </div>
+        </div>
+
+        <!-- 6-Card Stats Grid -->
+        <div class="complaints-stats-6-grid" style="margin-bottom: 32px;">
+          <div class="stat6-card">
+            <div class="stat6-top">
+              <div>
+                <div class="stat6-title">Total Complaints</div>
+                <div class="stat6-val" id="complaintsTotalVal">18</div>
+              </div>
+              <div class="stat6-icon" style="background:#EFF6FF; color:#2563EB;">📋</div>
+            </div>
+            <div class="stat6-desc">All time</div>
+          </div>
+          <div class="stat6-card">
+            <div class="stat6-top">
+              <div>
+                <div class="stat6-title">In Progress</div>
+                <div class="stat6-val" id="complaintsInProgressVal" style="color:var(--text-primary);">5</div>
+              </div>
+              <div class="stat6-icon" style="background:#FFF7ED; color:#EA580C;">🕒</div>
+            </div>
+            <div class="stat6-desc">Currently active</div>
+          </div>
+          <div class="stat6-card">
+            <div class="stat6-top">
+              <div>
+                <div class="stat6-title">Pending</div>
+                <div class="stat6-val" id="complaintsPendingVal">3</div>
+              </div>
+              <div class="stat6-icon" style="background:#FEF3C7; color:#D97706;">⏳</div>
+            </div>
+            <div class="stat6-desc">Awaiting action</div>
+          </div>
+          <div class="stat6-card">
+            <div class="stat6-top">
+              <div>
+                <div class="stat6-title">Resolved</div>
+                <div class="stat6-val" id="complaintsResolvedVal">9</div>
+              </div>
+              <div class="stat6-icon" style="background:#F0FDF4; color:#16A34A;">✅</div>
+            </div>
+            <div class="stat6-desc">Successfully closed</div>
+          </div>
+          <div class="stat6-card">
+            <div class="stat6-top">
+              <div>
+                <div class="stat6-title">Avg. Resolution Time</div>
+                <div class="stat6-val">4.6 <span style="font-size:0.9rem; font-weight:600; color:var(--text-secondary);">Days</span></div>
+              </div>
+              <div class="stat6-icon" style="background:#F3E8FF; color:#9333EA;">⏱️</div>
+            </div>
+            <div class="stat6-desc">This month</div>
+          </div>
+          <div class="stat6-card">
+            <div class="stat6-top">
+              <div>
+                <div class="stat6-title">Satisfaction Score</div>
+                <div class="stat6-val" style="display:flex; align-items:baseline; gap:4px;">
+                  4.6<span style="font-size:0.9rem; font-weight:600; color:var(--text-secondary);">/5</span>
+                </div>
+              </div>
+              <div class="stat6-icon" style="background:#F3E8FF; color:#9333EA;">⭐</div>
+            </div>
+            <div class="stat6-desc" style="color:#16A34A; font-weight:600;">Excellent</div>
+          </div>
+        </div>
+
+        <!-- Two Column Main Layout -->
+        <div class="complaints-split-layout">
+          
+          <!-- Left List View -->
+          <div class="complaints-left-pane">
+            <div class="complaints-filters-header">
+              <div class="comp-filter-tabs" id="complaintsFilterNav">
+                <button class="comp-ftab active" data-status="all">All Complaints (18)</button>
+                <button class="comp-ftab" data-status="In Progress">In Progress (5)</button>
+                <button class="comp-ftab" data-status="Assigned">Pending (3)</button>
+                <button class="comp-ftab" data-status="Resolved">Resolved (9)</button>
+              </div>
+              <div class="comp-sort-actions">
+                <button class="btn btn-secondary btn-sm" style="background:white;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                  Filter
+                </button>
+                <button class="btn btn-secondary btn-sm" style="background:white;">
+                  Sort: Newest <span style="margin-left:4px;">▼</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="complaint-cards-list" id="complaintItemsContainer">
+              <!-- Rendered by JS -->
+            </div>
+
+            <div class="load-more-btn-wrap" style="text-align: center; margin-top: 16px;">
+              <button class="btn btn-secondary" style="border:none; color:var(--primary); font-weight:600; background:none;">Load More ↓</button>
+            </div>
+          </div>
+
+          <!-- Right Sidebar Tracking View -->
+          <div class="complaints-right-pane" id="complaintsRightSidebar">
+            <!-- Rendered by JS -->
+            <div class="rp-card" style="padding: 24px; text-align: center; color: var(--text-tertiary);">
+              Select a complaint to view detailed tracking status.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: LIVE MAP                           -->
+      <!-- ========================================== -->
+      <div class="dash-view-tab" id="view-map" hidden>
+
+        <!-- Header row -->
+        <div class="lm-header-row">
+          <div>
+            <h1 class="text-h1">Live Map</h1>
+            <p class="text-md text-secondary">Explore real-time updates on issues, projects, and city services in your area.</p>
+          </div>
+          <div class="lm-view-toggle-group">
+            <button class="lm-view-btn active" id="lmBtnMapView">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              Map View
+            </button>
+            <button class="lm-view-btn" id="lmBtnListView">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              List View
+            </button>
+            <button class="lm-view-btn" id="lmBtnHeatmap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              Heat Map
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Chip Filter Bar -->
+        <div class="lm-chip-bar">
+          <button class="lm-chip active" data-lm-cat="all">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
+            All <span class="lm-chip-count">128</span>
+          </button>
+          <button class="lm-chip" data-lm-cat="roads">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            Roads <span class="lm-chip-count">34</span>
+          </button>
+          <button class="lm-chip" data-lm-cat="water">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            Water <span class="lm-chip-count">18</span>
+          </button>
+          <button class="lm-chip" data-lm-cat="electricity">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Electricity <span class="lm-chip-count">16</span>
+          </button>
+          <button class="lm-chip" data-lm-cat="garbage">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Garbage <span class="lm-chip-count">22</span>
+          </button>
+          <button class="lm-chip" data-lm-cat="traffic">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="8" r="2"/><circle cx="12" cy="14" r="2"/><circle cx="12" cy="20" r="1"/></svg>
+            Traffic <span class="lm-chip-count">12</span>
+          </button>
+          <button class="lm-chip" data-lm-cat="safety">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Safety <span class="lm-chip-count">8</span>
+          </button>
+          <button class="lm-chip" data-lm-cat="projects">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Projects <span class="lm-chip-count">16</span>
+          </button>
+          <button class="lm-chip" id="lmMoreFiltersBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            More Filters
+          </button>
+        </div>
+
+        <!-- Main 2-col layout: map + right sidebar -->
+        <div class="lm-main-layout">
+
+          <!-- The Leaflet Map -->
+          <div class="lm-map-wrapper">
+            <!-- "Show Boundaries" toggle overlay -->
+            <div class="lm-boundaries-overlay">
+              <span class="lm-overlay-label">Show Boundaries</span>
+              <label class="lm-toggle-switch">
+                <input type="checkbox" id="lmBoundariesToggle" checked />
+                <span class="lm-toggle-thumb"></span>
+              </label>
+            </div>
+
+            <!-- Map Canvas -->
+            <div id="liveMapCanvas" style="height:100%;width:100%;border-radius:inherit;"></div>
+
+            <!-- Legend bar at bottom of map -->
+            <div class="lm-legend-bar">
+              <span class="lm-legend-dot green"></span> Resolved
+              <span class="lm-legend-dot blue"></span> In Progress
+              <span class="lm-legend-dot orange"></span> Pending
+              <span class="lm-legend-dot red"></span> Critical
+              <button class="lm-layers-btn" id="lmLayersBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div class="lm-right-sidebar">
+
+            <!-- MAP FILTERS -->
+            <div class="lm-sidebar-card">
+              <div class="lm-sidebar-card-header">
+                <span class="lm-sidebar-card-title">Map Filters</span>
+                <button class="lm-link-btn" id="lmClearAllFilters">Clear All</button>
+              </div>
+
+              <div class="lm-filter-section">
+                <div class="lm-filter-label">Category</div>
+                <div class="lm-filter-chip-grid">
+                  <label class="lm-filter-chip roads-chip"><input type="checkbox" checked data-map-filter="roads" /> Roads</label>
+                  <label class="lm-filter-chip water-chip"><input type="checkbox" checked data-map-filter="water" /> Water</label>
+                  <label class="lm-filter-chip elec-chip"><input type="checkbox" checked data-map-filter="electricity" /> Electricity</label>
+                  <label class="lm-filter-chip garb-chip"><input type="checkbox" checked data-map-filter="garbage" /> Garbage</label>
+                  <label class="lm-filter-chip traf-chip"><input type="checkbox" checked data-map-filter="traffic" /> Traffic</label>
+                  <label class="lm-filter-chip safe-chip"><input type="checkbox" checked data-map-filter="safety" /> Safety</label>
+                  <label class="lm-filter-chip proj-chip"><input type="checkbox" checked data-map-filter="projects" /> Projects</label>
+                  <label class="lm-filter-chip other-chip"><input type="checkbox" checked data-map-filter="others" /> Others</label>
+                </div>
+              </div>
+
+              <div class="lm-filter-section">
+                <div class="lm-filter-label">Status</div>
+                <div class="lm-status-check-grid">
+                  <label class="lm-status-chk pending"><input type="checkbox" checked data-severity-filter="medium" /> Pending</label>
+                  <label class="lm-status-chk inprog"><input type="checkbox" checked data-severity-filter="low" /> In Progress</label>
+                  <label class="lm-status-chk resolved"><input type="checkbox" checked /> Resolved</label>
+                  <label class="lm-status-chk critical"><input type="checkbox" checked data-severity-filter="high" /> Critical</label>
+                </div>
+              </div>
+
+              <div class="lm-filter-section">
+                <div class="lm-filter-label">Time Range</div>
+                <select class="lm-select" id="lmTimeRange">
+                  <option value="all">All Time</option>
+                  <option value="7d">Last 7 Days</option>
+                  <option value="30d">Last 30 Days</option>
+                  <option value="90d">Last 3 Months</option>
+                </select>
+              </div>
+
+              <div class="lm-filter-section">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div class="lm-filter-label">Distance</div>
+                  <span class="lm-dist-val">5 KM</span>
+                </div>
+                <input type="range" min="1" max="20" value="5" class="lm-range-slider" id="lmDistanceSlider" />
+              </div>
+            </div>
+
+            <!-- ACTIVE ALERTS -->
+            <div class="lm-sidebar-card">
+              <div class="lm-sidebar-card-header">
+                <span class="lm-sidebar-card-title">Active Alerts in This Area</span>
+                <button class="lm-link-btn">View All</button>
+              </div>
+              <div class="lm-alerts-list">
+                <div class="lm-alert-item critical">
+                  <div class="lm-alert-icon" style="background:#FEF2F2; color:#EF4444;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  </div>
+                  <div class="lm-alert-body">
+                    <div class="lm-alert-title">Heavy Rain Warning</div>
+                    <div class="lm-alert-sub">Upto Aug 8 · IMD Alert</div>
+                  </div>
+                  <button class="lm-alert-close">×</button>
+                </div>
+                <div class="lm-alert-item warning">
+                  <div class="lm-alert-icon" style="background:#FFF7ED; color:#F59E0B;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                  </div>
+                  <div class="lm-alert-body">
+                    <div class="lm-alert-title">Water Supply Shutdown</div>
+                    <div class="lm-alert-sub">Aug 7 · 10:00 PM to 6:00 AM</div>
+                  </div>
+                  <button class="lm-alert-close">×</button>
+                </div>
+                <div class="lm-alert-item info">
+                  <div class="lm-alert-icon" style="background:#EFF6FF; color:#3B82F6;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </div>
+                  <div class="lm-alert-body">
+                    <div class="lm-alert-title">Power Maintenance</div>
+                    <div class="lm-alert-sub">Aug 8 · 11:00 AM to 3:00 PM</div>
+                  </div>
+                  <button class="lm-alert-close">×</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- NEARBY PROJECTS -->
+            <div class="lm-sidebar-card">
+              <div class="lm-sidebar-card-header">
+                <span class="lm-sidebar-card-title">Nearby Projects</span>
+                <button class="lm-link-btn">View All</button>
+              </div>
+              <div class="lm-projects-list" id="lmNearbyProjects">
+                <div class="lm-project-item">
+                  <div class="lm-proj-thumb">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                  </div>
+                  <div class="lm-proj-body">
+                    <div class="lm-proj-name">Drainage Improvement</div>
+                    <div class="lm-proj-meta">
+                      <span class="lm-proj-badge inprog">In Progress</span>
+                      <span class="lm-proj-pct">65%</span>
+                    </div>
+                    <div class="lm-proj-sub">Budget: ₹82.4 L · Completion: Oct 2026</div>
+                  </div>
+                </div>
+                <div class="lm-project-item">
+                  <div class="lm-proj-thumb">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </div>
+                  <div class="lm-proj-body">
+                    <div class="lm-proj-name">Footpath Construction</div>
+                    <div class="lm-proj-meta">
+                      <span class="lm-proj-badge approved">Approved</span>
+                      <span class="lm-proj-pct">20%</span>
+                    </div>
+                    <div class="lm-proj-sub">Budget: ₹45.6 L</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /lm-right-sidebar -->
+
+        </div><!-- /lm-main-layout -->
+
+        <!-- Bottom Stats Bar -->
+        <div class="lm-stats-bar">
+          <div class="lm-stats-bar-title">Live Overview (Ward 14)</div>
+          <div class="lm-stats-row">
+            <div class="lm-stat-item">
+              <div class="lm-stat-label">Total Issues</div>
+              <div class="lm-stat-val">128</div>
+              <div class="lm-stat-delta pos">+12 this week</div>
+            </div>
+            <div class="lm-stat-divider"></div>
+            <div class="lm-stat-item">
+              <div class="lm-stat-label">Pending</div>
+              <div class="lm-stat-val">42</div>
+              <div class="lm-stat-delta pos">+5 this week</div>
+            </div>
+            <div class="lm-stat-divider"></div>
+            <div class="lm-stat-item">
+              <div class="lm-stat-label">In Progress</div>
+              <div class="lm-stat-val">56</div>
+              <div class="lm-stat-delta pos">+8 this week</div>
+            </div>
+            <div class="lm-stat-divider"></div>
+            <div class="lm-stat-item">
+              <div class="lm-stat-label">Resolved</div>
+              <div class="lm-stat-val">30</div>
+              <div class="lm-stat-delta pos">+15 this week</div>
+            </div>
+            <div class="lm-stat-divider"></div>
+            <div class="lm-stat-item">
+              <div class="lm-stat-label">Avg. Resolution Time</div>
+              <div class="lm-stat-val">4.6 <span style="font-size:0.8rem;font-weight:500;color:var(--text-secondary);">Days</span></div>
+              <div class="lm-stat-delta neg">-0.8 this month</div>
+            </div>
+            <div class="lm-stat-divider"></div>
+            <div class="lm-stat-item">
+              <div class="lm-stat-label">Citizen Satisfaction</div>
+              <div class="lm-stat-val" style="color:#F59E0B;">4.6 <span style="font-size:0.8rem;font-weight:500;">/5</span></div>
+              <div class="lm-stat-delta" style="color:#16A34A;">Excellent</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /view-map -->
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 5: GOVERNMENT SERVICES -->
+      <!-- ========================================== -->
+            <div class="dash-view-tab" id="view-services" hidden>
+        <!-- Header -->
+        <div class="gs-header-row">
+          <div>
+            <h1 class="text-h1">Government Services</h1>
+            <p class="text-md text-secondary">Access 200+ services from Central, State and Local government in one place.</p>
+          </div>
+        </div>
+
+        <!-- Two-column layout -->
+        <div class="gs-layout">
+          <!-- LEFT MAIN CONTENT -->
+          <div class="gs-main">
+
+            <!-- Search Bar -->
+            <div class="gs-search-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="gs-search-input" id="gsSearchInput" placeholder="Search for services (e.g. Birth Certificate, Property Tax...)" />
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="gs-cat-tabs" id="gsCatTabs">
+              <button class="gs-cat-tab active" data-gs-cat="all">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                All Categories
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="certificates">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Certificates
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="licenses">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                Licenses
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="bills">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Bills &amp; Payments
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="property">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Property
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="transport">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                Transport
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="health">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                Health
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="education">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Education
+              </button>
+              <button class="gs-cat-tab" data-gs-cat="more">
+                ··· More
+              </button>
+            </div>
+
+            <!-- Popular Services Grid -->
+            <div class="gs-section-header">
+              <h3 class="gs-section-title">Popular Services</h3>
+              <button class="gs-link-btn">View All Services →</button>
+            </div>
+
+            <div class="gs-service-grid" id="gsServiceGrid">
+              <!-- Birth Certificate -->
+              <div class="gs-service-card" data-gs-cat="certificates">
+                <div class="gs-card-icon" style="background:#DCFCE7; color:#16A34A;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Birth Certificate</div>
+                  <div class="gs-card-desc">Apply for birth certificate for your child.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary" data-service="Birth Certificate">Apply Now</button>
+                  <button class="gs-btn-ghost" data-track="Birth Certificate">Track</button>
+                </div>
+              </div>
+
+              <!-- Income Certificate -->
+              <div class="gs-service-card" data-gs-cat="certificates">
+                <div class="gs-card-icon" style="background:#DBEAFE; color:#2563EB;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Income Certificate</div>
+                  <div class="gs-card-desc">Apply for income certificate online.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary blue" data-service="Income Certificate">Apply Now</button>
+                  <button class="gs-btn-ghost" data-track="Income Certificate">Track</button>
+                </div>
+              </div>
+
+              <!-- Property Tax -->
+              <div class="gs-service-card" data-gs-cat="bills property">
+                <div class="gs-card-icon" style="background:#EDE9FE; color:#7C3AED;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Property Tax</div>
+                  <div class="gs-card-desc">Pay your property tax and view receipts.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary purple" data-service="Property Tax">Pay Now</button>
+                  <button class="gs-btn-ghost" data-track="Property Tax">Track</button>
+                </div>
+              </div>
+
+              <!-- Water Bill -->
+              <div class="gs-service-card" data-gs-cat="bills">
+                <div class="gs-card-icon" style="background:#CFFAFE; color:#0891B2;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Water Bill</div>
+                  <div class="gs-card-desc">View and pay your water utility bills.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary cyan" data-service="Water Bill">Pay Now</button>
+                  <button class="gs-btn-ghost" data-track="Water Bill">Track</button>
+                </div>
+              </div>
+
+              <!-- Electricity Bill -->
+              <div class="gs-service-card" data-gs-cat="bills">
+                <div class="gs-card-icon" style="background:#FEF9C3; color:#CA8A04;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Electricity Bill</div>
+                  <div class="gs-card-desc">View and pay your electricity bills.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary yellow" data-service="Electricity Bill">Pay Now</button>
+                  <button class="gs-btn-ghost" data-track="Electricity Bill">Track</button>
+                </div>
+              </div>
+
+              <!-- Driving License -->
+              <div class="gs-service-card" data-gs-cat="licenses transport">
+                <div class="gs-card-icon" style="background:#DCFCE7; color:#16A34A;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Driving License</div>
+                  <div class="gs-card-desc">Apply for new driving license or renewal.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary" data-service="Driving License">Apply Now</button>
+                  <button class="gs-btn-ghost" data-track="Driving License">Track</button>
+                </div>
+              </div>
+
+              <!-- Voter Services -->
+              <div class="gs-service-card" data-gs-cat="certificates">
+                <div class="gs-card-icon" style="background:#FCE7F3; color:#DB2777;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Voter Services</div>
+                  <div class="gs-card-desc">Register, update or download voter ID.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary pink" data-service="Voter Services">Apply Now</button>
+                  <button class="gs-btn-ghost" data-track="Voter Services">Track</button>
+                </div>
+              </div>
+
+              <!-- Passport -->
+              <div class="gs-service-card" data-gs-cat="certificates">
+                <div class="gs-card-icon" style="background:#DBEAFE; color:#1D4ED8;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="10" cy="15" r="3"/></svg>
+                </div>
+                <div class="gs-card-body">
+                  <div class="gs-card-title">Passport</div>
+                  <div class="gs-card-desc">Apply for new passport or re-issue.</div>
+                </div>
+                <div class="gs-card-actions">
+                  <button class="gs-btn-primary blue" data-service="Passport">Apply Now</button>
+                  <button class="gs-btn-ghost" data-track="Passport">Track</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Banner -->
+            <div class="gs-banner">
+              <div class="gs-banner-text">
+                <h3>All your documents, applications &amp; certificates at one place</h3>
+                <p>Apply, track and download official documents digitally.</p>
+                <button class="gs-banner-btn" id="gsGoToAppsBtn">Go to My Applications</button>
+              </div>
+              <div class="gs-banner-art">
+                <svg width="100" height="90" viewBox="0 0 120 100" fill="none">
+                  <rect x="10" y="10" width="60" height="80" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+                  <rect x="20" y="25" width="40" height="5" rx="2" fill="#3B82F6"/>
+                  <rect x="20" y="35" width="30" height="4" rx="2" fill="#93C5FD"/>
+                  <rect x="20" y="44" width="35" height="4" rx="2" fill="#93C5FD"/>
+                  <rect x="20" y="53" width="25" height="4" rx="2" fill="#93C5FD"/>
+                  <circle cx="88" cy="60" r="22" fill="#2563EB"/>
+                  <polyline points="78,60 85,67 98,52" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Services by Department -->
+            <div class="gs-section-header" style="margin-top:28px;">
+              <h3 class="gs-section-title">Services by Department</h3>
+            </div>
+            <div class="gs-dept-grid">
+              <div class="gs-dept-card">
+                <div class="gs-dept-icon">🏛️</div>
+                <div class="gs-dept-name">BBMP</div>
+                <div class="gs-dept-count">32 Services</div>
+                <button class="gs-dept-btn">View Services →</button>
+              </div>
+              <div class="gs-dept-card">
+                <div class="gs-dept-icon">🏛️</div>
+                <div class="gs-dept-name">Karnataka Govt</div>
+                <div class="gs-dept-count">68 Services</div>
+                <button class="gs-dept-btn">View Services →</button>
+              </div>
+              <div class="gs-dept-card">
+                <div class="gs-dept-icon">🚌</div>
+                <div class="gs-dept-name">Transport Dept.</div>
+                <div class="gs-dept-count">24 Services</div>
+                <button class="gs-dept-btn">View Services →</button>
+              </div>
+              <div class="gs-dept-card">
+                <div class="gs-dept-icon">🏥</div>
+                <div class="gs-dept-name">Health Dept.</div>
+                <div class="gs-dept-count">18 Services</div>
+                <button class="gs-dept-btn">View Services →</button>
+              </div>
+              <div class="gs-dept-card">
+                <div class="gs-dept-icon">🎓</div>
+                <div class="gs-dept-name">Education Dept.</div>
+                <div class="gs-dept-count">26 Services</div>
+                <button class="gs-dept-btn">View Services →</button>
+              </div>
+              <div class="gs-dept-card" style="background:#F8FAFC;">
+                <div class="gs-dept-icon">···</div>
+                <div class="gs-dept-name">More Departments</div>
+                <button class="gs-dept-btn" style="color:#2563EB;">View All</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDEBAR -->
+          <div class="gs-sidebar">
+            <!-- My Applications -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">My Applications</span>
+                <button class="gs-link-btn">View All</button>
+              </div>
+              <div class="gs-app-list" id="gsMyApplications">
+                <div class="gs-app-item">
+                  <div class="gs-app-icon blue-bg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <div class="gs-app-body">
+                    <div class="gs-app-name">Income Certificate</div>
+                    <div class="gs-app-sub">Applied on 02 Aug 2026</div>
+                    <div class="gs-app-sub">Application ID: APP-2026-8123</div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                    <span class="gs-status-badge inprog">In Progress</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                  </div>
+                </div>
+                <div class="gs-app-item">
+                  <div class="gs-app-icon purple-bg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </div>
+                  <div class="gs-app-body">
+                    <div class="gs-app-name">Property Tax</div>
+                    <div class="gs-app-sub">Paid on 25 Jul 2026</div>
+                    <div class="gs-app-sub">Receipt: PTX-2026-7789</div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                    <span class="gs-status-badge paid">Paid</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                  </div>
+                </div>
+                <div class="gs-app-item">
+                  <div class="gs-app-icon green-bg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <div class="gs-app-body">
+                    <div class="gs-app-name">Birth Certificate</div>
+                    <div class="gs-app-sub">Approved on 18 Jul 2026</div>
+                    <div class="gs-app-sub">Certificate ID: BC-2026-5567</div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                    <span class="gs-status-badge approved">Approved</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                  </div>
+                </div>
+              </div>
+              <button class="gs-view-all-btn">View All Applications</button>
+            </div>
+
+            <!-- Application Status Tracker -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Application Status Tracker</span>
+              </div>
+              <p class="gs-sidebar-sub">Track your application in real-time</p>
+              <div class="gs-tracker-steps">
+                <div class="gs-tracker-step completed">
+                  <div class="gs-tracker-dot completed"></div>
+                  <div class="gs-tracker-body">
+                    <div class="gs-tracker-label">Application Submitted</div>
+                    <div class="gs-tracker-date">02 Aug 2026</div>
+                  </div>
+                </div>
+                <div class="gs-tracker-step completed">
+                  <div class="gs-tracker-dot completed"></div>
+                  <div class="gs-tracker-body">
+                    <div class="gs-tracker-label">Under Verification</div>
+                    <div class="gs-tracker-date">03 Aug 2026</div>
+                  </div>
+                </div>
+                <div class="gs-tracker-step active">
+                  <div class="gs-tracker-dot active"></div>
+                  <div class="gs-tracker-body">
+                    <div class="gs-tracker-label">Approved</div>
+                    <div class="gs-tracker-date">04 Aug 2026</div>
+                  </div>
+                </div>
+                <div class="gs-tracker-step">
+                  <div class="gs-tracker-dot pending"></div>
+                  <div class="gs-tracker-body">
+                    <div class="gs-tracker-label">Document Issued</div>
+                    <div class="gs-tracker-date" style="color:#F59E0B;">Pending</div>
+                  </div>
+                </div>
+              </div>
+              <button class="gs-track-btn" id="gsTrackNewBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Track New Application
+              </button>
+            </div>
+
+            <!-- Need Help -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-title" style="margin-bottom:12px;">Need Help?</div>
+              <div class="gs-sidebar-sub" style="margin-bottom:14px;">We're here to help you</div>
+              <div class="gs-help-list">
+                <div class="gs-help-item" id="gsHelpAI">
+                  <div class="gs-help-icon">🤖</div>
+                  <div class="gs-help-body">
+                    <div class="gs-help-title">AI Assistant</div>
+                    <div class="gs-help-sub">Get instant help</div>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+                <div class="gs-help-item">
+                  <div class="gs-help-icon">❓</div>
+                  <div class="gs-help-body">
+                    <div class="gs-help-title">Help Center</div>
+                    <div class="gs-help-sub">FAQs and guides</div>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+                <div class="gs-help-item">
+                  <div class="gs-help-icon">📞</div>
+                  <div class="gs-help-body">
+                    <div class="gs-help-title">Contact Support</div>
+                    <div class="gs-help-sub">Call or raise a ticket</div>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+            <div class="dash-view-tab" id="view-transparency" hidden>
+        <!-- ── Header ── -->
+        <div class="pft-header">
+          <div>
+            <h1 class="text-h1">Public Funds Transparency</h1>
+            <p class="text-md text-secondary">Track how public money is planned, allocated, and spent for your city in real-time.</p>
+          </div>
+          <div class="pft-header-actions">
+            <select id="pfFYSelect" class="lm-select" style="padding:8px 14px;font-size:0.8rem;">
+              <option value="2026">FY 2025-26</option>
+              <option value="2025">FY 2024-25</option>
+              <option value="2024">FY 2023-24</option>
+            </select>
+            <button id="pfDownloadBtn" class="gs-btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download Report
+            </button>
+          </div>
+        </div>
+
+        <!-- ── 5 KPI Stat Cards ── -->
+        <div class="pf-stats-grid">
+          <div class="pf-stat-card pft-kpi-card" id="pfKpi1">
+            <div class="pf-stat-icon blue-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div><div class="pf-stat-label">Total Budget</div><div class="pf-stat-val" id="pfStatBudget">₹ 8.40 Cr</div><div class="pf-stat-sub">This Financial Year</div></div>
+          </div>
+          <div class="pf-stat-card pft-kpi-card" id="pfKpi2">
+            <div class="pf-stat-icon green-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <div><div class="pf-stat-label">Total Utilized</div><div class="pf-stat-val" id="pfStatUtilized">₹ 5.20 Cr</div><div class="pf-stat-sub pft-delta up" id="pfUtilPct">61.90% of Budget</div></div>
+          </div>
+          <div class="pf-stat-card pft-kpi-card" id="pfKpi3">
+            <div class="pf-stat-icon orange-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><div class="pf-stat-label">Remaining</div><div class="pf-stat-val" id="pfStatRemaining">₹ 3.20 Cr</div><div class="pf-stat-sub pft-delta down" id="pfRemPct">38.10% Remaining</div></div>
+          </div>
+          <div class="pf-stat-card pft-kpi-card" id="pfKpi4">
+            <div class="pf-stat-icon purple-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+            <div><div class="pf-stat-label">Total Projects</div><div class="pf-stat-val" id="pfStatProjects">128</div><div class="pf-stat-sub">Across All Departments</div></div>
+          </div>
+          <div class="pf-stat-card pft-kpi-card" id="pfKpi5">
+            <div class="pf-stat-icon cyan-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div><div class="pf-stat-label">Active Projects</div><div class="pf-stat-val" id="pfStatActive">56</div><div class="pf-stat-sub">In Progress</div></div>
+          </div>
+        </div>
+
+        <!-- ── Sub-tabs ── -->
+        <div class="pf-tabs-row">
+          <div class="pf-tabs" id="pfTabs">
+            <button class="pf-tab active" data-pf-tab="overview">Overview</button>
+            <button class="pf-tab" data-pf-tab="dept">Department Wise</button>
+            <button class="pf-tab" data-pf-tab="project">Project Wise</button>
+            <button class="pf-tab" data-pf-tab="ward">Ward Wise</button>
+            <button class="pf-tab" data-pf-tab="scheme">Scheme Wise</button>
+            <button class="pf-tab" data-pf-tab="sources">Fund Sources</button>
+          </div>
+        </div>
+
+        <!-- ── TAB CONTENT PANELS ── -->
+        <div class="pf-main-layout">
+          <div class="pf-left">
+
+            <!-- ===================== OVERVIEW TAB ===================== -->
+            <div id="pfPanel-overview" class="pf-tab-panel">
+
+              <!-- Budget Donut + Monthly Trend -->
+              <div class="pf-card">
+                <div class="pf-card-header">
+                  <h3 class="pf-card-title">Budget Overview</h3>
+                  <div class="dash-chart-controls">
+                    <button class="dash-chart-btn active" data-pf-period="monthly">Monthly</button>
+                    <button class="dash-chart-btn" data-pf-period="quarterly">Quarterly</button>
+                    <button class="dash-chart-btn" data-pf-period="yearly">Yearly</button>
+                  </div>
+                </div>
+                <div class="pft-overview-row">
+                  <!-- Interactive Donut (Chart.js) -->
+                  <div class="pft-donut-container">
+                    <canvas id="pfBudgetDonut" width="200" height="200"></canvas>
+                    <div class="pft-donut-center">
+                      <div id="pfDonutPct">61.9%</div>
+                      <div>Utilized</div>
+                    </div>
+                    <div class="pft-donut-legend" id="pfDonutLegend"></div>
+                  </div>
+                  <!-- Monthly Spending Line Chart -->
+                  <div class="pft-trend-container">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                      <span style="font-size:0.82rem;font-weight:700;color:#0F172A;">Monthly Spending Trend</span>
+                      <span id="pfSpendingTooltipBadge" style="font-size:0.7rem;background:#EFF6FF;color:#2563EB;padding:3px 9px;border-radius:10px;font-weight:700;"></span>
+                    </div>
+                    <canvas id="pfSpendingChart" height="200"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Utilization Progress by Dept -->
+              <div class="pf-card" style="margin-top:18px;">
+                <div class="pf-card-header">
+                  <h3 class="pf-card-title">Department Budget Utilization</h3>
+                  <span style="font-size:0.72rem;color:#64748B;">Click bar for details</span>
+                </div>
+                <canvas id="pfDeptBarChart" height="180"></canvas>
+              </div>
+
+              <!-- Projects Table -->
+              <div class="pf-card" style="margin-top:18px;">
+                <div class="pf-card-header">
+                  <h3 class="pf-card-title">Recent Projects</h3>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="text" id="pfProjectSearch" placeholder="Search projects..." style="padding:5px 10px;border:1px solid #E2E8F0;border-radius:6px;font-size:0.75rem;outline:none;width:160px;" />
+                    <button class="gs-link-btn" onclick="document.querySelector('[data-tab=projects]')&&document.querySelector('[data-tab=projects]').click()">View All →</button>
+                  </div>
+                </div>
+                <table class="pf-table" id="pfProjectsTable">
+                  <thead><tr><th>Project Name</th><th>Dept</th><th>Budget</th><th>Utilized</th><th>Progress</th><th>Status</th><th></th></tr></thead>
+                  <tbody id="pfProjectsBody"></tbody>
+                </table>
+              </div>
+
+              <!-- Funds Map Placeholder with stats -->
+              <div class="pf-card" style="margin-top:18px;">
+                <div class="pf-card-header">
+                  <h3 class="pf-card-title">Ward-wise Fund Utilization</h3>
+                  <button class="gs-link-btn" onclick="document.querySelector('[data-tab=map]')&&document.querySelector('[data-tab=map]').click()">View on Live Map →</button>
+                </div>
+                <div class="pft-ward-grid" id="pfWardGrid"></div>
+              </div>
+            </div>
+
+            <!-- ===================== DEPT TAB ===================== -->
+            <div id="pfPanel-dept" class="pf-tab-panel" hidden>
+              <div class="pf-card">
+                <div class="pf-card-header">
+                  <h3 class="pf-card-title">Department-wise Allocation vs Utilization</h3>
+                </div>
+                <canvas id="pfDeptGroupedBar" height="260"></canvas>
+              </div>
+              <div class="pf-card" style="margin-top:18px;">
+                <div class="pf-card-header"><h3 class="pf-card-title">Department Details</h3></div>
+                <table class="pf-table"><thead><tr><th>Department</th><th>Allocated</th><th>Utilized</th><th>Remaining</th><th>Efficiency</th></tr></thead>
+                <tbody id="pfDeptTableBody"></tbody></table>
+              </div>
+            </div>
+
+            <!-- ===================== PROJECT TAB ===================== -->
+            <div id="pfPanel-project" class="pf-tab-panel" hidden>
+              <div class="pf-card">
+                <div class="pf-card-header">
+                  <h3 class="pf-card-title">Project Budget vs Utilization</h3>
+                </div>
+                <canvas id="pfProjectHBar" height="280"></canvas>
+              </div>
+              <div class="pf-card" style="margin-top:18px;">
+                <div class="pf-card-header"><h3 class="pf-card-title">Project Spend Timeline</h3></div>
+                <canvas id="pfProjectTimeline" height="200"></canvas>
+              </div>
+            </div>
+
+            <!-- ===================== WARD TAB ===================== -->
+            <div id="pfPanel-ward" class="pf-tab-panel" hidden>
+              <div class="pf-card">
+                <div class="pf-card-header"><h3 class="pf-card-title">Ward-wise Budget Radar</h3></div>
+                <canvas id="pfWardRadar" height="300"></canvas>
+              </div>
+            </div>
+
+            <!-- ===================== SCHEME TAB ===================== -->
+            <div id="pfPanel-scheme" class="pf-tab-panel" hidden>
+              <div class="pf-card">
+                <div class="pf-card-header"><h3 class="pf-card-title">Scheme-wise Fund Distribution</h3></div>
+                <canvas id="pfSchemePie" height="260"></canvas>
+              </div>
+              <div class="pf-card" style="margin-top:18px;">
+                <div class="pf-card-header"><h3 class="pf-card-title">Scheme Progress Tracker</h3></div>
+                <div id="pfSchemeTracker"></div>
+              </div>
+            </div>
+
+            <!-- ===================== SOURCES TAB ===================== -->
+            <div id="pfPanel-sources" class="pf-tab-panel" hidden>
+              <div class="pf-card">
+                <div class="pf-card-header"><h3 class="pf-card-title">Fund Sources Breakdown</h3></div>
+                <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+                  <canvas id="pfSourceDonut" width="200" height="200" style="max-width:200px;"></canvas>
+                  <div id="pfSourceLegend" style="flex:1;"></div>
+                </div>
+              </div>
+              <div class="pf-card" style="margin-top:18px;">
+                <div class="pf-card-header"><h3 class="pf-card-title">Monthly Fund Inflow</h3></div>
+                <canvas id="pfSourceInflow" height="200"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ── RIGHT SIDEBAR ── -->
+          <div class="pf-sidebar">
+            <!-- Fund Summary -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Fund Summary</span>
+                <button class="gs-link-btn">View Details</button>
+              </div>
+              <div class="pf-fund-rows" id="pfFundSummaryRows">
+                <div class="pf-fund-row"><span>Central Grants</span><span>₹ 4.80 Cr</span><span class="pf-pct">57.1%</span></div>
+                <div class="pf-fund-row"><span>State Grants</span><span>₹ 2.10 Cr</span><span class="pf-pct">25.0%</span></div>
+                <div class="pf-fund-row"><span>Local Body Funds</span><span>₹ 1.20 Cr</span><span class="pf-pct">14.3%</span></div>
+                <div class="pf-fund-row"><span>Other Sources</span><span>₹ 0.30 Cr</span><span class="pf-pct">3.6%</span></div>
+                <div class="pf-fund-row total"><span><strong>Total</strong></span><span><strong>₹ 8.40 Cr</strong></span><span><strong>100%</strong></span></div>
+              </div>
+            </div>
+
+            <!-- Utilization Gauge -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Utilization Gauge</span>
+              </div>
+              <div style="position:relative;display:flex;justify-content:center;">
+                <canvas id="pfGaugeChart" height="120" style="max-height:120px;"></canvas>
+              </div>
+              <div style="text-align:center;margin-top:6px;">
+                <div style="font-size:1.4rem;font-weight:800;color:#2563EB;" id="pfGaugePct">61.9%</div>
+                <div style="font-size:0.72rem;color:#64748B;">Budget Utilized</div>
+              </div>
+              <!-- Burn rate indicator -->
+              <div class="pft-burn-wrap">
+                <span>Monthly Burn Rate</span>
+                <span style="font-weight:800;color:#EA580C;" id="pfBurnRate">₹ 0.52 Cr</span>
+              </div>
+              <div class="pft-burn-wrap">
+                <span>Days Left in FY</span>
+                <span style="font-weight:800;color:#7C3AED;" id="pfDaysLeft">—</span>
+              </div>
+            </div>
+
+            <!-- Department Performance -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Dept. Performance</span>
+                <button class="gs-link-btn" id="pfViewDeptBtn">View All</button>
+              </div>
+              <div class="pf-dept-perf-list" id="pfDeptPerfList"></div>
+            </div>
+
+            <!-- Live Fund Activities -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Live Fund Activities</span>
+                <span class="pft-live-dot"></span>
+              </div>
+              <div class="pf-activities-list" id="pfActivitiesList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Banner -->
+        <div class="pf-bottom-banner" style="margin-top:20px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:1.4rem;">🏛️</span>
+            <div>
+              <div style="font-weight:700;font-size:0.88rem;">Public money is your money. Stay informed, stay empowered.</div>
+              <div style="font-size:0.75rem;color:#475569;">Every rupee counts towards building a better, transparent and accountable city.</div>
+            </div>
+          </div>
+          <button class="gs-btn-primary" id="pfKnowRightsBtn">Know Your Rights</button>
+        </div>
+      </div>
+
+            <div class="dash-view-tab" id="view-projects" hidden>
+        <div class="dp-header-row">
+          <div>
+            <h1 class="text-h1">Development Projects</h1>
+            <p class="text-md text-secondary">Explore ongoing, completed and upcoming projects across your city.</p>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="dp-stats-grid">
+          <div class="dp-stat-card">
+            <div class="dp-stat-icon purple-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+            <div><div class="dp-stat-label">Total Projects</div><div class="dp-stat-val">243</div><div class="dp-stat-sub">Across all departments</div></div>
+          </div>
+          <div class="dp-stat-card">
+            <div class="dp-stat-icon green-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div><div class="dp-stat-label">Ongoing Projects</div><div class="dp-stat-val">86</div><div class="dp-stat-sub">In Progress</div></div>
+          </div>
+          <div class="dp-stat-card">
+            <div class="dp-stat-icon blue-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><div class="dp-stat-label">Completed Projects</div><div class="dp-stat-val">112</div><div class="dp-stat-sub">Successfully delivered</div></div>
+          </div>
+          <div class="dp-stat-card">
+            <div class="dp-stat-icon orange-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div><div class="dp-stat-label">Total Investments</div><div class="dp-stat-val">45</div><div class="dp-stat-sub">Planned &amp; Approved</div></div>
+          </div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="dp-main-layout">
+          <div class="dp-left">
+            <!-- Filter Row -->
+            <div class="dp-filter-row">
+              <div class="dp-filter-tabs" id="dpFilterTabs">
+                <button class="dp-ftab active" data-dp-status="all">All Projects</button>
+                <button class="dp-ftab" data-dp-status="ongoing">Ongoing (86)</button>
+                <button class="dp-ftab" data-dp-status="completed">Completed (112)</button>
+                <button class="dp-ftab" data-dp-status="upcoming">Upcoming (45)</button>
+              </div>
+              <div class="dp-filter-actions">
+                <button class="gs-btn-ghost">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                  Filter
+                </button>
+                <select class="lm-select" style="width:auto;padding:6px 10px;font-size:0.78rem;">
+                  <option>All Departments</option><option>BBMP</option><option>BESCOM</option><option>BWSSB</option>
+                </select>
+                <select class="lm-select" style="width:auto;padding:6px 10px;font-size:0.78rem;">
+                  <option>Sort: Newest</option><option>Sort: Budget</option><option>Sort: Progress</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Projects List -->
+            <div class="dp-projects-list" id="dpProjectsList">
+              <div class="dp-project-card" data-dp-status="ongoing">
+                <div class="dp-proj-img"><img src="proj_drainage.jpg" alt="Drainage Improvement" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+                <div class="dp-proj-body">
+                  <span class="dp-status-badge inprog">In Progress</span>
+                  <div class="dp-proj-title">Drainage Improvement (3rd Block)</div>
+                  <div class="dp-proj-meta"><span>🏢 Department: BBMP</span> · <span>📍 3rd Block, Vasanth Nagar</span></div>
+                </div>
+                <div class="dp-proj-stats">
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 82.40 L</div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Progress</div><div class="dp-proj-stat-val">65%</div><div class="dp-progress-bar"><div style="width:65%;background:#2563EB;"></div></div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Expected Completion</div><div class="dp-proj-stat-val">15 Sep 2025</div></div>
+                </div>
+                <button class="dp-view-btn">View Details</button>
+              </div>
+              <div class="dp-project-card" data-dp-status="ongoing">
+                <div class="dp-proj-img"><img src="proj_park.jpg" alt="Park Renovation" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+                <div class="dp-proj-body">
+                  <span class="dp-status-badge inprog">In Progress</span>
+                  <div class="dp-proj-title">Park Renovation (Cunningham Park)</div>
+                  <div class="dp-proj-meta"><span>🏢 Department: Horticulture</span> · <span>📍 Cunningham Park, Vasanth Nagar</span></div>
+                </div>
+                <div class="dp-proj-stats">
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 50.00 L</div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Progress</div><div class="dp-proj-stat-val">57%</div><div class="dp-progress-bar"><div style="width:57%;background:#10B981;"></div></div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Expected Completion</div><div class="dp-proj-stat-val">10 Oct 2025</div></div>
+                </div>
+                <button class="dp-view-btn">View Details</button>
+              </div>
+              <div class="dp-project-card" data-dp-status="ongoing">
+                <div class="dp-proj-img"><img src="proj_led.jpg" alt="LED Street Lights" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+                <div class="dp-proj-body">
+                  <span class="dp-status-badge inprog">In Progress</span>
+                  <div class="dp-proj-title">Street Light LED Upgrade</div>
+                  <div class="dp-proj-meta"><span>🏢 Department: BESCOM</span> · <span>📍 Multiple Locations in Ward 14</span></div>
+                </div>
+                <div class="dp-proj-stats">
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 70.00 L</div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Progress</div><div class="dp-proj-stat-val">70%</div><div class="dp-progress-bar"><div style="width:70%;background:#F59E0B;"></div></div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Expected Completion</div><div class="dp-proj-stat-val">05 Sep 2025</div></div>
+                </div>
+                <button class="dp-view-btn">View Details</button>
+              </div>
+              <div class="dp-project-card" data-dp-status="ongoing">
+                <div class="dp-proj-img"><img src="proj_pipeline.jpg" alt="Water Pipeline" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+                <div class="dp-proj-body">
+                  <span class="dp-status-badge inprog">In Progress</span>
+                  <div class="dp-proj-title">Water Pipeline Replacement</div>
+                  <div class="dp-proj-meta"><span>🏢 Department: BWSSB</span> · <span>📍 4th Main Road, Vasanth Nagar</span></div>
+                </div>
+                <div class="dp-proj-stats">
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 1.20 Cr</div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Progress</div><div class="dp-proj-stat-val">65%</div><div class="dp-progress-bar"><div style="width:65%;background:#06B6D4;"></div></div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Expected Completion</div><div class="dp-proj-stat-val">20 Oct 2025</div></div>
+                </div>
+                <button class="dp-view-btn">View Details</button>
+              </div>
+              <div class="dp-project-card" data-dp-status="completed">
+                <div class="dp-proj-img"><img src="proj_road.jpg" alt="Road Resurfacing" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+                <div class="dp-proj-body">
+                  <span class="dp-status-badge completed">Completed</span>
+                  <div class="dp-proj-title">Road Resurfacing (5th Main Road)</div>
+                  <div class="dp-proj-meta"><span>🏢 Department: BBMP</span> · <span>📍 5th Main Road, Vasanth Nagar</span></div>
+                </div>
+                <div class="dp-proj-stats">
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 90.00 L</div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Progress</div><div class="dp-proj-stat-val">100%</div><div class="dp-progress-bar"><div style="width:100%;background:#10B981;"></div></div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Completed On</div><div class="dp-proj-stat-val">18 Jul 2025</div></div>
+                </div>
+                <button class="dp-view-btn">View Details</button>
+              </div>
+              <div class="dp-project-card" data-dp-status="upcoming">
+                <div class="dp-proj-img"><img src="proj_school.jpg" alt="School Building" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+                <div class="dp-proj-body">
+                  <span class="dp-status-badge upcoming">Upcoming</span>
+                  <div class="dp-proj-title">Government School Building – Phase 2</div>
+                  <div class="dp-proj-meta"><span>🏢 Department: Education</span> · <span>📍 7th Cross, Vasanth Nagar</span></div>
+                </div>
+                <div class="dp-proj-stats">
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 2.80 Cr</div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Start Date</div><div class="dp-proj-stat-val">01 Sep 2025</div></div>
+                  <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Expected Completion</div><div class="dp-proj-stat-val">30 May 2026</div></div>
+                </div>
+                <button class="dp-view-btn">View Details</button>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-top:16px;"><button class="gs-btn-ghost">Load More Projects ↓</button></div>
+
+            <!-- Feedback Banner -->
+            <div class="dp-feedback-banner">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <div style="width:40px;height:40px;background:#EFF6FF;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div>
+                  <div style="font-weight:700;font-size:0.88rem;">Your Feedback Matters!</div>
+                  <div style="font-size:0.75rem;color:#475569;">Rate projects in your area and share your feedback with the authorities.</div>
+                </div>
+              </div>
+              <button class="gs-btn-primary">Provide Feedback →</button>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDEBAR -->
+          <div class="dp-sidebar">
+            <!-- Projects on Map -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Projects on Map</span>
+                <button class="gs-link-btn">View Full Map</button>
+              </div>
+              <div style="height:200px;background:#E8ECF0;border-radius:10px;position:relative;overflow:hidden;margin-bottom:14px;">
+                <!-- Placeholder dots to simulate map -->
+                <div style="position:absolute;top:18%;left:45%;width:26px;height:26px;background:#2563EB;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.7rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">12</div>
+                <div style="position:absolute;top:30%;left:70%;width:24px;height:24px;background:#F59E0B;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.7rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">5</div>
+                <div style="position:absolute;top:50%;left:20%;width:24px;height:24px;background:#10B981;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.7rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">8</div>
+                <div style="position:absolute;top:55%;left:58%;width:22px;height:22px;background:#8B5CF6;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.65rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">6</div>
+                <div style="position:absolute;top:30%;left:82%;width:21px;height:21px;background:#EF4444;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.65rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">3</div>
+                <div style="position:absolute;top:72%;left:30%;width:21px;height:21px;background:#F59E0B;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.65rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">3</div>
+                <div style="position:absolute;top:65%;left:55%;width:20px;height:20px;background:#EF4444;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.65rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">2</div>
+                <div style="position:absolute;top:80%;left:65%;width:20px;height:20px;background:#8B5CF6;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:0.65rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.2);">4</div>
+              </div>
+              <div class="dp-map-legend">
+                <span><span class="dp-leg-dot" style="background:#10B981;"></span> In Progress <strong>58</strong></span>
+                <span><span class="dp-leg-dot" style="background:#2563EB;"></span> Completed <strong>102</strong></span>
+                <span><span class="dp-leg-dot" style="background:#F59E0B;"></span> Upcoming <strong>45</strong></span>
+                <span><span class="dp-leg-dot" style="background:#EF4444;"></span> On Hold <strong>8</strong></span>
+              </div>
+            </div>
+
+            <!-- Project Progress Overview (Donut) -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Project Progress Overview</span>
+                <button class="gs-link-btn">This Financial Year</button>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <svg viewBox="0 0 120 120" width="110" height="110">
+                  <circle cx="60" cy="60" r="44" fill="none" stroke="#E2E8F0" stroke-width="18"/>
+                  <circle cx="60" cy="60" r="44" fill="none" stroke="#10B981" stroke-width="18" stroke-dasharray="99 177" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="44" fill="none" stroke="#2563EB" stroke-width="18" stroke-dasharray="129 147" stroke-dashoffset="-99" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="44" fill="none" stroke="#F59E0B" stroke-width="18" stroke-dasharray="50 226" stroke-dashoffset="-228" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="44" fill="none" stroke="#EF4444" stroke-width="18" stroke-dasharray="9 268" stroke-dashoffset="-278" transform="rotate(-90 60 60)"/>
+                  <text x="60" y="56" text-anchor="middle" font-size="14" font-weight="800" fill="#0F172A">243</text>
+                  <text x="60" y="70" text-anchor="middle" font-size="7" fill="#64748B">Total Projects</text>
+                </svg>
+                <div class="dp-donut-legend">
+                  <div><span class="dp-leg-dot" style="background:#10B981;"></span> In Progress <span>86 (35%)</span></div>
+                  <div><span class="dp-leg-dot" style="background:#2563EB;"></span> Completed <span>112 (46%)</span></div>
+                  <div><span class="dp-leg-dot" style="background:#F59E0B;"></span> Upcoming <span>45 (18%)</span></div>
+                  <div><span class="dp-leg-dot" style="background:#EF4444;"></span> On Hold <span>8 (3%)</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Project Updates -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Recent Project Updates</span>
+                <button class="gs-link-btn">View All</button>
+              </div>
+              <div class="dp-updates-list">
+                <div class="dp-update-item"><div class="dp-upd-dot" style="background:#10B981;"></div><div class="dp-upd-body"><div class="dp-upd-title">Drainage Improvement (3rd Block)</div><div class="dp-upd-sub">Work is 65% completed.</div><div class="dp-upd-time">2 hours ago</div></div></div>
+                <div class="dp-update-item"><div class="dp-upd-dot" style="background:#F59E0B;"></div><div class="dp-upd-body"><div class="dp-upd-title">Street Light LED Upgrade</div><div class="dp-upd-sub">New lights installed in 12 locations.</div><div class="dp-upd-time">5 hours ago</div></div></div>
+                <div class="dp-update-item"><div class="dp-upd-dot" style="background:#8B5CF6;"></div><div class="dp-upd-body"><div class="dp-upd-title">Government School Building – Phase 2</div><div class="dp-upd-sub">Tender process has been finalised.</div><div class="dp-upd-time">1 day ago</div></div></div>
+                <div class="dp-update-item"><div class="dp-upd-dot" style="background:#10B981;"></div><div class="dp-upd-body"><div class="dp-upd-title">Park Renovation (Cunningham Park)</div><div class="dp-upd-sub">Landscaping work in progress.</div><div class="dp-upd-time">2 days ago</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+            <div class="dash-view-tab" id="view-ai" hidden>
+        <div class="ai-layout">
+          <!-- LEFT: Chat area -->
+          <div class="ai-chat-panel">
+            <div class="ai-chat-header">
+              <div>
+                <h1 class="ai-chat-title">AI Assistant <span class="ai-sparkle">✨</span></h1>
+                <p class="ai-chat-sub">Your smart civic companion. Ask anything about your city.</p>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="ai-header-btn" id="aiNewChatBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  New Chat
+                </button>
+                <button class="ai-header-btn icon-only" id="aiHistoryBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick action chips -->
+            <div class="ai-quick-chips">
+              <button class="ai-chip" data-prompt="Ask anything about your city">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div><div style="font-weight:700;font-size:0.8rem;">Ask Anything</div><div style="font-size:0.68rem;color:#94A3B8;">Get instant answers</div></div>
+              </button>
+              <button class="ai-chip" data-prompt="I want to report a civic issue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div><div style="font-weight:700;font-size:0.8rem;">Report Issue</div><div style="font-size:0.68rem;color:#94A3B8;">AI-guided reporting</div></div>
+              </button>
+              <button class="ai-chip" data-prompt="Track the status of my complaints">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                <div><div style="font-weight:700;font-size:0.8rem;">Track Status</div><div style="font-size:0.68rem;color:#94A3B8;">Track complaints</div></div>
+              </button>
+              <button class="ai-chip" data-prompt="Find government services">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <div><div style="font-weight:700;font-size:0.8rem;">Find Services</div><div style="font-size:0.68rem;color:#94A3B8;">Find government services</div></div>
+              </button>
+              <button class="ai-chip" data-prompt="Translate this document">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <div><div style="font-weight:700;font-size:0.8rem;">Translate</div><div style="font-size:0.68rem;color:#94A3B8;">Multi-language support</div></div>
+              </button>
+            </div>
+
+            <!-- Chat messages -->
+            <div class="ai-messages-area" id="aiMessagesArea">
+              <!-- User message -->
+              <div class="ai-msg-wrap user">
+                <div class="ai-msg user">
+                  The street light is not working near Park Road for the last 3 days. Please help.
+                  <div class="ai-msg-time">09:41 AM ✓✓</div>
+                </div>
+              </div>
+
+              <!-- AI reply -->
+              <div class="ai-msg-wrap ai">
+                <div class="ai-bot-avatar">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><line x1="12" y1="7" x2="12" y2="11"/><line x1="7" y1="15" x2="7.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="17" y1="15" x2="17.01" y2="15"/></svg>
+                </div>
+                <div class="ai-msg ai">
+                  <p>I can help you report this issue.</p>
+                  <p>I found similar complaints in your area about street light malfunction.</p>
+                  <div class="ai-similar-issue-card">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                      <div>
+                        <div style="font-weight:700;font-size:0.82rem;">Street light not working near Park Road</div>
+                        <div style="font-size:0.7rem;color:#64748B;">Park Road, Ward 14</div>
+                        <div style="font-size:0.7rem;color:#64748B;">Reported 2 days ago</div>
+                      </div>
+                      <span class="dp-status-badge inprog" style="margin-left:auto;">In Progress</span>
+                    </div>
+                  </div>
+                  <p style="margin-top:12px;">Would you like me to create a new complaint for you?</p>
+                  <div class="ai-msg-time" style="color:#94A3B8;font-size:0.65rem;">09:41 AM</div>
+                </div>
+              </div>
+
+              <!-- User message 2 -->
+              <div class="ai-msg-wrap user">
+                <div class="ai-msg user">
+                  Yes, please create a complaint.
+                  <div class="ai-msg-time">09:42 AM ✓✓</div>
+                </div>
+              </div>
+
+              <!-- AI complaint created -->
+              <div class="ai-msg-wrap ai">
+                <div class="ai-bot-avatar">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><line x1="12" y1="7" x2="12" y2="11"/></svg>
+                </div>
+                <div class="ai-msg ai">
+                  <p>Complaint created successfully! ✅</p>
+                  <div class="ai-complaint-card">
+                    <div class="ai-comp-row"><span class="ai-comp-lbl">Complaint ID</span><span class="ai-comp-val">CMP-2026-0814-00126 <button class="ai-copy-btn">📋</button></span></div>
+                    <div class="ai-comp-row"><span class="ai-comp-lbl">Category</span><span class="ai-comp-val">Street Light</span></div>
+                    <div class="ai-comp-row"><span class="ai-comp-lbl">Location</span><span class="ai-comp-val">Park Road, Ward 14, Vasanth Nagar</span></div>
+                    <div class="ai-comp-row"><span class="ai-comp-lbl">Priority</span><span class="ai-comp-val"><span class="dp-status-badge upcoming" style="font-size:0.65rem;padding:2px 7px;">Medium</span></span></div>
+                    <div class="ai-comp-row"><span class="ai-comp-lbl">Expected Resolution</span><span class="ai-comp-val">07 Aug 2026</span></div>
+                    <div class="ai-comp-actions">
+                      <button class="ai-comp-btn">🔍 View Complaint</button>
+                      <button class="ai-comp-btn">🔗 Share</button>
+                      <button class="ai-comp-btn">📊 Track Status</button>
+                    </div>
+                  </div>
+                  <div class="ai-msg-time" style="color:#94A3B8;font-size:0.65rem;">09:42 AM</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Suggestion pills -->
+            <div class="ai-suggestion-pills" id="aiSuggestions">
+              <button class="ai-pill">🔍 Track my complaint</button>
+              <button class="ai-pill">💧 Water supply issue</button>
+              <button class="ai-pill">🗑️ Garbage not collected</button>
+              <button class="ai-pill">📄 Download documents</button>
+            </div>
+
+            <!-- Input area -->
+            <div class="ai-input-area">
+              <div class="ai-input-wrap">
+                <textarea class="ai-textarea" id="aiInput" placeholder="Type your question or request here..." rows="2" maxlength="1000"></textarea>
+                <div class="ai-input-footer">
+                  <span class="ai-char-count" id="aiCharCount">0/1000</span>
+                  <div class="ai-input-btns">
+                    <button class="ai-icon-btn" title="Attach file">📎</button>
+                    <button class="ai-send-btn" id="aiSendBtn">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
+                    <button class="ai-icon-btn" title="Voice input">🎤</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ai-disclaimer">AI Assistant may make mistakes. Please verify important information from official sources.</div>
+          </div>
+
+          <!-- RIGHT SIDEBAR -->
+          <div class="ai-sidebar">
+            <!-- Quick Actions -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Quick Actions</span>
+                <button class="gs-link-btn">See All</button>
+              </div>
+              <div class="ai-qa-grid">
+                <button class="ai-qa-btn red-bg" data-prompt="Report a new civic issue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg><span>Report Issue</span></button>
+                <button class="ai-qa-btn blue-bg" data-prompt="Track my complaint status"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Track Complaint</span></button>
+                <button class="ai-qa-btn green-bg" data-prompt="Find available government services"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Find Services</span></button>
+                <button class="ai-qa-btn yellow-bg" data-prompt="What is the status of my applications?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Check Status</span></button>
+                <button class="ai-qa-btn cyan-bg" data-prompt="How do I pay my bills online?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Pay Bills</span></button>
+                <button class="ai-qa-btn purple-bg" data-prompt="Find government offices near me"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Nearby Offices</span></button>
+              </div>
+            </div>
+
+            <!-- Suggested Questions -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Suggested Questions</span>
+                <button class="gs-link-btn">See All</button>
+              </div>
+              <div class="ai-suggested-list" id="aiSuggestedList">
+                <button class="ai-sug-item">How do I apply for birth certificate? <span>→</span></button>
+                <button class="ai-sug-item">What is my property tax due? <span>→</span></button>
+                <button class="ai-sug-item">How to change name in voter ID? <span>→</span></button>
+                <button class="ai-sug-item">When will my complaint be resolved? <span>→</span></button>
+                <button class="ai-sug-item">How to pay water bill online? <span>→</span></button>
+              </div>
+            </div>
+
+            <!-- Popular Services -->
+            <div class="gs-sidebar-card">
+              <div class="gs-sidebar-header">
+                <span class="gs-sidebar-title">Popular Services</span>
+                <button class="gs-link-btn">See All</button>
+              </div>
+              <div class="ai-pop-services">
+                <div class="ai-pop-srv-item"><div class="gs-app-icon green-bg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div style="font-size:0.8rem;font-weight:700;">Birth Certificate</div><div style="font-size:0.68rem;color:#94A3B8;">Apply for birth certificate</div></div></div>
+                <div class="ai-pop-srv-item"><div class="gs-app-icon purple-bg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><div style="font-size:0.8rem;font-weight:700;">Property Tax</div><div style="font-size:0.68rem;color:#94A3B8;">Pay your property tax</div></div></div>
+                <div class="ai-pop-srv-item"><div class="gs-app-icon cyan-bg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><div><div style="font-size:0.8rem;font-weight:700;">Water Bill</div><div style="font-size:0.68rem;color:#94A3B8;">View and pay water bills</div></div></div>
+                <div class="ai-pop-srv-item"><div class="gs-app-icon blue-bg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div><div style="font-size:0.8rem;font-weight:700;">Driving License</div><div style="font-size:0.68rem;color:#94A3B8;">Apply or renew license</div></div></div>
+              </div>
+            </div>
+
+            <!-- Need Human Help -->
+            <div class="gs-sidebar-card" style="background:linear-gradient(135deg,#EFF6FF,#DBEAFE);">
+              <div style="font-weight:800;font-size:0.88rem;margin-bottom:4px;">Need Human Help?</div>
+              <div style="font-size:0.75rem;color:#475569;margin-bottom:14px;">Our support team is here for you.</div>
+              <button class="gs-btn-primary" style="width:100%;">💬 Chat with Support</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-view-tab" id="view-emergency" hidden>
+        <div class="view-header">
+          <div>
+            <h1 class="text-h1 text-danger">Emergency Safety Center</h1>
+            <p class="text-md text-secondary">One-click SOS triggers, local emergency directories, and medical cards.</p>
+          </div>
+        </div>
+
+        <div class="emergency-grid-layout">
+          <!-- SOS Box -->
+          <div class="sos-trigger-card">
+            <h2 class="sos-title">Emergency SOS</h2>
+            <p class="sos-desc">Tap the button to transmit your live GPS coordinates to local Police, Ward Disaster teams, and emergency contacts.</p>
+            <div class="sos-btn-wrapper">
+              <button class="giant-sos-btn" id="fullSOSBtn">
+                <span class="sos-pulse-ring" id="sosPulseRing"></span>
+                <span class="sos-lbl">SOS</span>
+              </button>
+            </div>
+            <div class="sos-status-line" id="sosStatusOutput">System Idle · Location Ready</div>
+          </div>
+
+          <!-- Emergency Directory -->
+          <div class="emergency-directory">
+            <h3 class="panel-title">Unified Emergency Directory</h3>
+            <div class="directory-list">
+              <div class="dir-item">
+                <div class="dir-icon">🚨</div>
+                <div class="dir-details">
+                  <h4 class="dir-name">National Emergency Response</h4>
+                  <p class="dir-number">Call: 112</p>
+                </div>
+                <a href="tel:112" class="btn btn-ghost btn-sm">Dial</a>
+              </div>
+              <div class="dir-item">
+                <div class="dir-icon">🚔</div>
+                <div class="dir-details">
+                  <h4 class="dir-name">Police Control Room</h4>
+                  <p class="dir-number">Call: 100</p>
+                </div>
+                <a href="tel:100" class="btn btn-ghost btn-sm">Dial</a>
+              </div>
+              <div class="dir-item">
+                <div class="dir-icon">🚒</div>
+                <div class="dir-details">
+                  <h4 class="dir-name">Fire Department</h4>
+                  <p class="dir-number">Call: 101</p>
+                </div>
+                <a href="tel:101" class="btn btn-ghost btn-sm">Dial</a>
+              </div>
+              <div class="dir-item">
+                <div class="dir-icon">🚑</div>
+                <div class="dir-details">
+                  <h4 class="dir-name">National Ambulance Service</h4>
+                  <p class="dir-number">Call: 108</p>
+                </div>
+                <a href="tel:108" class="btn btn-ghost btn-sm">Dial</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 10: PROFILE & DIGILOCKER -->
+      <!-- ========================================== -->
+      <div class="dash-view-tab" id="view-profile" hidden>
+        <div class="view-header">
+          <div>
+            <h1 class="text-h1">Citizen Profile &amp; DigiLocker Vault</h1>
+            <p class="text-md text-secondary">Manage verified credentials, identity verification, and general settings.</p>
+          </div>
+        </div>
+
+        <div class="grid-2-column">
+          <!-- Profile details -->
+          <div class="side-panel-card">
+            <h3 class="panel-title">Personal Information</h3>
+            <div class="profile-avatar-row">
+              <div class="profile-large-avatar">RS</div>
+              <div>
+                <h4 class="profile-name-header" id="profileUserName">Rahul Sharma</h4>
+                <p class="profile-score-badge" id="profileVolunteerBadge">⭐️ Verified Volunteer · 420 XP</p>
+              </div>
+            </div>
+
+            <div class="profile-details-table">
+              <div class="detail-row"><span>Citizen ID</span> <strong>CVC-KA-48291</strong></div>
+              <div class="detail-row"><span>Mobile Registered</span> <strong>+91 98765 43210</strong></div>
+              <div class="detail-row"><span>Primary Address</span> <strong id="profileAddressValue">42, MG Road, Ward 14, Bengaluru</strong></div>
+              <div class="detail-row"><span>Language Preferences</span> <strong>English, Kannada</strong></div>
+            </div>
+            
+            <div class="profile-volunteer-toggle" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+              <label class="reg-toggle-label">
+                <input type="checkbox" class="reg-toggle-input" id="volunteerStatusToggle" checked />
+                <span class="reg-toggle" aria-hidden="true"></span>
+                <span>Active Volunteer (Available for local assistance)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- DigiLocker list -->
+          <div class="side-panel-card">
+            <div class="header-flex-title">
+              <h3 class="panel-title">DigiLocker Verified Vault</h3>
+              <span class="digilocker-badge">🔒 Secure</span>
+            </div>
+            <p class="panel-subtitle">Identity credentials linked to your Aadhaar profile.</p>
+
+            <div class="vault-document-list" id="digilockerDocsContainer">
+              <!-- Doc 1 -->
+              <div class="vault-doc-item" id="docAadhaar">
+                <div class="doc-meta">
+                  <span class="doc-icon">🪪</span>
+                  <div>
+                    <h4 class="doc-name">Aadhaar Card (UIDAI)</h4>
+                    <p class="doc-id-num">XXXX-XXXX-8429</p>
+                  </div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-view-doc" data-doc="Aadhaar Card">View</button>
+              </div>
+              <!-- Doc 2 -->
+              <div class="vault-doc-item" id="docDL">
+                <div class="doc-meta">
+                  <span class="doc-icon">🚗</span>
+                  <div>
+                    <h4 class="doc-name">Driving License (MORTH)</h4>
+                    <p class="doc-id-num">KA-03-2015-XXXX</p>
+                  </div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-view-doc" data-doc="Driving License">View</button>
+              </div>
+            </div>
+
+            <!-- Link new document action -->
+            <div class="link-doc-box" style="margin-top: 16px; padding-top:16px; border-top: 1px dashed var(--border);">
+              <button class="btn btn-secondary btn-sm btn-full" id="linkNewDocBtn">➕ Link New DigiLocker Document</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 11: OPEN COMPLAINT BOX (REDDIT STYLE) -->
+      <!-- ========================================== -->
+      
+      <!-- VIEW: NOTIFICATIONS -->
+      <div class="dash-view-tab" id="view-notifications" hidden>
+        <div class="view-header">
+          <div>
+            <h1 class="text-h1">Notifications</h1>
+            <p class="text-md text-secondary">Stay updated with real-time ward alerts, complaint status updates, and government notices.</p>
+          </div>
+        </div>
+        <div class="rp-card" style="max-width: 800px; padding: 20px;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; gap:12px; padding:12px; background:#EFF6FF; border-left:4px solid #2563EB; border-radius:8px;">
+              <div style="font-size:1.2rem;">📢</div>
+              <div>
+                <div style="font-weight:700; font-size:0.88rem; color:#0F172A;">PWD Work Order Scheduled</div>
+                <div style="font-size:0.78rem; color:#475569;">Pothole repair at 8th Cross Main Road scheduled for tonight. Field team dispatched.</div>
+                <div style="font-size:0.65rem; color:#94A3B8; margin-top:4px;">10 minutes ago</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; padding:12px; background:#FEF3C7; border-left:4px solid #D97706; border-radius:8px;">
+              <div style="font-size:1.2rem;">⚠️</div>
+              <div>
+                <div style="font-weight:700; font-size:0.88rem; color:#0F172A;">Scheduled Water Outage</div>
+                <div style="font-size:0.78rem; color:#475569;">BWSSB maintenance in Vasanth Nagar on Aug 7 from 10 PM to 6 AM. Please store water.</div>
+                <div style="font-size:0.65rem; color:#94A3B8; margin-top:4px;">2 hours ago</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; padding:12px; background:#ECFDF5; border-left:4px solid #10B981; border-radius:8px;">
+              <div style="font-size:1.2rem;">✅</div>
+              <div>
+                <div style="font-weight:700; font-size:0.88rem; color:#0F172A;">Complaint Resolved</div>
+                <div style="font-size:0.78rem; color:#475569;">Water pipeline leak near Community Park has been sealed and verified by Inspector Sunil Gowda.</div>
+                <div style="font-size:0.65rem; color:#94A3B8; margin-top:4px;">Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- VIEW: SETTINGS -->
+      <div class="dash-view-tab" id="view-settings" hidden>
+        <div class="view-header">
+          <div>
+            <h1 class="text-h1">Account Settings</h1>
+            <p class="text-md text-secondary">Manage your citizen profile preferences, notification alerts, and language options.</p>
+          </div>
+        </div>
+        <div class="rp-card" style="max-width: 700px; padding: 24px;">
+          <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:16px;">Preferences</h3>
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #E2E8F0; padding-bottom:12px;">
+              <div>
+                <div style="font-size:0.84rem; font-weight:700;">SMS & WhatsApp Emergency Alerts</div>
+                <div style="font-size:0.72rem; color:#64748B;">Receive IMD weather alerts and ward shutdown notifications on mobile.</div>
+              </div>
+              <input type="checkbox" checked style="width:18px; height:18px; accent-color:#2563EB;" />
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #E2E8F0; padding-bottom:12px;">
+              <div>
+                <div style="font-size:0.84rem; font-weight:700;">Public Profile Visibility</div>
+                <div style="font-size:0.72rem; color:#64748B;">Show your verified volunteer badge on Community Hub discussions.</div>
+              </div>
+              <input type="checkbox" checked style="width:18px; height:18px; accent-color:#2563EB;" />
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px;">
+              <div>
+                <div style="font-size:0.84rem; font-weight:700;">Language Preference</div>
+                <div style="font-size:0.72rem; color:#64748B;">Set default portal language.</div>
+              </div>
+              <select style="padding:6px 12px; border-radius:6px; border:1px solid #E2E8F0; font-size:0.8rem;">
+                <option>English</option>
+                <option>Kannada (ಕನ್ನಡ)</option>
+                <option>Hindi (हिंदी)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- VIEW: HELP CENTER -->
+      <div class="dash-view-tab" id="view-help" hidden>
+        <div class="view-header">
+          <div>
+            <h1 class="text-h1">Help Center & Support</h1>
+            <p class="text-md text-secondary">Find answers to common civic queries or reach out to Ward 14 support team.</p>
+          </div>
+        </div>
+        <div class="rp-card" style="max-width: 800px; padding: 24px;">
+          <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:16px;">Frequently Asked Questions</h3>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <details style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:12px; cursor:pointer;">
+              <summary style="font-weight:700; font-size:0.85rem; color:#0F172A;">How long does it take for a complaint to be assigned?</summary>
+              <p style="font-size:0.78rem; color:#475569; margin-top:8px;">Complaints submitted on New Street are routed within 2 hours to the respective PWD, BESCOM, or BWSSB division engineer.</p>
+            </details>
+            <details style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:12px; cursor:pointer;">
+              <summary style="font-weight:700; font-size:0.85rem; color:#0F172A;">How do I track my property tax payment status?</summary>
+              <p style="font-size:0.78rem; color:#475569; margin-top:8px;">Navigate to the <strong>Gov Services</strong> tab, click on <strong>Property Tax</strong>, and enter your 10-digit SAS Assessment Code.</p>
+            </details>
+            <details style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:12px; cursor:pointer;">
+              <summary style="font-weight:700; font-size:0.85rem; color:#0F172A;">What is Sahayak AI and how does it work?</summary>
+              <p style="font-size:0.78rem; color:#475569; margin-top:8px;">Sahayak AI is your 24/7 civic assistant capable of checking scheme eligibility, translating documents, and lodging voice complaints.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+
+</main>
+
+    <!-- ── RIGHT UTILITY PANEL ──────────────────────────── -->
+    <aside class="dash-right-utility">
+
+      <!-- Active Alerts -->
+      <div class="rp-card">
+        <div class="rp-card-header">
+          <h3 class="rp-card-title">Active Alerts</h3>
+          <button class="btn-text-link">View All</button>
+        </div>
+        <div class="active-alerts-list">
+          <div class="alert-pill alert-pill-danger" id="alertCard1">
+            <div class="alert-pill-left">
+              <span class="alert-pill-icon-circle alert-circle-red">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              </span>
+              <div class="alert-pill-info">
+                <div class="alert-pill-name">Heavy Rain Warning</div>
+                <div class="alert-pill-sub">Upto Aug 8 · IMD Alert</div>
+              </div>
+            </div>
+            <button class="alert-pill-chevron" aria-label="Expand">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+
+          <div class="alert-pill alert-pill-warning" id="alertCard2">
+            <div class="alert-pill-left">
+              <span class="alert-pill-icon-circle alert-circle-amber">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              </span>
+              <div class="alert-pill-info">
+                <div class="alert-pill-name">Water Supply Shutdown</div>
+                <div class="alert-pill-sub">Aug 7 · 10:00 PM to 6:00 AM</div>
+              </div>
+            </div>
+            <button class="alert-pill-chevron">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+
+          <div class="alert-pill alert-pill-info" id="alertCard3">
+            <div class="alert-pill-left">
+              <span class="alert-pill-icon-circle alert-circle-blue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </span>
+              <div class="alert-pill-info">
+                <div class="alert-pill-name">Power Maintenance</div>
+                <div class="alert-pill-sub">Aug 8 · 11:00 AM to 3:00 PM</div>
+              </div>
+            </div>
+            <button class="alert-pill-chevron">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions (4x2 Circular Icons) -->
+      <div class="rp-card">
+        <h3 class="rp-card-title" style="margin-bottom:12px;">Quick Actions</h3>
+        <div class="qa-grid-v2">
+          
+          <button class="qa-tile-v2" id="tileReport">
+            <span class="qa-circle-icon qa-icon-blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+            <span class="qa-lbl-v2">Register Complaint</span>
+          </button>
+
+          <button class="qa-tile-v2" id="trackComplaintBtn">
+            <span class="qa-circle-icon qa-icon-green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+            <span class="qa-lbl-v2">Track Complaint</span>
+          </button>
+
+          <button class="qa-tile-v2" id="tileMap">
+            <span class="qa-circle-icon qa-icon-purple">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            </span>
+            <span class="qa-lbl-v2">Live Map</span>
+          </button>
+
+          <button class="qa-tile-v2" id="tileService">
+            <span class="qa-circle-icon qa-icon-cyan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.1 12a10 10 0 0 0 9.9 10V12z"/><path d="M12 12V2a10 10 0 0 1 10 10H12z"/></svg>
+            </span>
+            <span class="qa-lbl-v2">AI Assistant</span>
+          </button>
+
+          <button class="qa-tile-v2" id="qaGovServices">
+            <span class="qa-circle-icon qa-icon-amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/></svg>
+            </span>
+            <span class="qa-lbl-v2">Gov Services</span>
+          </button>
+
+          <button class="qa-tile-v2" id="tileSOS">
+            <span class="qa-circle-icon qa-icon-red">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </span>
+            <span class="qa-lbl-v2">Emergency</span>
+          </button>
+
+          <button class="qa-tile-v2" id="voiceComplaintBtn">
+            <span class="qa-circle-icon qa-icon-purple">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </span>
+            <span class="qa-lbl-v2">Voice Complaint</span>
+          </button>
+
+          <button class="qa-tile-v2" id="nearbyUpdatesBtn">
+            <span class="qa-circle-icon qa-icon-blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </span>
+            <span class="qa-lbl-v2">Nearby Updates</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- My Fund Dashboard -->
+      <div class="rp-card">
+        <div class="rp-card-header">
+          <h3 class="rp-card-title">My Fund Dashboard</h3>
+          <button class="btn-text-link" id="dashBudgetDetailsBtn">View Details</button>
+        </div>
+        <div class="fund-3-stats">
+          <div class="fund-3-stat fund-bg-blue">
+            <div class="fund-3-lbl">Total Assigned</div>
+            <div class="fund-3-val">₹ 8.40 Cr</div>
+          </div>
+          <div class="fund-3-stat fund-bg-green">
+            <div class="fund-3-lbl">Utilized</div>
+            <div class="fund-3-val">₹ 5.20 Cr</div>
+          </div>
+          <div class="fund-3-stat fund-bg-orange">
+            <div class="fund-3-lbl">Remaining</div>
+            <div class="fund-3-val">₹ 3.20 Cr</div>
+          </div>
+        </div>
+        <p class="fund-usage-title">Fund Usage Overview</p>
+        <div class="fund-chart-area">
+          <div class="fund-donut-svg">
+            <svg viewBox="0 0 100 100" width="100" height="100">
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#E2E8F0" stroke-width="14"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#2563EB" stroke-width="14" stroke-dasharray="92.4 127.6" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#06B6D4" stroke-width="14" stroke-dasharray="48.4 171.6" stroke-dashoffset="-92.4" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#F59E0B" stroke-width="14" stroke-dasharray="33.0 187.0" stroke-dashoffset="-140.8" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#10B981" stroke-width="14" stroke-dasharray="24.2 195.8" stroke-dashoffset="-173.8" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#8B5CF6" stroke-width="14" stroke-dasharray="22.0 198.0" stroke-dashoffset="-198.0" transform="rotate(-90 50 50)"/>
+              <text x="50" y="46" text-anchor="middle" font-size="12" font-weight="800" fill="#0F172A" font-family="Outfit,sans-serif">62%</text>
+              <text x="50" y="57" text-anchor="middle" font-size="6.5" fill="#64748B" font-family="Inter,sans-serif">Utilized</text>
+            </svg>
+          </div>
+          <div class="fund-legend">
+            <div class="fund-leg-item"><span class="fund-leg-dot" style="background:#2563EB"></span><span class="fund-leg-name">Roads</span><span class="fund-leg-pct">42%</span><span class="fund-leg-amt">₹3.53 Cr</span></div>
+            <div class="fund-leg-item"><span class="fund-leg-dot" style="background:#06B6D4"></span><span class="fund-leg-name">Water</span><span class="fund-leg-pct">22%</span><span class="fund-leg-amt">₹1.85 Cr</span></div>
+            <div class="fund-leg-item"><span class="fund-leg-dot" style="background:#F59E0B"></span><span class="fund-leg-name">Electricity</span><span class="fund-leg-pct">15%</span><span class="fund-leg-amt">₹1.26 Cr</span></div>
+            <div class="fund-leg-item"><span class="fund-leg-dot" style="background:#10B981"></span><span class="fund-leg-name">Sanitation</span><span class="fund-leg-pct">11%</span><span class="fund-leg-amt">₹0.96 Cr</span></div>
+            <div class="fund-leg-item"><span class="fund-leg-dot" style="background:#8B5CF6"></span><span class="fund-leg-name">Others</span><span class="fund-leg-pct">10%</span><span class="fund-leg-amt">₹0.80 Cr</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Voice -->
+      <div class="rp-card">
+        <div class="rp-card-header">
+          <h3 class="rp-card-title">Community Voice</h3>
+          <button class="btn-text-link" id="rpViewAllCommunity">View All</button>
+        </div>
+        <p class="rp-poll-question">Which road in Ward 14 needs urgent repair?</p>
+        <div class="rp-poll-options" id="commVoicePoll">
+          <div class="rp-poll-opt">
+            <div class="rp-poll-opt-top">
+              <span class="rp-poll-opt-name">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;vertical-align:middle;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                8th Cross / Main Road
+              </span>
+              <span class="rp-poll-opt-pct" style="color:#2563EB">62% (82 votes)</span>
+            </div>
+            <div class="rp-poll-bar-track"><div class="rp-poll-bar-fill" style="width:62%;background:#2563EB"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden elements preserved for JS compatibility -->
+      <div style="display:none;">
+        <input type="text" id="quickAiField" />
+        <button id="quickAiSubmitBtn"></button>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <nav class="mobile-tabbar" aria-label="Mobile dashboard navigation">
+    <button class="mobile-tabbar-btn active" data-mobile-tab="dashboard"><span>📊</span>Home</button>
+    <button class="mobile-tabbar-btn" data-mobile-tab="complaints"><span>📋</span>Cases</button>
+    <button class="mobile-tabbar-btn" data-mobile-tab="map"><span>🗺️</span>Map</button>
+    <button class="mobile-tabbar-btn" data-mobile-tab="services"><span>🏛️</span>Services</button>
+    <button class="mobile-tabbar-btn danger" data-mobile-tab="emergency"><span>🚨</span>SOS</button>
+  </nav>
+
+  <!-- ── MODAL: FILE COMPLAINT FORM ────────────────────────────── -->
+  <div class="modal-overlay" id="complaintModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Register a Civic Complaint</h2>
+        <button class="modal-close" id="closeComplaintModalBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="complaintForm" onsubmit="event.preventDefault();">
+          
+          <div class="reg-field-group">
+            <label class="reg-label" for="compCategory">Category / Department <span class="reg-required">*</span></label>
+            <select class="reg-select" id="compCategory" required>
+              <option value="" disabled selected>Select category</option>
+              <option value="roads">Road Damage / Potholes</option>
+              <option value="water">Water supply leakage / sewage</option>
+              <option value="electricity">Electrical maintenance / Streetlights</option>
+              <option value="garbage">Garbage / Sanitation issue</option>
+            </select>
+          </div>
+
+          <div class="reg-field-group">
+            <label class="reg-label" for="compTitle">Short Summary Title <span class="reg-required">*</span></label>
+            <input type="text" class="reg-input" id="compTitle" placeholder="e.g. Large pothole opposite gate 4" required />
+          </div>
+
+          <div class="reg-field-group">
+            <label class="reg-label" for="compDetails">Detailed Description <span class="reg-required">*</span></label>
+            <textarea class="reg-input" id="compDetails" rows="4" placeholder="Describe the severity, exact landmark, and any relevant details..." required></textarea>
+          </div>
+
+          <div class="reg-field-group">
+            <label class="reg-label" for="compAddress">Address / Location Landmark <span class="reg-required">*</span></label>
+            <input type="text" class="reg-input" id="compAddress" value="8th Cross Main Road, Vasanth Nagar" required autocomplete="street-address" />
+            <div class="complaint-location-tools">
+              <button type="button" class="btn btn-secondary btn-sm" id="useCurrentLocationBtn">Use Current Location</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="previewComplaintLocationBtn">Preview on Map</button>
+            </div>
+            <div class="location-preview-card" id="complaintLocationPreview" aria-live="polite">
+              <span class="location-preview-dot"></span>
+              <div>
+                <strong>Ward 14 routing ready</strong>
+                <p>Enter a landmark or use GPS to place this issue on the live map.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-form-photo-upload">
+            <label class="reg-label">Upload Reference Photograph</label>
+            <div class="photo-upload-placeholder">
+              <span>📷</span> Click here to upload issue photo (Max 5MB)
+            </div>
+          </div>
+
+          <div class="modal-footer-actions">
+            <button type="button" class="btn btn-secondary" id="cancelComplaintBtn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="submitComplaintFormBtn">File Complaint</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: DOCUMENT VIEWER ────────────────────────────────── -->
+  <div class="modal-overlay" id="documentModal" hidden>
+    <div class="modal-card doc-view-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="docModalTitle">DigiLocker Document</h2>
+        <button class="modal-close" id="closeDocModalBtn">✕</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div class="document-mock-display" id="docDisplayArea">
+          <!-- Content injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: DOCUMENT LINKING ──────────────────────────────── -->
+  <div class="modal-overlay" id="linkDocModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Link Document from DigiLocker</h2>
+        <button class="modal-close" id="closeLinkDocModalBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="linkDocForm" onsubmit="event.preventDefault();">
+          <div class="reg-field-group">
+            <label class="reg-label" for="linkDocType">Document Type</label>
+            <select class="reg-select" id="linkDocType" required>
+              <option value="" disabled selected>Select document type</option>
+              <option value="pan">PAN Card (Income Tax Dept)</option>
+              <option value="ration">Ration Card (Dept of Food &amp; Supplies)</option>
+              <option value="voter">Voter ID (Election Commission of India)</option>
+            </select>
+          </div>
+          <div class="reg-field-group">
+            <label class="reg-label" for="linkDocNum">Document ID Number</label>
+            <input type="text" class="reg-input" id="linkDocNum" placeholder="e.g. ABCDE1234F" required />
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn btn-secondary" id="cancelLinkDocBtn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Link Document</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: BILL / ASSESSMENT PAYMENT ────────────────────── -->
+  <div class="modal-overlay" id="paymentModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="paymentModalTitle">Assess &amp; Pay Tax</h2>
+        <button class="modal-close" id="closePaymentModalBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="payment-bill-details" style="margin-bottom: 20px; padding:12px; background:var(--surface-2); border-radius: var(--radius-md); border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:6px;">
+            <span>Outstanding Assessment</span>
+            <span style="color:var(--danger);" id="paymentBillAmount">₹4,250</span>
+          </div>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Property Tax Assessment Code: Assessment-Ward14-8291</p>
+        </div>
+        <div class="reg-field-group">
+          <label class="reg-label">Select Payment Method</label>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <label class="choice-item" style="padding:10px; border:1px solid var(--border); border-radius:6px; background:white;">
+              <input type="radio" name="paymethod" checked /> UPI (GPAY, PhonePe, Paytm)
+            </label>
+            <label class="choice-item" style="padding:10px; border:1px solid var(--border); border-radius:6px; background:white;">
+              <input type="radio" name="paymethod" /> NetBanking
+            </label>
+            <label class="choice-item" style="padding:10px; border:1px solid var(--border); border-radius:6px; background:white;">
+              <input type="radio" name="paymethod" /> Debit / Credit Card
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer-actions">
+          <button class="btn btn-secondary" id="cancelPaymentBtn">Cancel</button>
+          <button class="btn btn-primary" id="confirmPaymentBtn">Proceed with Payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: SITE IMAGES / RESOLUTION PROOF ───────────────── -->
+  <div class="modal-overlay" id="photosModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="photosModalTitle">Project Site Photos</h2>
+        <button class="modal-close" id="closePhotosModalBtn">✕</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <h4 id="photosProjectTitle" style="font-size:1.1rem; font-weight:800; margin-bottom:6px;">8th Main Road Resurfacing</h4>
+        <p id="photosProjectProgress" style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:16px;">Current Progress: 65%</p>
+        
+        <div class="project-photos-compare-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+            <div style="background:#e2e8f0; height:120px; display:flex; align-items:center; justify-content:center; font-size:2rem;">🚧</div>
+            <div style="padding:6px; font-size:0.75rem; font-weight:700; background:#f1f5f9;">Before Work Start</div>
+          </div>
+          <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+            <div style="background:#cbd5e1; height:120px; display:flex; align-items:center; justify-content:center; font-size:2rem;" id="photosAfterContainer">🚜</div>
+            <div style="padding:6px; font-size:0.75rem; font-weight:700; background:#f1f5f9;" id="photosAfterLabel">Current Status (In-Progress)</div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem; color:var(--text-tertiary);">Photos captured by Ward Site Inspector (timestamped &amp; geo-tagged).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST NOTIFICATIONS ────────────────────────────────────── -->
+  <div class="toast-notification-area" id="toastContainer"></div>
+
+  <!-- Leaflet.js Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLcE=" crossorigin=""></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

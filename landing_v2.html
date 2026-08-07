@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Street — India's Digital Civic Operating System</title>
+  <meta name="description" content="One Platform. Every Citizen. Every Service. Built for Indian civic governance with AI assistance, complaint tracking, real-time public fund transparency, and 100+ unified services." />
+  <meta name="theme-color" content="#2563EB" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="landing_v2.css" />
+</head>
+<body>
+
+<!-- ─── 1. NAVBAR ─── -->
+<nav class="navbar" id="mainNav">
+  <div class="nav-container">
+    <a href="landing_v2.html" class="brand-wrapper">
+      <div class="brand-logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="brand-text">New <span>Street</span></span>
+      <span class="brand-pill">2.0</span>
+    </a>
+
+    <div class="nav-menu">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#ai" class="nav-link">Sahayak AI</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#transparency" class="nav-link">Transparency</a>
+      <a href="#community" class="nav-link">Community</a>
+    </div>
+
+    <div class="nav-actions">
+      <button class="nav-location-btn" id="navLocationBtn" title="Click to change city">
+        <span class="nav-location-dot"></span>
+        <span id="navLocationText">Bengaluru</span>
+      </button>
+
+      <a href="dashboard.html" class="btn-nav-outline">Dashboard</a>
+      <a href="register.html" class="btn-nav-primary">Get Started →</a>
+
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Navigation Drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="#locationHub">🏙️ Select City</a>
+  <a href="#features">⚡ Features</a>
+  <a href="#how">🔄 How It Works</a>
+  <a href="#ai">🤖 Sahayak AI</a>
+  <a href="#services">🏛️ 100+ Services</a>
+  <a href="#transparency">📊 Fund Transparency</a>
+  <a href="#community">👥 Community Hub</a>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;padding-top:14px;border-top:1px solid var(--border-light);">
+    <a href="dashboard.html" class="btn-nav-outline text-center">Open Dashboard</a>
+    <a href="register.html" class="btn-nav-primary text-center">Get Started Free →</a>
+  </div>
+</div>
+
+<!-- ─── 2. CINEMATIC HERO SECTION ─── -->
+<section class="hero-section">
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-radial-glow"></div>
+  <div class="hero-grid-mesh"></div>
+  <div class="hero-particles-canvas" id="heroParticles"></div>
+
+  <div class="container" style="position:relative;z-index:3;">
+    <div class="hero-layout">
+
+      <!-- LEFT: Hero Copy -->
+      <div class="hero-left-content">
+        <div class="hero-announcement-badge">
+          <span class="hab-dot"></span>
+          <span>India's Digital Civic Operating System</span>
+        </div>
+
+        <h1 class="hero-headline">
+          One Platform.<br/>
+          <span class="highlight-word">Every Citizen.</span><br/>
+          Every Service.
+        </h1>
+
+        <p class="hero-subtitle">
+          Report civic issues, access 100+ government services, receive emergency alerts, discover welfare schemes, and track public funds in real time through one unified, intelligent platform.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="dashboard.html" class="btn-hero-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Report Issue
+          </a>
+          <a href="dashboard.html" class="btn-hero-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Explore Platform
+          </a>
+          <a href="#how" class="btn-hero-demo">
+            Watch 2-Min Demo →
+          </a>
+        </div>
+
+        <div class="hero-trust-badges">
+          <div class="htb-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Government Verified</span>
+          </div>
+          <div class="htb-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Sahayak AI Powered</span>
+          </div>
+          <div class="htb-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>256-Bit SSL Secure</span>
+          </div>
+          <div class="htb-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Real-Time SLA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Interactive Floating Glass HUD -->
+      <div class="hero-right-showcase">
+        <div class="hero-main-glass-card">
+          <div class="hmg-header">
+            <div class="hmg-telemetry-badge">
+              <span class="nav-location-dot"></span>
+              <span id="heroHudCity">BENGALURU · LIVE TELEMETRY</span>
+            </div>
+            <div class="hmg-status-indicator">AI ENGINE LIVE</div>
+          </div>
+
+          <div class="hmg-metric-tiles">
+            <div class="hmg-tile">
+              <div class="hmg-tile-val font-mono-num text-primary" id="heroHudActive">214</div>
+              <div class="hmg-tile-lbl">Active Issues</div>
+            </div>
+            <div class="hmg-tile">
+              <div class="hmg-tile-val font-mono-num text-emerald" id="heroHudResolved">162</div>
+              <div class="hmg-tile-lbl">Resolved Today</div>
+            </div>
+            <div class="hmg-tile">
+              <div class="hmg-tile-val font-mono-num text-amber">52</div>
+              <div class="hmg-tile-lbl">In Progress</div>
+            </div>
+          </div>
+
+          <div class="hmg-live-feed">
+            <div class="hmg-feed-item">
+              <div class="hmg-feed-icon" style="background:#EF4444;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="hmg-feed-info">
+                <div class="hmg-feed-title">Pothole on 8th Cross Road</div>
+                <div class="hmg-feed-meta">Ward 14 · Field truck dispatched · SLA: 3 hrs</div>
+              </div>
+              <span class="hmg-feed-time">Just now</span>
+            </div>
+
+            <div class="hmg-feed-item">
+              <div class="hmg-feed-icon" style="background:#10B981;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="hmg-feed-info">
+                <div class="hmg-feed-title">Street LED Cluster Restored</div>
+                <div class="hmg-feed-meta">5th Main · ₹1.2L budget logged · Verified by BBMP</div>
+              </div>
+              <span class="hmg-feed-time">4m ago</span>
+            </div>
+
+            <div class="hmg-feed-item">
+              <div class="hmg-feed-icon" style="background:#2563EB;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div class="hmg-feed-info">
+                <div class="hmg-feed-title">₹45.6L Released for Storm Drain</div>
+                <div class="hmg-feed-meta">3rd Block Urban Drainage · 68% milestone passed</div>
+              </div>
+              <span class="hmg-feed-time">12m ago</span>
+            </div>
+          </div>
+
+          <div class="hmg-footer-bar">
+            <span>Sahayak AI is processing 42 municipal sensor streams</span>
+            <span style="color:#60A5FA;font-weight:700;">99.8% System Uptime</span>
+          </div>
+        </div>
+
+        <!-- Floating AI Assistant Bubble -->
+        <div class="hero-floating-ai-card">
+          <div class="hfa-avatar">🤖</div>
+          <div class="hfa-body">
+            <div class="hfa-title">Sahayak AI Civic Assistant</div>
+            <div class="hfa-msg">"Where is my water bill?", "Track complaint #CMP-4821"</div>
+          </div>
+          <a href="#ai" class="hfa-action-btn">Try Sahayak →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── 3. SMART LOCATION EXPERIENCE ─── -->
+<section class="smart-location-section" id="locationHub">
+  <div class="container">
+    <div class="location-hub-card reveal">
+      <div>
+        <span class="badge-tag badge-blue" style="margin-bottom:12px;">SMART LOCATION SYSTEM</span>
+        <h3 class="lhc-left-title">Connect to Your City</h3>
+        <p class="lhc-left-desc">
+          New Street works across India and instantly personalizes your civic portal, emergency numbers, active ward projects, and corporator directory based on where you live.
+        </p>
+        <button class="btn-gps-detect" id="btnGpsDetect">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Use My Current Location
+        </button>
+      </div>
+
+      <div class="lhc-search-wrapper">
+        <div class="lhc-input-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="lhc-input" id="citySearchInput" placeholder="Search City, District, or 6-digit Pincode (e.g. 560034)..." />
+        </div>
+
+        <div class="lhc-popular-cities">
+          <span class="lhc-pop-label">Popular:</span>
+          <button class="city-pill active" data-city="Bengaluru">Bengaluru</button>
+          <button class="city-pill" data-city="Mumbai">Mumbai</button>
+          <button class="city-pill" data-city="Delhi">Delhi</button>
+          <button class="city-pill" data-city="Hyderabad">Hyderabad</button>
+          <button class="city-pill" data-city="Ahmedabad">Ahmedabad</button>
+          <button class="city-pill" data-city="Pune">Pune</button>
+          <button class="city-pill" data-city="Jaipur">Jaipur</button>
+          <button class="city-pill" data-city="Chennai">Chennai</button>
+          <button class="city-pill" data-city="Kolkata">Kolkata</button>
+          <button class="city-pill" data-city="Lucknow">Lucknow</button>
+        </div>
+
+        <div class="city-personalized-banner" id="cityPersonalizedBanner">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 4. NATIONAL TRUST METRICS ─── -->
+<section class="trust-metrics-section" id="trustMetricsSection">
+  <div class="container">
+    <div class="metrics-grid">
+      <div class="metric-card reveal">
+        <div class="mc-val font-mono-num" data-counter-target="2.8" data-counter-suffix=" Cr+">0</div>
+        <div class="mc-label">Citizens Connected</div>
+        <div class="mc-sub">Across 198 Wards</div>
+      </div>
+
+      <div class="metric-card reveal" style="transition-delay:0.06s;">
+        <div class="mc-val font-mono-num" data-counter-target="18.4" data-counter-suffix=" L+">0</div>
+        <div class="mc-label">Complaints Solved</div>
+        <div class="mc-sub">Avg 4.2 hrs fix time</div>
+      </div>
+
+      <div class="metric-card reveal" style="transition-delay:0.12s;">
+        <div class="mc-val font-mono-num" data-counter-target="700" data-counter-suffix="+">0</div>
+        <div class="mc-label">Govt Departments</div>
+        <div class="mc-sub">Integrated APIs</div>
+      </div>
+
+      <div class="metric-card reveal" style="transition-delay:0.18s;">
+        <div class="mc-val font-mono-num text-primary" data-counter-target="92" data-counter-suffix="%">0</div>
+        <div class="mc-label">Resolution Rate</div>
+        <div class="mc-sub">SLA Guaranteed</div>
+      </div>
+
+      <div class="metric-card reveal" style="transition-delay:0.24s;">
+        <div class="mc-val font-mono-num text-amber" data-counter-target="4.8" data-counter-suffix="★">0</div>
+        <div class="mc-label">Citizen Satisfaction</div>
+        <div class="mc-sub">1.2M+ Verified Ratings</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 5. PROBLEM SECTION (DARK) ─── -->
+<section class="problem-section">
+  <div class="container">
+    <div class="problem-header reveal">
+      <span class="problem-tag">TODAY'S CIVIC REALITY</span>
+      <h2 class="problem-title">The Fragmented Municipal Maze<br/>Costing Citizens Millions of Hours.</h2>
+      <p class="problem-sub">
+        Today, an Indian citizen must navigate 10+ disconnected departmental websites, deal with unanswered phone numbers, face duplicate filings, and endure zero transparency.
+      </p>
+    </div>
+
+    <div class="friction-grid">
+      <div class="friction-card reveal">
+        <div class="fc-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        </div>
+        <h3 class="fc-title">10+ Disconnected Portals</h3>
+        <p class="fc-desc">Separate websites for water boards, electricity distributors, road corporations, police, and property tax. Different passwords, confusing UI, and endless server errors.</p>
+      </div>
+
+      <div class="friction-card reveal" style="transition-delay:0.1s;">
+        <div class="fc-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+        </div>
+        <h3 class="fc-title">Endless Delays & Duplicate Complaints</h3>
+        <p class="fc-desc">Complaints get bounced between departments with no SLA tracking. Multiple neighbors file for the exact same pothole, wasting valuable field engineer time.</p>
+      </div>
+
+      <div class="friction-card reveal" style="transition-delay:0.2s;">
+        <div class="fc-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <h3 class="fc-title">Zero Public Fund Visibility</h3>
+        <p class="fc-desc">Citizens have no idea how much municipal money was budgeted for their local road or drain, who the contractor is, or when the warranty expires.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 6. SOLUTION SECTION (BRIGHT WORKFLOW) ─── -->
+<section class="solution-section">
+  <div class="container">
+    <div class="solution-header reveal">
+      <span class="solution-tag">THE NEW STREET PARADIGM</span>
+      <h2 class="solution-title">Everything comes together<br/><span class="gradient-text">inside one unified operating system.</span></h2>
+      <p class="section-sub">A transparent, automated, AI-governed lifecycle from issue detection to verified repair.</p>
+    </div>
+
+    <div class="workflow-container reveal">
+      <div class="workflow-steps-row">
+        <div class="wf-step-card active">
+          <div class="wf-step-num font-mono-num">1</div>
+          <h4 class="wf-step-title">Citizen Photo / Voice</h4>
+          <p class="wf-step-desc">Citizen snaps a photo or speaks in their native language.</p>
+        </div>
+
+        <div class="wf-step-card">
+          <div class="wf-step-num font-mono-num">2</div>
+          <h4 class="wf-step-title">Sahayak AI Triage</h4>
+          <p class="wf-step-desc">AI detects category, severity, GPS ward bounds, and checks duplicates.</p>
+        </div>
+
+        <div class="wf-step-card">
+          <div class="wf-step-num font-mono-num">3</div>
+          <h4 class="wf-step-title">Engineer Auto-Dispatch</h4>
+          <p class="wf-step-desc">Routed directly to the on-duty junior engineer with a countdown SLA.</p>
+        </div>
+
+        <div class="wf-step-card">
+          <div class="wf-step-num font-mono-num">4</div>
+          <h4 class="wf-step-title">Verified Field Fix</h4>
+          <p class="wf-step-desc">Crews execute repair and upload timestamped before/after proof.</p>
+        </div>
+
+        <div class="wf-step-card">
+          <div class="wf-step-num font-mono-num">5</div>
+          <h4 class="wf-step-title">Citizen Rating & Ledger</h4>
+          <p class="wf-step-desc">Citizen confirms resolution and expenditure is published on the open ledger.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 7. CORE FEATURES BENTO GRID ─── -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="badge-tag badge-blue" style="margin-bottom:14px;">CAPABILITIES ARCHITECTURE</span>
+      <h2 class="section-h2">Architected for national scale,<br/><span class="gradient-text">designed for everyday humans.</span></h2>
+      <p class="section-sub">Eight powerful modules working in seamless synchronization.</p>
+    </div>
+
+    <div class="bento-grid">
+      <!-- 1. AI Citizen Assistant -->
+      <div class="bento-card bento-card-8 reveal" style="border-top: 3px solid var(--purple);">
+        <div>
+          <div class="bc-icon" style="background:var(--purple-light);color:var(--purple);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+          </div>
+          <h3 class="bc-title">Sahayak Multilingual AI Assistant</h3>
+          <p class="bc-desc">Speak or type in Hindi, Kannada, Tamil, Telugu, Marathi, Bengali, or English. Sahayak translates citizen intent, checks government scheme eligibility, auto-fills application forms, and provides instant ward updates.</p>
+        </div>
+        <div class="bc-interactive-preview">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;font-weight:700;color:var(--text-secondary);">
+            <span>🎙️ Voice Input Enabled (12+ Indic Dialects)</span>
+            <span style="color:var(--purple);font-weight:800;">Try in Sandbox ↓</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Smart Complaint System -->
+      <div class="bento-card bento-card-4 reveal" style="border-top: 3px solid var(--royal-blue);transition-delay:0.08s;">
+        <div>
+          <div class="bc-icon" style="background:var(--royal-blue-light);color:var(--royal-blue);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3 class="bc-title">Smart Triage & SLAs</h3>
+          <p class="bc-desc">Computer vision auto-detects pothole depth, water leaks, or garbage volume. Auto-routes with strict 24-48 hr SLAs.</p>
+        </div>
+        <div class="bc-interactive-preview">
+          <span style="font-size:0.75rem;font-weight:800;color:var(--royal-blue);">✓ Auto Duplicate Prevention</span>
+        </div>
+      </div>
+
+      <!-- 3. Live Geospatial Map -->
+      <div class="bento-card bento-card-4 reveal" style="border-top: 3px solid var(--cyan);transition-delay:0.12s;">
+        <div>
+          <div class="bc-icon" style="background:var(--cyan-light);color:var(--cyan);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          </div>
+          <h3 class="bc-title">Live Geospatial Ward Map</h3>
+          <p class="bc-desc">Real-time Leaflet GIS layers showing active issues, road closures, water maintenance shutdowns, and live project pins.</p>
+        </div>
+        <div class="bc-interactive-preview">
+          <span style="font-size:0.75rem;font-weight:800;color:var(--cyan);">📍 GPS Ward Bound Tracking</span>
+        </div>
+      </div>
+
+      <!-- 4. Emergency SOS -->
+      <div class="bento-card bento-card-4 reveal" style="border-top: 3px solid var(--red);transition-delay:0.16s;">
+        <div>
+          <div class="bc-icon" style="background:var(--red-light);color:var(--red);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <h3 class="bc-title">24x7 Emergency SOS</h3>
+          <p class="bc-desc">1-tap emergency beacon dispatching ambulance/police, live flood radar feeds, and nearby hospital ICU bed vacancy telemetry.</p>
+        </div>
+        <div class="bc-interactive-preview">
+          <span style="font-size:0.75rem;font-weight:800;color:var(--red);">🚨 1-Touch Police & Ambulance</span>
+        </div>
+      </div>
+
+      <!-- 5. Public Fund Transparency -->
+      <div class="bento-card bento-card-4 reveal" style="border-top: 3px solid var(--emerald);transition-delay:0.20s;">
+        <div>
+          <div class="bc-icon" style="background:var(--emerald-light);color:var(--emerald);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3 class="bc-title">Fund Transparency</h3>
+          <p class="bc-desc">Track every single rupee of municipal budget, contractor performance ratings, and geo-tagged invoice proofs with zero phantom projects.</p>
+        </div>
+        <div class="bc-interactive-preview">
+          <span style="font-size:0.75rem;font-weight:800;color:var(--emerald);">📊 Real-Time Public Treasury</span>
+        </div>
+      </div>
+
+      <!-- 6. 100+ Citizen Services -->
+      <div class="bento-card bento-card-12 reveal" style="border-top: 3px solid var(--royal-blue);transition-delay:0.24s;">
+        <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:32px;align-items:center;">
+          <div>
+            <div class="bc-icon" style="background:var(--royal-blue-light);color:var(--royal-blue);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/></svg>
+            </div>
+            <h3 class="bc-title">100+ Unified Citizen Services</h3>
+            <p class="bc-desc">Birth & death certificates, property tax SAS calculations, water bill settlements, trade license renewals, and scholarship applications in one unified interface with DigiLocker sync.</p>
+            <a href="#services" class="btn-nav-primary" style="display:inline-block;margin-top:8px;">Browse All Services →</a>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div style="background:var(--bg-subtle);border:1px solid var(--border-light);border-radius:10px;padding:12px;font-size:0.82rem;font-weight:700;">📄 DigiLocker Sync</div>
+            <div style="background:var(--bg-subtle);border:1px solid var(--border-light);border-radius:10px;padding:12px;font-size:0.82rem;font-weight:700;">💳 UPI Instant Pay</div>
+            <div style="background:var(--bg-subtle);border:1px solid var(--border-light);border-radius:10px;padding:12px;font-size:0.82rem;font-weight:700;">⚡ Instant E-Receipts</div>
+            <div style="background:var(--bg-subtle);border:1px solid var(--border-light);border-radius:10px;padding:12px;font-size:0.82rem;font-weight:700;">📜 Trade Licenses</div>
+            <div style="background:var(--bg-subtle);border:1px solid var(--border-light);border-radius:10px;padding:12px;font-size:0.82rem;font-weight:700;">🏠 Property Tax SAS</div>
+            <div style="background:var(--bg-subtle);border:1px solid var(--border-light);border-radius:10px;padding:12px;font-size:0.82rem;font-weight:700;">💧 Kaveri Water Bills</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 8. HOW IT WORKS ─── -->
+<section class="solution-section" id="how" style="background:var(--bg-subtle);">
+  <div class="container">
+    <div class="solution-header reveal">
+      <span class="solution-tag">STEP-BY-STEP RESOLUTION</span>
+      <h2 class="solution-title">How New Street Works<br/><span class="gradient-text">for Every Citizen in India.</span></h2>
+      <p class="section-sub">A proven 5-step accountability pipeline engineered to eliminate red tape.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;">
+      <div class="reveal">
+        <div style="border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-lg);position:relative;">
+          <img src="feature_report.jpg" alt="Citizen filing complaint" style="width:100%;height:auto;display:block;" />
+          <div style="position:absolute;bottom:20px;left:20px;right:20px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:50%;background:#10B981;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;">✓</div>
+            <div>
+              <div style="font-size:0.86rem;font-weight:800;color:var(--text-primary);">SLA Guaranteed Field Dispatch</div>
+              <div style="font-size:0.72rem;color:var(--text-secondary);">Inspected & Verified within 4 Hours</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div class="wf-step-num font-mono-num" style="margin:0;">1</div>
+          <div>
+            <h4 style="font-size:1.05rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">Snap Photo or Voice Note</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">Open the app, take a picture of the broken pipe, pothole, or garbage spot. The app automatically extracts high-precision GPS coordinates.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div class="wf-step-num font-mono-num" style="margin:0;">2</div>
+          <div>
+            <h4 style="font-size:1.05rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">AI Analyzes & Categorizes</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">Sahayak AI verifies image authenticity, checks if an identical issue was already reported nearby, and assigns priority level P1/P2/P3.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div class="wf-step-num font-mono-num" style="margin:0;">3</div>
+          <div>
+            <h4 style="font-size:1.05rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">Direct Municipal Assignment</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">Ticket lands directly on the field tablet of the designated Ward Junior Engineer with an automated countdown SLA clock.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div class="wf-step-num font-mono-num" style="margin:0;">4</div>
+          <div>
+            <h4 style="font-size:1.05rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">On-Site Repair with Proof</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">Work crew arrives, completes the physical repair, and submits before/after timestamped photos verified via GPS bounds.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div class="wf-step-num font-mono-num" style="margin:0;">5</div>
+          <div>
+            <h4 style="font-size:1.05rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">Citizen Verification & Rating</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">You receive an SMS/app alert to confirm the repair and rate the officer. The budget expenditure is logged publicly on the ward ledger.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 9. SAHAYAK AI ASSISTANT SHOWCASE ─── -->
+<section class="ai-section" id="ai">
+  <div class="container">
+    <div class="ai-container">
+      <div class="reveal">
+        <span class="ai-tag">MULTILINGUAL CONVERSATIONAL CIVIC AI</span>
+        <h2 class="ai-title">Your 24x7 Digital Assistant<br/><span class="gradient-text-light">for Any Civic Need.</span></h2>
+        <p class="ai-desc">
+          Sahayak AI bridges the gap between complex government bureaucracy and citizens. It answers questions, drafts official letters, calculates property tax rebates, and tracks complaints in real time.
+        </p>
+
+        <div class="ai-features-list">
+          <div class="aif-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Supports 12+ Indian Languages (Hindi, Kannada, Tamil, Telugu, etc.)</span>
+          </div>
+          <div class="aif-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Auto-checks eligibility for 45+ Central & State Welfare Schemes</span>
+          </div>
+          <div class="aif-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Instant RTI query drafting and status tracking</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive AI Chat Sandbox -->
+      <div class="ai-chat-sandbox reveal" style="transition-delay:0.12s;">
+        <div class="chat-sandbox-header">
+          <div class="csh-brand">
+            <div class="csh-avatar">🤖</div>
+            <div>
+              <div class="csh-name">Sahayak AI · Live Simulator</div>
+              <div class="csh-status">
+                <span class="nav-location-dot"></span>
+                <span>Online & Connected to Municipal Database</span>
+              </div>
+            </div>
+          </div>
+          <span class="brand-pill">v2.4 Turbo</span>
+        </div>
+
+        <div class="chat-msg-area" id="chatMsgArea">
+          <div class="chat-bubble bot">
+            👋 Namaste! I am <strong>Sahayak AI</strong>. Ask me about utility bills, nearest trauma hospitals, complaint status, or government scheme subsidies in your city!
+          </div>
+        </div>
+
+        <div class="chat-quick-prompts">
+          <button class="cqp-btn" data-query="Where is my water bill?">💧 Water Bill</button>
+          <button class="cqp-btn" data-query="Nearest hospital with ICU">🏥 Nearest Hospital</button>
+          <button class="cqp-btn" data-query="Track complaint #CMP-4821">🔍 Track #CMP-4821</button>
+          <button class="cqp-btn" data-query="Am I eligible for PM Awas Yojana?">🎓 Govt Schemes</button>
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" class="chat-input-field" id="chatInputField" placeholder="Ask Sahayak anything (e.g. Kaveri water timing, property tax SAS)..." />
+          <button class="chat-send-btn" id="chatSendBtn" aria-label="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 10. LIVE INDIA MAP & STREAM ─── -->
+<section class="live-india-section" id="liveMap">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="badge-tag badge-blue" style="margin-bottom:14px;">NATIONAL CIVIC PULSE</span>
+      <h2 class="section-h2">Live India Municipal Telemetry<br/><span class="gradient-text">Streaming across 700+ Cities.</span></h2>
+      <p class="section-sub">Click on any city hub to inspect active resolution metrics and live local ward updates.</p>
+    </div>
+
+    <div class="live-india-grid">
+      <!-- Interactive Map Card -->
+      <div class="live-map-card reveal">
+        <div class="lmc-bg"></div>
+        <div class="lmc-overlay"></div>
+        
+        <div class="lmc-hud">
+          <span class="lmc-hud-title">📍 INTERACTIVE GIS INDIA GRID</span>
+          <span style="font-size:0.75rem;color:#34D399;font-weight:700;">● 12,410 Nodes Active</span>
+        </div>
+
+        <!-- Glowing City Pins -->
+        <div class="lmc-pin lmc-pin-blr" data-city="Bengaluru" title="Bengaluru (Ward 14)"></div>
+        <div class="lmc-pin lmc-pin-mum" data-city="Mumbai" title="Mumbai (BMC)"></div>
+        <div class="lmc-pin lmc-pin-del" data-city="Delhi" title="Delhi (MCD)"></div>
+        <div class="lmc-pin lmc-pin-hyd" data-city="Hyderabad" title="Hyderabad (GHMC)"></div>
+        <div class="lmc-pin lmc-pin-kol" data-city="Kolkata" title="Kolkata (KMC)"></div>
+        <div class="lmc-pin lmc-pin-che" data-city="Chennai" title="Chennai (GCC)"></div>
+
+        <div style="position:absolute;bottom:20px;left:20px;right:20px;background:rgba(15,23,42,0.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:3;">
+          <div style="font-size:0.78rem;color:#CBD5E1;font-weight:700;">Showing real-time road repairs, water updates, and power outages.</div>
+          <a href="dashboard.html" style="font-size:0.78rem;font-weight:800;color:#60A5FA;text-decoration:none;">Open Full GIS Map →</a>
+        </div>
+      </div>
+
+      <!-- Live Streaming Activity Feed -->
+      <div class="live-feed-sidebar reveal" style="transition-delay:0.12s;">
+        <div class="lfs-header">
+          <h3 class="lfs-title">Live Activity Stream</h3>
+          <span class="badge-tag badge-blue">Real-Time</span>
+        </div>
+
+        <div class="lfs-feed-list" id="liveActivityFeedList">
+          <div class="lfs-item">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(37,99,235,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🔧</div>
+            <div style="flex:1;">
+              <div style="font-size:0.86rem;font-weight:700;color:var(--text-primary);">Pothole patch completed on 5th Main</div>
+              <div style="font-size:0.72rem;color:var(--text-tertiary);">Bengaluru · Ward 14</div>
+            </div>
+            <span style="font-size:0.7rem;color:var(--text-tertiary);font-weight:600;">Just now</span>
+          </div>
+
+          <div class="lfs-item">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(6,182,212,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">💧</div>
+            <div style="flex:1;">
+              <div style="font-size:0.86rem;font-weight:700;color:var(--text-primary);">Water valve leak repaired near Metro</div>
+              <div style="font-size:0.72rem;color:var(--text-tertiary);">Mumbai · Ward G/North</div>
+            </div>
+            <span style="font-size:0.7rem;color:var(--text-tertiary);font-weight:600;">2m ago</span>
+          </div>
+
+          <div class="lfs-item">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(245,158,11,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">⚡</div>
+            <div style="flex:1;">
+              <div style="font-size:0.86rem;font-weight:700;color:var(--text-primary);">High-voltage transformer upgraded</div>
+              <div style="font-size:0.72rem;color:var(--text-tertiary);">Delhi · Karol Bagh</div>
+            </div>
+            <span style="font-size:0.7rem;color:var(--text-tertiary);font-weight:600;">5m ago</span>
+          </div>
+
+          <div class="lfs-item">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🌳</div>
+            <div style="flex:1;">
+              <div style="font-size:0.86rem;font-weight:700;color:var(--text-primary);">Miyawaki urban forest planted</div>
+              <div style="font-size:0.72rem;color:var(--text-tertiary);">Hyderabad · Gachibowli</div>
+            </div>
+            <span style="font-size:0.7rem;color:var(--text-tertiary);font-weight:600;">8m ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 11. 100+ GOVERNMENT SERVICES EXPLORER ─── -->
+<section class="services-section" id="services">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="badge-tag badge-blue" style="margin-bottom:14px;">ONE DIGITAL FRONT DOOR</span>
+      <h2 class="section-h2" id="servicesDynamicCity">Services available in Bengaluru</h2>
+      <p class="section-sub">Access official municipal, utility, and state services directly with zero queues.</p>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="services-filter-tabs reveal">
+      <button class="s-tab-btn active" data-category="all">All 100+ Portals</button>
+      <button class="s-tab-btn" data-category="certificates">📄 Certificates</button>
+      <button class="s-tab-btn" data-category="utilities">💧 Utilities & Power</button>
+      <button class="s-tab-btn" data-category="tax">🏠 Property & Taxes</button>
+      <button class="s-tab-btn" data-category="welfare">🎓 Schemes & Welfare</button>
+      <button class="s-tab-btn" data-category="health">🏥 Health & Clinics</button>
+    </div>
+
+    <div class="services-catalog-grid">
+      <!-- 1 -->
+      <div class="svc-catalog-card reveal" data-category="certificates">
+        <div class="scc-icon" style="background:#EFF6FF;color:#2563EB;">📄</div>
+        <h4 class="scc-name">Birth & Death Certificates</h4>
+        <p class="scc-desc">Instant digital issuance with QR-code authentication and DigiLocker direct sync.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Apply Online →</a>
+          <span class="scc-sla">24 Hr SLA</span>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="svc-catalog-card reveal" data-category="tax" style="transition-delay:0.05s;">
+        <div class="scc-icon" style="background:#ECFDF5;color:#10B981;">🏠</div>
+        <h4 class="scc-name">Property Tax SAS 2026</h4>
+        <p class="scc-desc">Calculate PID zone tax, avail 5% early rebate, and download signed municipal receipts.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Pay & Download →</a>
+          <span class="scc-sla">Instant</span>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="svc-catalog-card reveal" data-category="utilities" style="transition-delay:0.1s;">
+        <div class="scc-icon" style="background:#ECFEFF;color:#0891B2;">💧</div>
+        <h4 class="scc-name">BWSSB Kaveri Water</h4>
+        <p class="scc-desc">Pay water bills, request meter re-calibration, or apply for new pipeline connections.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Manage Water →</a>
+          <span class="scc-sla">Instant Pay</span>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="svc-catalog-card reveal" data-category="utilities" style="transition-delay:0.15s;">
+        <div class="scc-icon" style="background:#FFFBEB;color:#D97706;">⚡</div>
+        <h4 class="scc-name">Electricity (BESCOM)</h4>
+        <p class="scc-desc">Track meter load, settle monthly bills, report power surges, and view planned outage schedules.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Pay Electricity →</a>
+          <span class="scc-sla">24x7 Active</span>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="svc-catalog-card reveal" data-category="tax" style="transition-delay:0.2s;">
+        <div class="scc-icon" style="background:#F3E8FF;color:#7C3AED;">🏢</div>
+        <h4 class="scc-name">Trade License & Fire NOC</h4>
+        <p class="scc-desc">Single-window commercial enterprise registration, annual renewals, and pollution clearances.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Start Filing →</a>
+          <span class="scc-sla">3 Days SLA</span>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="svc-catalog-card reveal" data-category="welfare" style="transition-delay:0.25s;">
+        <div class="scc-icon" style="background:#FEF2F2;color:#DC2626;">🎓</div>
+        <h4 class="scc-name">Govt Welfare Schemes</h4>
+        <p class="scc-desc">PM Awas Yojana, Gruha Jyothi, municipal merit scholarships, and senior citizen pensions.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Check Eligibility →</a>
+          <span class="scc-sla">AI Assisted</span>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="svc-catalog-card reveal" data-category="health" style="transition-delay:0.3s;">
+        <div class="scc-icon" style="background:#FFF7ED;color:#EA580C;">🏥</div>
+        <h4 class="scc-name">Namma Clinic & OPD</h4>
+        <p class="scc-desc">Book free doctor appointments, view lab diagnostic test reports, and download Ayushman Bharat cards.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Book Appointment →</a>
+          <span class="scc-sla">Free Service</span>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="svc-catalog-card reveal" data-category="certificates" style="transition-delay:0.35s;">
+        <div class="scc-icon" style="background:#F1F5F9;color:#475569;">✨</div>
+        <h4 class="scc-name">View Complete Directory</h4>
+        <p class="scc-desc">Search all 100+ municipal, revenue, and district services sorted by state and department.</p>
+        <div class="scc-actions">
+          <a href="dashboard.html" class="scc-link">Explore Catalog →</a>
+          <span class="scc-sla">100% Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 12. PUBLIC FUND TRANSPARENCY & CITY TREASURY ─── -->
+<section class="transparency-section" id="transparency">
+  <div class="container">
+    <div class="treasury-banner-card reveal">
+      <div>
+        <span class="badge-tag badge-dark-glass" style="margin-bottom:14px;">FINANCIAL OPENNESS</span>
+        <h2 class="tbc-left-title">Every Rupee of Public Money.<br/>Tracked in Real Time.</h2>
+        <p class="tbc-left-desc">
+          Explore city budget allocations, contractor performance metrics, and ward expenditure ledgers with complete openness and zero ghost projects.
+        </p>
+
+        <div class="tbc-stats-grid">
+          <div class="tbc-stat-box">
+            <div class="tbc-stat-val font-mono-num">₹840 Cr</div>
+            <div class="tbc-stat-lbl">City Budget (FY 26)</div>
+          </div>
+          <div class="tbc-stat-box">
+            <div class="tbc-stat-val font-mono-num text-emerald">₹571 Cr</div>
+            <div class="tbc-stat-lbl">Utilized (68%)</div>
+          </div>
+          <div class="tbc-stat-box">
+            <div class="tbc-stat-val font-mono-num text-cyan">412</div>
+            <div class="tbc-stat-lbl">Active Projects</div>
+          </div>
+        </div>
+
+        <a href="dashboard.html" class="btn-hero-primary" style="display:inline-flex;">
+          Open Fund Transparency Portal →
+        </a>
+      </div>
+
+      <!-- Live Treasury Progress Visualizer -->
+      <div class="treasury-live-card">
+        <div class="tlc-header">
+          <span id="treasuryDynamicCity">BBMP BENGALURU · LIVE TREASURY</span>
+          <span style="color:#34D399;font-weight:700;">AUDIT PASS 100%</span>
+        </div>
+
+        <div class="tlc-bars-list">
+          <div class="tlc-bar-item">
+            <div class="tlc-bar-meta">
+              <span>Roads & Underpasses Infrastructure</span>
+              <strong>₹210 Cr / ₹250 Cr (84%)</strong>
+            </div>
+            <div class="tlc-bar-track">
+              <div class="tlc-bar-fill" style="width:84%;background:#2563EB;"></div>
+            </div>
+          </div>
+
+          <div class="tlc-bar-item">
+            <div class="tlc-bar-meta">
+              <span>Stormwater Drains & Flood Mitigation</span>
+              <strong>₹145 Cr / ₹180 Cr (80%)</strong>
+            </div>
+            <div class="tlc-bar-track">
+              <div class="tlc-bar-fill" style="width:80%;background:#06B6D4;"></div>
+            </div>
+          </div>
+
+          <div class="tlc-bar-item">
+            <div class="tlc-bar-meta">
+              <span>Solid Waste Management & Plants</span>
+              <strong>₹88 Cr / ₹120 Cr (73%)</strong>
+            </div>
+            <div class="tlc-bar-track">
+              <div class="tlc-bar-fill" style="width:73%;background:#10B981;"></div>
+            </div>
+          </div>
+
+          <div class="tlc-bar-item">
+            <div class="tlc-bar-meta">
+              <span>Parks, Solar Streetlights & Lakes</span>
+              <strong>₹42 Cr / ₹60 Cr (70%)</strong>
+            </div>
+            <div class="tlc-bar-track">
+              <div class="tlc-bar-fill" style="width:70%;background:#7C3AED;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.75rem;color:#94A3B8;">
+          <span style="color:#34D399;font-weight:700;">✓ 100% Geo-Tagged Invoices</span>
+          <span>·</span>
+          <span>Open RTI Compliance API</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 13. DEVELOPMENT PROJECTS SHOWCASE ─── -->
+<section class="projects-section" id="projects">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="badge-tag badge-blue" style="margin-bottom:14px;">INFRASTRUCTURE RADAR</span>
+      <h2 class="section-h2">Ongoing Development Projects<br/><span class="gradient-text">in Your Neighborhood.</span></h2>
+      <p class="section-sub">Inspect progress, milestone dates, contractors, and photo updates for city works.</p>
+    </div>
+
+    <div class="projects-cards-grid">
+      <!-- 1 -->
+      <div class="dev-proj-card reveal">
+        <div class="dpc-img-wrap">
+          <img src="proj_road.jpg" alt="Road Resurfacing" />
+          <span class="dpc-status-badge status-inprog">68% Complete</span>
+        </div>
+        <div class="dpc-body">
+          <h4 class="dpc-title">Outer Ring Road Asphalting</h4>
+          <div class="dpc-ward">Ward 14 · Bengaluru · Contractor: L&T Infra</div>
+          <div class="dpc-progress-track">
+            <div class="dpc-progress-fill" style="width:68%;"></div>
+          </div>
+          <div class="dpc-meta-row">
+            <span>Budget: <strong>₹3.2 Cr</strong></span>
+            <span>Target: <strong>Nov 2026</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="dev-proj-card reveal" style="transition-delay:0.08s;">
+        <div class="dpc-img-wrap">
+          <img src="proj_drainage.jpg" alt="Stormwater Drainage" />
+          <span class="dpc-status-badge status-inprog">84% Complete</span>
+        </div>
+        <div class="dpc-body">
+          <h4 class="dpc-title">Urban Storm Drain Remodeling</h4>
+          <div class="dpc-ward">Ward 14 · Bengaluru · Contractor: BBMP Projects</div>
+          <div class="dpc-progress-track">
+            <div class="dpc-progress-fill" style="width:84%;background:#06B6D4;"></div>
+          </div>
+          <div class="dpc-meta-row">
+            <span>Budget: <strong>₹1.8 Cr</strong></span>
+            <span>Target: <strong>Oct 2026</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="dev-proj-card reveal" style="transition-delay:0.16s;">
+        <div class="dpc-img-wrap">
+          <img src="proj_led.jpg" alt="Smart Solar LED Lights" />
+          <span class="dpc-status-badge status-completed">Completed</span>
+        </div>
+        <div class="dpc-body">
+          <h4 class="dpc-title">Smart Solar Streetlight Grid</h4>
+          <div class="dpc-ward">5th to 9th Cross · Contractor: Havells Smart Grid</div>
+          <div class="dpc-progress-track">
+            <div class="dpc-progress-fill" style="width:100%;background:#10B981;"></div>
+          </div>
+          <div class="dpc-meta-row">
+            <span>Budget: <strong>₹85 Lakh</strong></span>
+            <span>Status: <strong>Operational</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 14. COMMUNITY HUB & DEMOCRATIC ENGAGEMENT ─── -->
+<section class="community-section" id="community">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="badge-tag badge-blue" style="margin-bottom:14px;">DEMOCRATIC PARTICIPATION</span>
+      <h2 class="section-h2">Citizens Building Better Cities Together</h2>
+      <p class="section-sub">Vote on ward improvement budgets, propose neighborhood clean drives, and earn Civic Karma badges.</p>
+    </div>
+
+    <div class="community-grid">
+      <!-- Live Ward Poll Card -->
+      <div class="comm-poll-card reveal">
+        <div class="cpc-header">
+          <span class="nav-location-dot"></span>
+          <span>ACTIVE WARD 14 CITIZEN POLL · CLOSES IN 48 HOURS</span>
+        </div>
+        <h3 class="cpc-question">Should the municipal vacant plot on 4th Main be converted into an Eco Park or a Multi-level Parking Lot?</h3>
+        
+        <div class="cpc-poll-options">
+          <button class="poll-opt-btn" data-choice="park">
+            <span>🌳 Eco Park with Walking Track & Native Trees</span>
+            <span class="poll-vote-count font-mono-num">1,420 votes (84%)</span>
+          </button>
+          <button class="poll-opt-btn" data-choice="parking">
+            <span>🚗 Multi-level Automated Car Parking</span>
+            <span class="poll-vote-count font-mono-num">270 votes (16%)</span>
+          </button>
+        </div>
+        
+        <div style="font-size:0.78rem;color:var(--text-secondary);">
+          🔒 One vote per Aadhaar / Ward Verified Resident. Results submitted directly to the Corporator.
+        </div>
+      </div>
+
+      <!-- Citizen Leaderboard & Civic Karma -->
+      <div class="comm-poll-card reveal" style="transition-delay:0.1s;background:#FFFFFF;">
+        <div class="cpc-header">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span style="color:#D97706;">TOP CITIZEN CONTRIBUTORS · WARD 14</span>
+        </div>
+        <h3 class="cpc-question">Civic Karma Leaderboard</h3>
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg-subtle);border-radius:10px;border:1px solid var(--border-light);">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#4F46E5);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;">RK</div>
+              <div>
+                <div style="font-size:0.88rem;font-weight:800;color:var(--text-primary);">Ravi Kiran</div>
+                <div style="font-size:0.72rem;color:var(--text-tertiary);">14 Issues Verified · Koramangala</div>
+              </div>
+            </div>
+            <span class="badge-tag badge-blue font-mono-num">2,850 Karma</span>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg-subtle);border-radius:10px;border:1px solid var(--border-light);">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#C084FC);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;">SM</div>
+              <div>
+                <div style="font-size:0.88rem;font-weight:800;color:var(--text-primary);">Sowmya Murthy</div>
+                <div style="font-size:0.72rem;color:var(--text-tertiary);">RWA Lead · Indiranagar</div>
+              </div>
+            </div>
+            <span class="badge-tag badge-blue font-mono-num">2,410 Karma</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 15. CITIZEN TESTIMONIALS ─── -->
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="badge-tag badge-blue" style="margin-bottom:14px;">PROVEN CITIZEN TRUST</span>
+      <h2 class="section-h2">Loved by Citizens,<br/><span class="gradient-text">Trusted by City Administrators.</span></h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"I reported a deep road pothole in Koramangala at 9:00 PM. By 11:30 AM the next morning, the asphalt repair truck was there. The live photo tracking is groundbreaking."</p>
+        <div class="test-author-row">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#2563EB,#4F46E5);">RK</div>
+          <div>
+            <div class="test-name">Ravi Kiran</div>
+            <div class="test-role">Resident · Koramangala 4th Block</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card reveal" style="transition-delay:0.1s;">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"The Fund Transparency section shows exactly what contractor was hired and how much was spent on our stormwater drains. It brings pure trust back into local governance."</p>
+        <div class="test-author-row">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#7C3AED,#C084FC);">SM</div>
+          <div>
+            <div class="test-name">Sowmya Murthy</div>
+            <div class="test-role">RWA President · Indiranagar</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card reveal" style="transition-delay:0.2s;">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"Sahayak AI helped me find a municipal scholarship for my daughter and drafted the application in Kannada automatically. Zero bribes, zero waiting in lines."</p>
+        <div class="test-author-row">
+          <div class="test-avatar" style="background:linear-gradient(135deg,#10B981,#06B6D4);">BN</div>
+          <div>
+            <div class="test-name">Basavaraj N.</div>
+            <div class="test-role">Citizen · Hebbal Ward 14</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 16. FAQ ACCORDION ─── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="badge-tag badge-blue" style="margin-bottom:14px;">FREQUENTLY ASKED QUESTIONS</span>
+      <h2 class="section-h2">Everything You Need to Know.</h2>
+    </div>
+
+    <div class="faq-accordion-list reveal">
+      <div class="faq-item open">
+        <button class="faq-question-btn">
+          <span>How does New Street ensure complaints are actually resolved?</span>
+          <svg class="faq-icon-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer-body">
+          Every ticket is bound to a strict municipal SLA timer and assigned to a verified Junior Engineer on field duty. The ticket cannot be marked closed until the engineer uploads a geo-tagged before/after repair image, and you (the citizen) approve the resolution.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question-btn">
+          <span>Is New Street completely free for citizens?</span>
+          <svg class="faq-icon-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer-body">
+          Yes. New Street is 100% free for all Indian residents. All grievance filings, scheme eligibility checks, emergency SOS beacons, and public fund audits are publicly accessible public goods funded under the Smart Cities Mission.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question-btn">
+          <span>How does Sahayak AI handle regional languages?</span>
+          <svg class="faq-icon-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer-body">
+          Sahayak uses native Indian language models supporting Hindi, Kannada, Tamil, Telugu, Marathi, Bengali, Gujarati, and English. You can speak voice notes or write in colloquial text, and Sahayak translates it into formal municipal terminology.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question-btn">
+          <span>Is my personal data and identity secure?</span>
+          <svg class="faq-icon-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer-body">
+          All data is encrypted with 256-bit SSL encryption and hosted exclusively within CERT-In certified data centers in India. Aadhaar authentication uses masked virtual IDs and complies with the Digital Personal Data Protection (DPDP) Act 2023.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question-btn">
+          <span>Can I access services if my city is not yet listed?</span>
+          <svg class="faq-icon-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer-body">
+          Yes. All central government portals, DigiLocker integrations, emergency hotlines (112), and pan-India scheme discovery tools work everywhere in India. As your local municipality connects to our API, ward-level telemetry activates automatically.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 17. FINAL CINEMATIC CALL TO ACTION ─── -->
+<section class="final-cta-section">
+  <div class="fcta-grid-mesh"></div>
+  <div class="container fcta-content reveal">
+    <h2 class="fcta-headline">Together, We Build<br/>Smarter Streets and a Stronger India.</h2>
+    <p class="fcta-sub">
+      Join over 2.8 crore citizens transforming municipal governance into a responsive, transparent, and technology-driven public service.
+    </p>
+    <div class="fcta-btn-group">
+      <a href="register.html" class="btn-fcta-white">Get Started Free →</a>
+      <a href="dashboard.html" class="btn-fcta-glass">Launch Interactive Dashboard</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 18. COMPREHENSIVE MASTER FOOTER ─── -->
+<footer class="master-footer">
+  <div class="container">
+    <div class="footer-main-grid">
+      <!-- Col 1: Brand -->
+      <div class="f-brand-block">
+        <a href="landing_v2.html" class="f-brand-logo">
+          <div class="brand-logo-icon" style="width:36px;height:36px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <span class="f-brand-name">New <span>Street</span></span>
+        </a>
+        <p class="f-brand-desc">
+          India's Unified Digital Civic Operating System. Bridging citizens, engineers, and municipal administrators through AI, real-time data, and fund transparency.
+        </p>
+        <div class="f-badges-row">
+          <div class="f-security-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>ISO 27001 Certified</span>
+          </div>
+          <div class="f-security-badge">
+            <span>🇮🇳 Digital India Partner</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2: Platform -->
+      <div>
+        <h4 class="f-col-heading">Platform</h4>
+        <ul class="f-nav-list">
+          <li><a href="dashboard.html">Civic Dashboard</a></li>
+          <li><a href="dashboard.html">File Grievance</a></li>
+          <li><a href="dashboard.html">Live Geospatial Map</a></li>
+          <li><a href="dashboard.html">Sahayak AI Assistant</a></li>
+          <li><a href="dashboard.html">Fund Transparency</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Services -->
+      <div>
+        <h4 class="f-col-heading">Citizen Services</h4>
+        <ul class="f-nav-list">
+          <li><a href="dashboard.html">Birth / Death Certificates</a></li>
+          <li><a href="dashboard.html">Property Tax SAS</a></li>
+          <li><a href="dashboard.html">Water & Utility Bills</a></li>
+          <li><a href="dashboard.html">Emergency SOS Radar</a></li>
+          <li><a href="dashboard.html">Ward Voting & Polls</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Governance -->
+      <div>
+        <h4 class="f-col-heading">Governance</h4>
+        <ul class="f-nav-list">
+          <li><a href="#">RTI Disclosures</a></li>
+          <li><a href="#">Open Data Portal</a></li>
+          <li><a href="#">Officer Directory</a></li>
+          <li><a href="#">Smart Cities Mission</a></li>
+          <li><a href="#">Security & Encryption</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 5: Legal & Help -->
+      <div>
+        <h4 class="f-col-heading">Support</h4>
+        <ul class="f-nav-list">
+          <li><a href="#">24x7 Citizen Helpline (112)</a></li>
+          <li><a href="#">Privacy Policy (DPDP 2023)</a></li>
+          <li><a href="#">Terms of Public Service</a></li>
+          <li><a href="#">Accessibility (WCAG 2.1)</a></li>
+          <li><a href="#">Contact Administration</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div>© 2026 New Street Technologies · Designed for Bharat 🇮🇳 · Ministry of Electronics & IT Compliant</div>
+      <div class="fbb-meta">
+        <span>Made with Pride in India</span>
+        <span>·</span>
+        <span>Version 2.4.0 (Production)</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SCRIPTS ─── -->
+<script src="landing_v2.js"></script>
+
+</body>
+</html>

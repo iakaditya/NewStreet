@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — New Street Citizen Portal</title>
+  <meta name="description" content="Create your New Street citizen account — file complaints, access government services, and get local alerts in one place." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="register.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+</head>
+<body class="reg-body">
+
+<!-- ── MINIMAL NAV ──────────────────────────────────────────── -->
+<nav class="reg-nav">
+  <a href="index.html" class="nav-logo" aria-label="New Street Home">
+    <div class="nav-logo-mark">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="1.5"/>
+        <polyline points="9 22 9 12 15 12 15 22" stroke="white" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+    <span class="nav-logo-text">New <span>Street</span></span>
+  </a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="reg-nav-link">Already have an account?</span>
+    <a href="dashboard.html" class="btn btn-secondary btn-sm">Sign In</a>
+  </div>
+</nav>
+
+<!-- ── MAIN LAYOUT ──────────────────────────────────────────── -->
+<main class="reg-main">
+
+  <!-- Left Panel: Branding -->
+  <aside class="reg-left" aria-label="Platform information">
+    <div class="reg-left-inner">
+      <div class="reg-left-badge">
+        <span>🇮🇳</span>
+        <span>Government-Integrated Platform · Digital India</span>
+      </div>
+      <h1 class="reg-left-title">
+        One account.<br/>
+        Every service.<br/>
+        <span class="reg-left-accent">Your city, simplified.</span>
+      </h1>
+      <p class="reg-left-sub">
+        Join 2.4 million citizens who access complaints, government schemes, emergency help, and local alerts — all from one platform.
+      </p>
+
+      <!-- Feature highlights -->
+      <div class="reg-features">
+        <div class="reg-feature-item">
+          <div class="reg-feature-icon" style="background:rgba(11,95,255,0.15);">📋</div>
+          <div>
+            <div class="reg-feature-title">File &amp; Track Complaints</div>
+            <div class="reg-feature-desc">AI-powered routing with real-time updates</div>
+          </div>
+        </div>
+        <div class="reg-feature-item">
+          <div class="reg-feature-icon" style="background:rgba(20,184,166,0.15);">🗺️</div>
+          <div>
+            <div class="reg-feature-title">Ward-Level Live Alerts</div>
+            <div class="reg-feature-desc">Water, power, road, and weather updates</div>
+          </div>
+        </div>
+        <div class="reg-feature-item">
+          <div class="reg-feature-icon" style="background:rgba(22,163,74,0.15);">📜</div>
+          <div>
+            <div class="reg-feature-title">100+ Government Services</div>
+            <div class="reg-feature-desc">Certificates, tax, pension, schemes</div>
+          </div>
+        </div>
+        <div class="reg-feature-item">
+          <div class="reg-feature-icon" style="background:rgba(239,68,68,0.15);">🚨</div>
+          <div>
+            <div class="reg-feature-title">One-Tap Emergency Help</div>
+            <div class="reg-feature-desc">Police, fire, ambulance with live location</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust bar -->
+      <div class="reg-trust">
+        <div class="reg-trust-item">
+          <div class="reg-trust-num">2.4M+</div>
+          <div class="reg-trust-label">Citizens</div>
+        </div>
+        <div class="reg-trust-divider"></div>
+        <div class="reg-trust-item">
+          <div class="reg-trust-num">312</div>
+          <div class="reg-trust-label">Cities</div>
+        </div>
+        <div class="reg-trust-divider"></div>
+        <div class="reg-trust-item">
+          <div class="reg-trust-num">94%</div>
+          <div class="reg-trust-label">Satisfaction</div>
+        </div>
+        <div class="reg-trust-divider"></div>
+        <div class="reg-trust-item">
+          <div class="reg-trust-num">48h</div>
+          <div class="reg-trust-label">Avg. Resolution</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Right Panel: Registration Form -->
+  <section class="reg-right" aria-label="Registration form">
+    <div class="reg-card">
+
+      <!-- Step indicators -->
+      <div class="reg-steps" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" aria-label="Registration step 1 of 3">
+        <div class="reg-step active" id="stepDot1">
+          <div class="reg-step-dot">1</div>
+          <div class="reg-step-label">Mobile</div>
+        </div>
+        <div class="reg-step-line" id="stepLine1"></div>
+        <div class="reg-step" id="stepDot2">
+          <div class="reg-step-dot">2</div>
+          <div class="reg-step-label">Verify OTP</div>
+        </div>
+        <div class="reg-step-line" id="stepLine2"></div>
+        <div class="reg-step" id="stepDot3">
+          <div class="reg-step-dot">3</div>
+          <div class="reg-step-label">Profile</div>
+        </div>
+      </div>
+
+      <!-- ── STEP 1: Mobile Number ───────────── -->
+      <div class="reg-form-panel active" id="panel1">
+        <div class="reg-form-header">
+          <h2 class="reg-form-title">Create your New Street account</h2>
+          <p class="reg-form-sub">Enter your mobile number to get started. No passwords needed.</p>
+        </div>
+
+        <div class="reg-field-group">
+          <label class="reg-label" for="mobileInput">
+            Mobile Number <span class="reg-required">*</span>
+          </label>
+          <div class="reg-input-wrap">
+            <div class="reg-input-prefix">
+              <span class="reg-flag">🇮🇳</span>
+              <span class="reg-code">+91</span>
+            </div>
+            <input
+              class="reg-input" id="mobileInput"
+              type="tel" inputmode="numeric" maxlength="10"
+              placeholder="98765 43210"
+              autocomplete="tel"
+              aria-required="true"
+              aria-describedby="mobileHelp"
+            />
+          </div>
+          <div class="reg-field-help" id="mobileHelp">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            OTP will be sent to this number via SMS
+          </div>
+          <div class="reg-field-error" id="mobileError" role="alert" hidden>
+            Please enter a valid 10-digit mobile number
+          </div>
+        </div>
+
+        <div class="reg-field-group">
+          <label class="reg-label" for="stateSelect">State / UT</label>
+          <select class="reg-select" id="stateSelect" aria-label="Select your state">
+            <option value="" disabled selected>Select your state</option>
+            <option>Andhra Pradesh</option><option>Assam</option>
+            <option>Bihar</option><option>Chhattisgarh</option>
+            <option>Delhi</option><option>Goa</option>
+            <option>Gujarat</option><option>Haryana</option>
+            <option>Himachal Pradesh</option><option>Jharkhand</option>
+            <option selected>Karnataka</option><option>Kerala</option>
+            <option>Madhya Pradesh</option><option>Maharashtra</option>
+            <option>Odisha</option><option>Punjab</option>
+            <option>Rajasthan</option><option>Tamil Nadu</option>
+            <option>Telangana</option><option>Uttar Pradesh</option>
+            <option>Uttarakhand</option><option>West Bengal</option>
+          </select>
+        </div>
+
+        <div class="reg-field-group">
+          <label class="reg-label" for="cityInput">City / Town</label>
+          <input class="reg-input" id="cityInput" type="text" placeholder="e.g. Bengaluru" autocomplete="address-level2" value="Bengaluru" />
+        </div>
+
+        <div class="reg-field-group">
+          <label class="reg-label" for="pincodeInput">Pincode</label>
+          <input class="reg-input" id="pincodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="560001" value="560001" />
+          <div class="reg-field-help" id="pinHelp">Used to identify your ward and nearby civic alerts.</div>
+        </div>
+
+        <div class="reg-lang-select-wrap">
+          <label class="reg-label" for="langSelect">Preferred Language</label>
+          <div class="reg-lang-grid" role="group" aria-label="Select preferred language">
+            <button type="button" class="reg-lang-btn active" data-lang="en" aria-pressed="true">English</button>
+            <button type="button" class="reg-lang-btn" data-lang="hi" aria-pressed="false">हिंदी</button>
+            <button type="button" class="reg-lang-btn" data-lang="kn" aria-pressed="false">ಕನ್ನಡ</button>
+            <button type="button" class="reg-lang-btn" data-lang="ta" aria-pressed="false">தமிழ்</button>
+            <button type="button" class="reg-lang-btn" data-lang="te" aria-pressed="false">తెలుగు</button>
+            <button type="button" class="reg-lang-btn" data-lang="mr" aria-pressed="false">मराठी</button>
+          </div>
+        </div>
+
+        <div class="reg-consent">
+          <label class="reg-checkbox-label">
+            <input type="checkbox" id="consentCheck" class="reg-checkbox" aria-required="true" />
+            <span class="reg-checkbox-custom" aria-hidden="true"></span>
+            <span>I agree to the <a href="#" class="reg-link">Terms of Service</a> and <a href="#" class="reg-link">Privacy Policy</a> (DPDP Act 2023 compliant)</span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary btn-lg reg-submit-btn" id="sendOtpBtn" type="button" aria-label="Send OTP to mobile number">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 01.01 1.2 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14z"/></svg>
+          Send OTP via SMS
+        </button>
+
+        <div class="reg-alt-login">
+          <span>Or register via</span>
+          <a href="#" class="reg-alt-btn" aria-label="Register via Aadhaar OTP">
+            <span>🔐</span> Aadhaar OTP
+          </a>
+          <a href="#" class="reg-alt-btn" aria-label="Register via DigiLocker">
+            <span>📁</span> DigiLocker
+          </a>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: OTP Verification ───────── -->
+      <div class="reg-form-panel" id="panel2" hidden>
+        <div class="reg-form-header">
+          <h2 class="reg-form-title">Verify your mobile number</h2>
+          <p class="reg-form-sub">
+            We sent a 6-digit OTP to
+            <strong id="otpMobileDisplay">+91 98765 43210</strong>
+          </p>
+        </div>
+
+        <!-- OTP input boxes -->
+        <div class="otp-wrapper" aria-label="Enter 6-digit OTP">
+          <div class="otp-boxes">
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="OTP digit 1" id="otp1" />
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="OTP digit 2" id="otp2" />
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="OTP digit 3" id="otp3" />
+            <div class="otp-divider">—</div>
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="OTP digit 4" id="otp4" />
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="OTP digit 5" id="otp5" />
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="OTP digit 6" id="otp6" />
+          </div>
+          <div class="otp-status" id="otpStatus" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="otp-timer-wrap">
+          <span class="otp-timer-label">OTP expires in</span>
+          <span class="otp-timer" id="otpTimer">04:59</span>
+        </div>
+
+        <div class="otp-resend">
+          Didn't receive?
+          <button class="reg-link-btn" id="resendOtpBtn" disabled aria-label="Resend OTP">
+            Resend OTP
+          </button>
+          <span id="resendCountdown" style="font-size:0.8rem;color:var(--text-tertiary);">(30s)</span>
+        </div>
+
+        <!-- Demo hint -->
+        <div class="otp-hint" role="note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Demo mode: Enter <strong>123456</strong> to proceed
+        </div>
+
+        <button class="btn btn-primary btn-lg reg-submit-btn" id="verifyOtpBtn" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Verify &amp; Continue
+        </button>
+
+        <button class="btn btn-secondary" id="backToStep1Btn" type="button" style="width:100%;margin-top:8px;">
+          ← Change Mobile Number
+        </button>
+      </div>
+
+      <!-- ── STEP 3: Profile Setup ──────────── -->
+      <div class="reg-form-panel" id="panel3" hidden>
+        <div class="reg-form-header">
+          <h2 class="reg-form-title">Complete your profile</h2>
+          <p class="reg-form-sub">This helps us personalize your dashboard and route your complaints accurately.</p>
+        </div>
+
+        <div class="reg-avatar-upload" role="group" aria-label="Profile photo upload">
+          <div class="reg-avatar" id="avatarPreview" aria-hidden="true">
+            <span class="reg-avatar-placeholder">👤</span>
+          </div>
+          <div>
+            <button class="btn btn-secondary btn-sm" type="button" id="uploadAvatarBtn">Upload Photo</button>
+            <div style="font-size:0.75rem;color:var(--text-tertiary);margin-top:4px;">Optional · JPG or PNG · Max 2MB</div>
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" hidden aria-label="Upload profile photo" />
+        </div>
+
+        <div class="reg-grid-2">
+          <div class="reg-field-group">
+            <label class="reg-label" for="firstNameInput">First Name <span class="reg-required">*</span></label>
+            <input class="reg-input" id="firstNameInput" type="text" placeholder="Rahul" autocomplete="given-name" aria-required="true" value="Rahul" />
+          </div>
+          <div class="reg-field-group">
+            <label class="reg-label" for="lastNameInput">Last Name <span class="reg-required">*</span></label>
+            <input class="reg-input" id="lastNameInput" type="text" placeholder="Sharma" autocomplete="family-name" aria-required="true" value="Sharma" />
+          </div>
+        </div>
+
+        <div class="reg-field-group">
+          <label class="reg-label" for="emailInput">Email Address <span class="reg-optional">(Optional)</span></label>
+          <input class="reg-input" id="emailInput" type="email" placeholder="rahul@email.com" autocomplete="email" />
+        </div>
+
+        <div class="reg-grid-2">
+          <div class="reg-field-group">
+            <label class="reg-label" for="dobInput">Date of Birth <span class="reg-required">*</span></label>
+            <input class="reg-input" id="dobInput" type="date" value="1990-04-15" aria-required="true" />
+          </div>
+          <div class="reg-field-group">
+            <label class="reg-label" for="genderSelect">Gender</label>
+            <select class="reg-select" id="genderSelect">
+              <option>Male</option>
+              <option>Female</option>
+              <option>Non-binary</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="reg-field-group">
+          <label class="reg-label" for="addressInput">Home Address <span class="reg-required">*</span></label>
+          <input class="reg-input" id="addressInput" type="text" placeholder="e.g. 42, MG Road, Ward 14" value="42, MG Road, Ward 14" aria-required="true" />
+          <div class="reg-location-actions">
+            <button class="btn btn-secondary btn-sm" type="button" id="profileUseLocationBtn">Use Current Location</button>
+            <span class="reg-location-status" id="profileLocationStatus">Location will improve complaint routing.</span>
+          </div>
+        </div>
+
+        <div class="reg-field-group">
+          <label class="reg-label">Notification Preferences</label>
+          <div class="reg-notif-prefs" role="group" aria-label="Notification preferences">
+            <label class="reg-toggle-label">
+              <input type="checkbox" class="reg-toggle-input" checked aria-label="Ward alerts notification" />
+              <span class="reg-toggle" aria-hidden="true"></span>
+              <span>Ward Alerts (water, power, roads)</span>
+            </label>
+            <label class="reg-toggle-label">
+              <input type="checkbox" class="reg-toggle-input" checked aria-label="Complaint updates notification" />
+              <span class="reg-toggle" aria-hidden="true"></span>
+              <span>Complaint Updates</span>
+            </label>
+            <label class="reg-toggle-label">
+              <input type="checkbox" class="reg-toggle-input" checked aria-label="Emergency alerts notification" />
+              <span class="reg-toggle" aria-hidden="true"></span>
+              <span>Emergency Alerts</span>
+            </label>
+            <label class="reg-toggle-label">
+              <input type="checkbox" class="reg-toggle-input" aria-label="Government scheme alerts notification" />
+              <span class="reg-toggle" aria-hidden="true"></span>
+              <span>Government Scheme Alerts</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg reg-submit-btn" id="createAccountBtn" type="button">
+          Create My Account &amp; Go to Dashboard
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- ── STEP 4: Success ──────────────────── -->
+      <div class="reg-form-panel" id="panelSuccess" hidden>
+        <div class="reg-success">
+          <div class="reg-success-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h2 class="reg-success-title">Welcome to New Street!</h2>
+          <p class="reg-success-sub">
+            Your account has been created successfully.<br/>
+            <strong id="successName">Rahul Sharma</strong>, your Citizen ID is
+            <strong class="reg-citizen-id" id="citizenIdDisplay">CVC-KA-2025-48291</strong>
+          </p>
+          <div class="reg-success-card">
+            <div class="reg-success-detail">
+              <span class="reg-success-detail-label">Location</span>
+              <span class="reg-success-detail-value" id="successLocation">Ward 14, Bengaluru</span>
+            </div>
+            <div class="reg-success-detail">
+              <span class="reg-success-detail-label">Language</span>
+              <span class="reg-success-detail-value" id="successLang">English</span>
+            </div>
+            <div class="reg-success-detail">
+              <span class="reg-success-detail-label">Account Type</span>
+              <span class="reg-success-detail-value">Standard Citizen</span>
+            </div>
+            <div class="reg-success-detail">
+              <span class="reg-success-detail-label">Registered On</span>
+              <span class="reg-success-detail-value" id="successDate">Aug 6, 2025</span>
+            </div>
+          </div>
+          <a href="dashboard.html" class="btn btn-primary btn-lg reg-submit-btn" id="goDashboardBtn">
+            Open My Dashboard
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <div class="reg-success-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 01.01 1.2 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14z"/></svg>
+            Citizen ID SMS sent to your registered mobile number
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure note -->
+      <div class="reg-secure-note" aria-label="Security information">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Secured by IndiaStack · DPDP 2023 Compliant · NIC Certified
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="register.js"></script>
+</body>
+</html>
