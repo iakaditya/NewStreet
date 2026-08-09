@@ -16,7 +16,7 @@
       if (window._dashReady) window._dashReady();
     }
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpIhPezzY6nN-4abPnHlfZHFjA6jbuHHY&callback=initGoogleMapsCallback&libraries=geometry" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpIhPezzY6nN-4abPnHlfZHFjA6jbuHHY&callback=initGoogleMapsCallback&libraries=geometry,visualization" async defer></script>
   <!-- Design System -->
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="dashboard.css" />
@@ -49,6 +49,7 @@
           <span class="dash-loc-city" id="navCityLabel">Bengaluru, KA</span>
           <span class="dash-loc-ward" id="navWardLabel">Ward 14 (Vasanth Nagar)</span>
         </div>
+        <div class="nav-address-tooltip" id="navAddressTooltip">Locating address...</div>
       </div>
     </div>
 
@@ -62,8 +63,11 @@
     <div class="dash-top-right">
       <!-- Real-time GPS location indicator -->
       <div class="dash-gps-live searching" id="gpsLiveIndicator" title="Real-time GPS location">
-        <span class="gps-dot"></span>
-        <span id="gpsCoordDisplay">Locating...</span>
+        <div class="gps-top-row">
+          <span class="gps-dot"></span>
+          <span id="gpsCoordDisplay">Locating...</span>
+        </div>
+        <div class="gps-address-row" id="gpsAddressDisplay">Acquiring signal...</div>
       </div>
       <div class="dash-divider"></div>
       <div class="dash-weather-widget" title="Current weather in Bengaluru">
@@ -458,6 +462,7 @@
 
         </div><!-- /feed-cards-list -->
 
+        <div class="dash-charts-grid">
           <!-- ── COMPLAINT TREND CHART ──────────────────────────── -->
           <div class="dash-chart-card">
             <div class="dash-chart-header">
@@ -471,7 +476,9 @@
                 <button class="dash-chart-btn" data-trend-range="1m">1M</button>
               </div>
             </div>
-            <canvas id="complaintTrendChart" height="220"></canvas>
+            <div style="flex:1; position:relative;">
+              <canvas id="complaintTrendChart" height="220"></canvas>
+            </div>
           </div>
 
           <!-- ── CATEGORY BREAKDOWN CHART ──────────────────────────── -->
@@ -486,7 +493,7 @@
                 <button class="dash-chart-btn" data-cat-view="bar">Bar</button>
               </div>
             </div>
-            <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;flex:1;">
               <div style="width:180px;height:180px;flex-shrink:0;position:relative;">
                 <canvas id="categoryDonutChart"></canvas>
               </div>
@@ -502,7 +509,9 @@
                 <p class="dash-chart-sub">Days taken to resolve per category</p>
               </div>
             </div>
-            <canvas id="resolutionBarChart" height="200"></canvas>
+            <div style="flex:1; position:relative;">
+              <canvas id="resolutionBarChart" height="200"></canvas>
+            </div>
           </div>
 
           <!-- ── WARD ACTIVITY HEATMAP ─────────────────────────────── -->
@@ -513,8 +522,11 @@
                 <p class="dash-chart-sub">Complaints submitted per day this week</p>
               </div>
             </div>
-            <canvas id="weeklyActivityChart" height="160"></canvas>
+            <div style="flex:1; position:relative;">
+              <canvas id="weeklyActivityChart" height="160"></canvas>
+            </div>
           </div>
+        </div>
 
 
         <!-- Hidden compat elements for JS -->

@@ -15,6 +15,101 @@ document.addEventListener('DOMContentLoaded', () => {
     servicesUsed: 4,
     activeComplaints: [
       {
+        id: 'CVC-2026-11849',
+        title: 'Open Manhole on Busy Sidewalk',
+        category: 'safety',
+        details: 'Deep open manhole right in the middle of the pedestrian pathway. High risk of someone falling in, especially at night.',
+        address: '2nd Cross, Vasanth Nagar',
+        status: 'Critical',
+        date: 'Aug 9, 2026',
+        officer: 'Emergency Response Unit',
+        eta: 'Immediate',
+        lat: 50, lng: 60,
+        geoLat: 12.9865,
+        geoLng: 77.5925,
+        severity: 'high',
+        ward: 'Ward 14',
+        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/safety_hazard_1786262361716.jpg',
+        timeline: [
+          { title: 'Submitted', desc: 'Aug 9, 08:00 AM · Reported by Rahul Sharma', completed: true },
+          { title: 'Emergency Dispatch', desc: 'Aug 9, 08:05 AM · ERU Dispatched', completed: true, active: true },
+          { title: 'Barricading', desc: 'Pending secure fencing.', completed: false }
+        ],
+        chatHistory: []
+      },
+      {
+        id: 'CVC-2026-33921',
+        title: 'Broken Traffic Signal Causing Chaos',
+        category: 'traffic',
+        details: 'All lights at the 4-way intersection are out. Complete gridlock and dangerous near-misses happening continuously.',
+        address: 'Vasanth Nagar Main Intersection',
+        status: 'In Progress',
+        date: 'Aug 9, 2026',
+        officer: 'Traffic Police Dept',
+        eta: 'Aug 9, 2026',
+        lat: 45, lng: 55,
+        geoLat: 12.9875,
+        geoLng: 77.5930,
+        severity: 'high',
+        ward: 'Ward 14',
+        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/traffic_signal_broken_1786262346616.jpg',
+        timeline: [
+          { title: 'Submitted', desc: 'Aug 9, 07:45 AM · Reported by Rahul Sharma', completed: true },
+          { title: 'Police Deployed', desc: 'Aug 9, 08:15 AM · Manual traffic regulation active.', completed: true, active: true },
+          { title: 'Signal Repair', desc: 'Technician dispatched for electrical repair.', completed: false }
+        ],
+        chatHistory: []
+      },
+      {
+        id: 'CVC-2026-88402',
+        title: 'Dangerous Sparking Wires',
+        category: 'electricity',
+        details: 'Low hanging live wires from street pole short-circuiting and sparking on the road. High electrocution risk.',
+        address: '3rd Main Rd, Vasanth Nagar',
+        status: 'Critical',
+        date: 'Aug 9, 2026',
+        officer: 'BESCOM Emergency Team',
+        eta: 'Immediate',
+        lat: 40, lng: 30,
+        geoLat: 12.9880,
+        geoLng: 77.5910,
+        severity: 'high',
+        ward: 'Ward 14',
+        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/electricity_hazard_1786262332779.jpg',
+        timeline: [
+          { title: 'Submitted', desc: 'Aug 9, 06:30 AM · Reported by Rahul Sharma', completed: true },
+          { title: 'Power Cut', desc: 'Aug 9, 06:45 AM · Sector power isolated.', completed: true },
+          { title: 'Line Repair', desc: 'Aug 9, 07:15 AM · Crew on-site fixing lines.', completed: true, active: true }
+        ],
+        chatHistory: []
+      },
+      {
+        id: 'CVC-2026-64902',
+        title: 'Massive Garbage Pile on Street Corner',
+        category: 'garbage',
+        details: 'A huge pile of uncollected garbage has accumulated at the corner of 1st Main Road. The smell is terrible and it is attracting stray animals.',
+        address: 'Corner of 1st Main Road, Vasanth Nagar',
+        status: 'Pending',
+        date: 'Aug 8, 2026',
+        officer: 'Sanjay Kumar (Sanitation Dept)',
+        eta: 'Aug 10, 2026',
+        lat: 60, lng: 70,
+        geoLat: 12.9860,
+        geoLng: 77.5960,
+        severity: 'high',
+        ward: 'Ward 14',
+        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/garbage_pile_complaint_1786261725860.jpg',
+        timeline: [
+          { title: 'Submitted', desc: 'Aug 8, 09:12 AM · Reported by Rahul Sharma', completed: true },
+          { title: 'Assigned', desc: 'Aug 8, 10:05 AM · Assigned to Sanitation Dept', completed: true, active: true },
+          { title: 'Work In Progress', desc: 'Pending pickup schedule.', completed: false },
+          { title: 'Resolved', desc: 'Pending cleanup verification.', completed: false }
+        ],
+        chatHistory: [
+          { sender: 'ai', text: 'Hello Rahul, the sanitation department has been notified. We will update you once a pickup truck is dispatched.' }
+        ]
+      },
+      {
         id: 'CVC-2026-98124',
         title: 'Pothole Hazard & Road Damage',
         category: 'roads',
@@ -590,17 +685,16 @@ document.addEventListener('DOMContentLoaded', () => {
       hideComplaintModal();
       showToast(`✅ Complaint ${newId} registered! Pinned to Live Map.`, 'success');
 
-      // Flash the new complaint on the live map first, then switch to complaints
-      if (leafletMap) {
+      if (googleMap) {
         switchTab('map');
         setTimeout(() => {
           flashNewComplaintOnMap(newComplaint);
           // Switch to complaints after showing the map flash
           setTimeout(() => {
-            switchTab('complaints');
             selectComplaint(newId);
+            switchTab('complaints');
           }, 2500);
-        }, 300);
+        }, 500);
       } else {
         switchTab('complaints');
         selectComplaint(newId);
@@ -681,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>🏢 ${escapeHTML(c.category.toUpperCase())}</span> • <span>Raised on ${escapeHTML(c.date)}</span>
         </div>
 
-        <img src="/Users/iakadityaraj/.gemini/antigravity/brain/fe32c3c1-5e2a-4d88-af52-8d4018d9ff7f/pothole_road_photo_1786037248976.jpg" class="cs-image" alt="Complaint Image" onerror="this.src='/Users/iakadityaraj/.gemini/antigravity/brain/fe32c3c1-5e2a-4d88-af52-8d4018d9ff7f/.user_uploaded/media_1786035969178.png'" />
+        <img src="${c.image || '/Users/iakadityaraj/.gemini/antigravity/brain/fe32c3c1-5e2a-4d88-af52-8d4018d9ff7f/pothole_road_photo_1786037248976.jpg'}" class="cs-image" alt="Complaint Image" onerror="this.src='/Users/iakadityaraj/.gemini/antigravity/brain/fe32c3c1-5e2a-4d88-af52-8d4018d9ff7f/.user_uploaded/media_1786035969178.png'" />
 
         <div class="cs-timeline-hoz">
           ${timelineHtml}
@@ -691,14 +785,14 @@ document.addEventListener('DOMContentLoaded', () => {
           ${escapeHTML(activeStepDesc)}
         </div>
 
-        <button class="cs-btn-full">View Full Details</button>
+        <button class="cs-btn-full" id="csFullBtn-${c.id}">View Full Details</button>
 
-        <div class="cs-help-box">
+        <div class="cs-help-box" id="csHelpBox-${c.id}">
           <div class="cs-help-text">
             <h4>Need Help?</h4>
             <p>Chat with officer or raise a follow-up.</p>
           </div>
-          <button class="cs-btn-chat">💬 Chat Now</button>
+          <button class="cs-btn-chat" id="csChatBtn-${c.id}">💬 Chat Now</button>
         </div>
 
         <div class="cs-insights">
@@ -728,6 +822,72 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
     `;
+
+    setTimeout(() => {
+      const chatBtn = $(`#csChatBtn-${c.id}`);
+      if (chatBtn) {
+        chatBtn.addEventListener('click', () => {
+          const helpBox = $(`#csHelpBox-${c.id}`);
+          
+          let historyHtml = (c.chatHistory || []).map(msg => 
+            `<div style="margin-bottom:8px; font-size:0.75rem; padding:8px; border-radius:8px; background:${msg.sender === 'user' ? 'var(--primary-light)' : '#f1f5f9'}; color:${msg.sender === 'user' ? 'var(--primary)' : 'var(--text-secondary)'}; text-align:${msg.sender === 'user' ? 'right' : 'left'};">
+              <strong>${msg.sender === 'user' ? 'You' : 'Officer'}</strong>: ${msg.text}
+             </div>`
+          ).join('');
+
+          if ((c.chatHistory || []).length === 0) {
+             historyHtml = `<div style="text-align:center; color:var(--text-tertiary); font-size:0.7rem; margin-bottom:8px;">No messages yet.</div>`;
+          }
+
+          helpBox.innerHTML = `
+            <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+              <div style="max-height:150px; overflow-y:auto; padding:4px;" id="csChatScroll-${c.id}">
+                ${historyHtml}
+              </div>
+              <div style="display:flex; gap:8px;">
+                <input type="text" id="csChatInput-${c.id}" placeholder="Type a comment..." style="flex:1; padding:6px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.75rem;" />
+                <button id="csChatSend-${c.id}" class="btn btn-primary btn-sm" style="padding:4px 12px;">Send</button>
+              </div>
+            </div>
+          `;
+          
+          const scrollBox = $(`#csChatScroll-${c.id}`);
+          if (scrollBox) scrollBox.scrollTop = scrollBox.scrollHeight;
+
+          const sendBtn = $(`#csChatSend-${c.id}`);
+          const input = $(`#csChatInput-${c.id}`);
+          
+          const sendMessage = () => {
+            if (input.value.trim()) {
+              if (!c.chatHistory) c.chatHistory = [];
+              c.chatHistory.push({ sender: 'user', text: input.value.trim() });
+              input.value = '';
+              renderComplaintSidebar(c);
+              showToast('Comment posted successfully.', 'success');
+              // Auto-open chat box on re-render
+              setTimeout(() => {
+                 const reChatBtn = $(`#csChatBtn-${c.id}`);
+                 if (reChatBtn) reChatBtn.click();
+              }, 50);
+            }
+          };
+
+          sendBtn.addEventListener('click', sendMessage);
+          input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+          input.focus();
+        });
+      }
+
+      const fullBtn = $(`#csFullBtn-${c.id}`);
+      if (fullBtn) fullBtn.addEventListener('click', () => {
+        if (window.googleNavToComplaint) {
+          window.googleNavToComplaint(c.id);
+        } else {
+          switchTab('complaints');
+          selectComplaint(c.id);
+        }
+      });
+    }, 50);
   }
 
   function renderComplaintsList() {
@@ -788,10 +948,30 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="cc-actions-area">
           <button class="cc-btn-details">View Details</button>
-          <button class="cc-btn-map" onclick="event.stopPropagation();window.viewComplaintOnMap('${escapeHTML(c.id)}')" title="View on Live Map">📍 Map</button>
-          <button class="cc-btn-chat">💬</button>
+          <button class="cc-btn-map" title="View on Live Map">📍 Map</button>
+          <button class="cc-btn-chat" title="Chat">💬</button>
         </div>
       `;
+
+      const mapBtn = item.querySelector('.cc-btn-map');
+      if (mapBtn) {
+        mapBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (window.viewComplaintOnMap) window.viewComplaintOnMap(c.id);
+        });
+      }
+
+      const chatBtn = item.querySelector('.cc-btn-chat');
+      if (chatBtn) {
+        chatBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectComplaint(c.id);
+          setTimeout(() => {
+            const b = $(`#csChatBtn-${c.id}`);
+            if (b) b.click();
+          }, 100);
+        });
+      }
 
       item.addEventListener('click', () => {
         renderComplaintSidebar(c);
@@ -896,7 +1076,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let projectMarkers = [];
   let watchId = null;
   let currentGeoPos = null;
-  let openInfoWindow = null; // only one open at a time
+  let openInfoWindow = null;
+  let heatmapLayer = null;
+
+  window.googleMap = googleMap;
+  window.complaintMarkers = complaintMarkers;
+  window.projectMarkers = projectMarkers;
+  window.heatmapLayer = heatmapLayer;
 
   const WARD_LATLNG = { lat: 12.9852, lng: 77.5948 };
 
@@ -910,6 +1096,52 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'ws-6', name: 'Govt. School Building – Phase 2',   dept: 'Education',    pct: 0,  status: 'upcoming', geoLat: 12.9804, geoLng: 77.5894, color: '#F97316', emoji: '🏫' }
   ];
 
+  // -- PRESENTATION MOCK DATA GENERATOR --
+  function generateMockPresentationData() {
+    const targets = { roads: 33, garbage: 20, water: 17, electricity: 15, traffic: 11, safety: 7 };
+    let idCounter = 2000;
+    const centerLat = 12.9852;
+    const centerLng = 77.5948;
+    const radius = 0.015;
+
+    for (const [category, count] of Object.entries(targets)) {
+      for (let i = 0; i < count; i++) {
+        state.activeComplaints.push({
+          id: `CVC-2026-F${idCounter++}`,
+          title: `Reported ${category} issue in sector ${Math.floor(Math.random()*20)}`,
+          category: category,
+          details: 'Autogenerated mock data for presentation.',
+          address: 'Vasanth Nagar Local Area',
+          status: Math.random() > 0.3 ? 'Pending' : (Math.random() > 0.5 ? 'In Progress' : 'Resolved'),
+          date: 'Aug ' + Math.floor(Math.random()*9 + 1) + ', 2026',
+          officer: 'System Assigned',
+          eta: 'Pending',
+          geoLat: centerLat + (Math.random() - 0.5) * radius * 2,
+          geoLng: centerLng + (Math.random() - 0.5) * radius * 2,
+          severity: Math.random() > 0.5 ? 'medium' : 'high',
+          ward: 'Ward 14',
+          timeline: [],
+          chatHistory: []
+        });
+      }
+    }
+
+    for (let i = 0; i < 10; i++) {
+      WORK_SITES.push({
+        id: `ws-mock-${i}`,
+        name: `Infrastructure Upgrade Phase ${i+1}`,
+        dept: 'BBMP',
+        pct: Math.floor(Math.random()*100),
+        status: Math.random() > 0.5 ? 'inprog' : 'pending',
+        geoLat: centerLat + (Math.random() - 0.5) * radius * 2.5,
+        geoLng: centerLng + (Math.random() - 0.5) * radius * 2.5,
+        color: '#6366F1',
+        emoji: '🏗️'
+      });
+    }
+  }
+  generateMockPresentationData();
+
   function statusToMarker(complaint) {
     if (complaint.status === 'Resolved') return { severity: 'low' };
     if (complaint.status === 'Assigned') return { severity: 'high' };
@@ -917,10 +1149,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getVisibleMapComplaints() {
+    const activeChip = document.querySelector('.lm-chip.active');
+    const cat = activeChip ? activeChip.dataset.lmCat : 'all';
+    
+    // Fallback to older checkboxes if chip not found/active
     const activeCategories = new Set($$('[data-map-filter]:checked').map(input => input.dataset.mapFilter));
     const activeSeverities = new Set($$('[data-severity-filter]:checked').map(input => input.dataset.severityFilter));
+    
     return state.activeComplaints.filter(c => {
       enrichComplaintLocation(c);
+      
+      if (cat !== 'all') {
+        return c.category === cat;
+      }
+      
+      // Legacy sidebar filter logic
       const { severity } = statusToMarker(c);
       const categoryVisible = activeCategories.size === 0 || activeCategories.has(c.category);
       const severityVisible = activeSeverities.size === 0 || activeSeverities.has(c.severity || severity);
@@ -1154,8 +1397,7 @@ document.addEventListener('DOMContentLoaded', () => {
         position: { lat: c.geoLat, lng: c.geoLng },
         map: googleMap,
         title: c.title,
-        icon: makeComplaintPin(c.status),
-        animation: google.maps.Animation.DROP
+        icon: makeComplaintPin(c.status)
       });
 
       const iw = new google.maps.InfoWindow({
@@ -1175,6 +1417,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderMapEventList();
     updateComplaintStats();
+    updateMapPillCounts();
+    window.complaintMarkers = complaintMarkers;
+    if (heatmapLayer && heatmapLayer.getMap()) {
+      updateHeatmapData();
+    }
+  }
+
+  function updateHeatmapData() {
+    if (!googleMap || !window.google || !google.maps.visualization) return;
+    const points = getVisibleMapComplaints().filter(c => c.geoLat && c.geoLng).map(c => new google.maps.LatLng(c.geoLat, c.geoLng));
+    if (!heatmapLayer) {
+      heatmapLayer = new google.maps.visualization.HeatmapLayer({
+        data: points,
+        map: googleMap,
+        radius: 35
+      });
+      window.heatmapLayer = heatmapLayer;
+    } else {
+      heatmapLayer.setData(points);
+      if (!heatmapLayer.getMap()) heatmapLayer.setMap(googleMap);
+    }
+  }
+  window.updateHeatmapData = updateHeatmapData;
+  window.renderGoogleMapPins = renderGoogleMapPins;
+
+  function updateMapPillCounts() {
+    const chips = document.querySelectorAll('.lm-chip[data-lm-cat]');
+    chips.forEach(chip => {
+      const cat = chip.dataset.lmCat;
+      const countEl = chip.querySelector('.lm-chip-count');
+      if (countEl) {
+        if (cat === 'all') {
+          countEl.textContent = state.activeComplaints.length;
+        } else {
+          countEl.textContent = state.activeComplaints.filter(c => c.category === cat).length;
+        }
+      }
+    });
   }
 
   function renderWorkSitePins() {
@@ -1187,8 +1467,7 @@ document.addEventListener('DOMContentLoaded', () => {
         position: { lat: site.geoLat, lng: site.geoLng },
         map: googleMap,
         title: site.name,
-        icon: makeWorkSitePin(site),
-        animation: google.maps.Animation.DROP
+        icon: makeWorkSitePin(site)
       });
 
       const iw = new google.maps.InfoWindow({
@@ -1280,9 +1559,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Nav bar GPS indicator
     const gpsIndicator = $('#gpsLiveIndicator');
     const gpsDisplay = $('#gpsCoordDisplay');
+    const gpsAddrDisplay = $('#gpsAddressDisplay');
+    const navTooltip = $('#navAddressTooltip');
+    
     if (gpsIndicator && gpsDisplay) {
       gpsIndicator.className = 'dash-gps-live';
       gpsDisplay.textContent = `${Number(location.geoLat).toFixed(4)}, ${Number(location.geoLng).toFixed(4)}`;
+    }
+    
+    // Reverse Geocode for real-time address
+    if (window.google && window.google.maps && google.maps.Geocoder) {
+      if (!window._dashGeocoder) window._dashGeocoder = new google.maps.Geocoder();
+      window._dashGeocoder.geocode({ location: pos }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+          const addr = results[0].formatted_address;
+          // Extract a shorter version for the small pill
+          const shortAddr = addr.split(',').slice(0, 2).join(',').trim();
+          if (gpsAddrDisplay) gpsAddrDisplay.textContent = shortAddr;
+          if (navTooltip) navTooltip.textContent = `Live Location: ${addr}`;
+        } else {
+          if (gpsAddrDisplay) gpsAddrDisplay.textContent = 'Address unavailable';
+          if (navTooltip) navTooltip.textContent = 'Live location active (Address unavailable)';
+        }
+      });
+    } else {
+      if (gpsAddrDisplay) gpsAddrDisplay.textContent = 'Acquiring address...';
     }
     const miniStatus = $('#miniMapStatusText');
     if (miniStatus) miniStatus.textContent = `${location.ward || 'Ward 14'} · GPS active`;
@@ -1328,8 +1629,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateGPSIndicator(stateStr, text) {
     const el = $('#gpsLiveIndicator');
     const display = $('#gpsCoordDisplay');
+    const addr = $('#gpsAddressDisplay');
     if (el) el.className = `dash-gps-live ${stateStr}`;
     if (display) display.textContent = text;
+    if (addr) addr.textContent = stateStr === 'error' ? 'Location access denied' : 'Acquiring signal...';
   }
 
   async function locateUserForMap() {
@@ -3306,7 +3609,8 @@ document.addEventListener('DOMContentLoaded', () => {
       lmChips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       const cat = chip.dataset.lmCat;
-      if (window.showToast) window.showToast('Map filtered: ' + (cat === 'all' ? 'All Issues' : chip.textContent.trim()), 'info');
+      // Re-render Google Map pins with new filter
+      if (window.renderGoogleMapPins) window.renderGoogleMapPins();
     });
   });
 
@@ -3317,10 +3621,15 @@ document.addEventListener('DOMContentLoaded', () => {
       lmViewBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const label = btn.textContent.trim();
-      if (label.includes('List')) {
-        if (window.showToast) window.showToast('List view: Showing ward complaints as a list', 'info');
-      } else if (label.includes('Heat')) {
-        if (window.showToast) window.showToast('Heat Map: Density view coming soon', 'info');
+      
+      if (label.includes('Map View')) {
+        if (window.heatmapLayer) window.heatmapLayer.setMap(null);
+        if (window.complaintMarkers) window.complaintMarkers.forEach(m => m.setMap(window.googleMap));
+      } else if (label.includes('Heat Map')) {
+        if (window.complaintMarkers) window.complaintMarkers.forEach(m => m.setMap(null));
+        if (window.updateHeatmapData) window.updateHeatmapData();
+      } else if (label.includes('List View')) {
+         if (window.switchTab) window.switchTab('complaints');
       }
     });
   });
