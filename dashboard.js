@@ -260,9 +260,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tabId === 'map') {
       updateMapClock();
       setTimeout(() => {
-        if (window.L) {
-          if (!leafletMap) initLeafletMap();
-          else { leafletMap.invalidateSize(); renderLeafletPins(); }
+        if (window.google && window.google.maps) {
+          if (!googleMap) initGoogleMap();
+          else {
+            renderGoogleMapPins();
+            renderWorkSitePins();
+          }
+        } else {
+          // API not loaded yet — show placeholder
+          const c = document.getElementById('liveMapCanvas');
+          if (c && !c.innerHTML.trim()) {
+            c.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:linear-gradient(135deg,#1e293b,#0f172a);color:#94a3b8;gap:12px;">
+              <svg width="48" height="48" fill="none" stroke="#4F8EF7" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <div style="font-size:1rem;font-weight:700;color:#e2e8f0;">Add your Google Maps API Key</div>
+              <div style="font-size:0.8rem;text-align:center;max-width:280px;line-height:1.6;">Open <code style="background:#1e3a5f;padding:2px 6px;border-radius:4px;">dashboard.html</code> and replace <code style="background:#1e3a5f;padding:2px 6px;border-radius:4px;">YOUR_GOOGLE_MAPS_API_KEY</code></div>
+            </div>`;
+          }
         }
       }, 100);
     }
@@ -575,11 +588,23 @@ document.addEventListener('DOMContentLoaded', () => {
       updateComplaintStats();
 
       hideComplaintModal();
-      showToast(`Complaint ${newId} registered successfully!`, 'success');
-      switchTab('complaints');
-      
-      // Focus on the newly added complaint
-      selectComplaint(newId);
+      showToast(`✅ Complaint ${newId} registered! Pinned to Live Map.`, 'success');
+
+      // Flash the new complaint on the live map first, then switch to complaints
+      if (leafletMap) {
+        switchTab('map');
+        setTimeout(() => {
+          flashNewComplaintOnMap(newComplaint);
+          // Switch to complaints after showing the map flash
+          setTimeout(() => {
+            switchTab('complaints');
+            selectComplaint(newId);
+          }, 2500);
+        }, 300);
+      } else {
+        switchTab('complaints');
+        selectComplaint(newId);
+      }
     });
   }
 
@@ -763,6 +788,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="cc-actions-area">
           <button class="cc-btn-details">View Details</button>
+          <button class="cc-btn-map" onclick="event.stopPropagation();window.viewComplaintOnMap('${escapeHTML(c.id)}')" title="View on Live Map">📍 Map</button>
           <button class="cc-btn-chat">💬</button>
         </div>
       `;
@@ -826,16 +852,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── 8. LEAFLET REAL MAP + REAL-TIME GPS ─────────────────────
-  let leafletMap = null;
-  let miniLeafletMap = null;
+  // View a specific complaint on the live map
+  window.viewComplaintOnMap = function(id) {
+    const c = state.activeComplaints.find(comp => comp.id === id);
+    if (!c) return;
+    enrichComplaintLocation(c);
+    switchTab('map');
+    setTimeout(() => {
+      if (!leafletMap) initLeafletMap();
+      if (leafletMap && c.geoLat && c.geoLng) {
+        leafletMap.flyTo([c.geoLat, c.geoLng], 17, { duration: 1.2 });
+        // Find and open the popup for this complaint marker
+        const found = complaintMarkers.find(m => {
+          const ll = m.getLatLng();
+          return Math.abs(ll.lat - c.geoLat) < 0.0001 && Math.abs(ll.lng - c.geoLng) < 0.0001;
+        });
+        if (found) setTimeout(() => found.openPopup(), 1300);
+      }
+    }, 200);
+  };
+
+  // Fly to a work site on the live map by index
+  window.flyToWorkSite = function(idx) {
+    switchTab('map');
+    setTimeout(() => {
+      if (!googleMap) initGoogleMap();
+      const site = WORK_SITES[idx];
+      if (!site || !googleMap) return;
+      googleMap.panTo({ lat: site.geoLat, lng: site.geoLng });
+      googleMap.setZoom(17);
+      const found = projectMarkers[idx];
+      if (found) setTimeout(() => found.infoWindow && found.infoWindow.open(googleMap, found), 400);
+    }, 200);
+  };
+
+  // ── 8. GOOGLE MAPS + REAL-TIME GPS ────────────────────
+  let googleMap = null;
+  let miniGoogleMap = null;
   let userMarker = null;
+  let userAccuracyCircle = null;
   let miniUserMarker = null;
   let complaintMarkers = [];
+  let projectMarkers = [];
   let watchId = null;
   let currentGeoPos = null;
+  let openInfoWindow = null; // only one open at a time
 
-  const WARD_LATLNG = [12.9852, 77.5948];
+  const WARD_LATLNG = { lat: 12.9852, lng: 77.5948 };
+
+  // Work-site / project data with geo coordinates
+  const WORK_SITES = [
+    { id: 'ws-1', name: 'Drainage Improvement (3rd Block)',   dept: 'BBMP',        pct: 80, status: 'inprog',   geoLat: 12.9872, geoLng: 77.5925, color: '#3B82F6', emoji: '🏗️' },
+    { id: 'ws-2', name: 'Park Renovation (Cunningham Park)',  dept: 'Horticulture', pct: 57, status: 'inprog',   geoLat: 12.9840, geoLng: 77.5902, color: '#10B981', emoji: '🌳' },
+    { id: 'ws-3', name: 'Street Light LED Upgrade',           dept: 'BESCOM',       pct: 70, status: 'inprog',   geoLat: 12.9864, geoLng: 77.5965, color: '#F59E0B', emoji: '💡' },
+    { id: 'ws-4', name: 'Water Pipeline Replacement',         dept: 'BWSSB',        pct: 65, status: 'inprog',   geoLat: 12.9825, geoLng: 77.5942, color: '#06B6D4', emoji: '🚰' },
+    { id: 'ws-5', name: 'Road Resurfacing (5th Main Road)',   dept: 'BBMP',         pct: 25, status: 'pending',  geoLat: 12.9891, geoLng: 77.5978, color: '#8B5CF6', emoji: '🛣️' },
+    { id: 'ws-6', name: 'Govt. School Building – Phase 2',   dept: 'Education',    pct: 0,  status: 'upcoming', geoLat: 12.9804, geoLng: 77.5894, color: '#F97316', emoji: '🏫' }
+  ];
 
   function statusToMarker(complaint) {
     if (complaint.status === 'Resolved') return { severity: 'low' };
@@ -880,112 +953,150 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="badge ${badgeClass}" style="font-size:0.55rem;">${escapeHTML(c.status)}</span>
       `;
       btn.addEventListener('click', () => {
-        if (leafletMap && c.geoLat && c.geoLng) {
-          leafletMap.setView([c.geoLat, c.geoLng], 16);
+        if (googleMap && c.geoLat && c.geoLng) {
+          googleMap.panTo({ lat: c.geoLat, lng: c.geoLng });
+          googleMap.setZoom(16);
         }
       });
       list.appendChild(btn);
     });
   }
 
-
-  function makeComplaintIcon(status) {
-    let color = '#F59E0B'; // amber = in progress
-    if (status === 'Resolved') color = '#10B981';
-    if (status === 'Assigned') color = '#F43F5E';
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32" width="24" height="32">
-      <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20S24 21 24 12c0-6.6-5.4-12-12-12z" fill="${color}"/>
-      <circle cx="12" cy="12" r="5" fill="white" opacity="0.9"/>
-    </svg>`;
-    return L.divIcon({
-      html: svg,
-      className: '',
-      iconSize: [24, 32],
-      iconAnchor: [12, 32],
-      popupAnchor: [0, -32]
-    });
+  // ── Google Maps marker SVG pin builder ──────────────────────
+  function makeComplaintPin(status) {
+    let fill = '#F59E0B';
+    if (status === 'Resolved') fill = '#10B981';
+    if (status === 'Assigned') fill = '#F43F5E';
+    return {
+      path: 'M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20S24 21 24 12c0-6.6-5.4-12-12-12z',
+      fillColor: fill,
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 2,
+      scale: 1.4,
+      anchor: new google.maps.Point(12, 32)
+    };
   }
 
-  function makeUserIcon() {
-    const html = `<div style="width:18px;height:18px;background:#4F8EF7;border-radius:50%;border:3px solid white;box-shadow:0 0 0 6px rgba(79,142,247,0.25), 0 2px 8px rgba(0,0,0,0.4);"></div>`;
-    return L.divIcon({
-      html,
-      className: '',
-      iconSize: [18, 18],
-      iconAnchor: [9, 9]
-    });
+  function makeWorkSitePin(site) {
+    const color = site.status === 'inprog' ? site.color : site.status === 'pending' ? '#F59E0B' : '#9CA3AF';
+    return {
+      path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+      fillColor: color,
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 2,
+      scale: 10,
+      anchor: new google.maps.Point(0, 2.5)
+    };
   }
 
-  function buildPopupHtml(c) {
-    const tagClass = c.status === 'Resolved' ? 'success' : c.status === 'Assigned' ? 'danger' : 'warning';
-    const tagText = c.status;
+  function makeUserPin() {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      fillColor: '#4F8EF7',
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 3,
+      scale: 9
+    };
+  }
+
+  function buildComplaintInfoWindow(c) {
+    const tagColor = c.status === 'Resolved' ? '#10B981' : c.status === 'Assigned' ? '#F43F5E' : '#F59E0B';
     return `<div class="map-popup-inner">
-      <span class="map-popup-tag ${tagClass}">${escapeHTML(tagText)}</span>
+      <span class="map-popup-tag" style="background:${tagColor};color:#fff;">${escapeHTML(c.status)}</span>
       <div class="map-popup-title">${escapeHTML(c.title)}</div>
       <div class="map-popup-desc">${escapeHTML(c.details)}</div>
       <div class="map-popup-coords">${Number(c.geoLat).toFixed(5)} N, ${Number(c.geoLng).toFixed(5)} E</div>
       <div class="map-popup-footer">
-        <button onclick="window.showToast('Opening complaint details…','info'); window.leafletNavToComplaint('${escapeHTML(c.id)}')" class="btn btn-primary btn-sm" style="width:100%;">View Details</button>
+        <button onclick="window.googleNavToComplaint('${escapeHTML(c.id)}')" class="btn btn-primary btn-sm" style="width:100%;margin-top:8px;">View Details</button>
       </div>
     </div>`;
   }
 
-  window.leafletNavToComplaint = function(id) {
+  function buildWorkSiteInfoWindow(site) {
+    const statusLabel = site.status === 'inprog' ? '🔨 In Progress' : site.status === 'pending' ? '⏳ Pending' : '📋 Upcoming';
+    const pctBar = `<div style="background:#E5E7EB;border-radius:4px;height:5px;margin-top:6px;"><div style="background:${site.color};width:${site.pct}%;height:100%;border-radius:4px;"></div></div>`;
+    return `<div class="map-popup-inner">
+      <span class="map-popup-tag" style="background:${site.color};color:#fff;">${statusLabel}</span>
+      <div class="map-popup-title">${site.emoji} ${escapeHTML(site.name)}</div>
+      <div class="map-popup-desc">Dept: ${escapeHTML(site.dept)} · ${site.pct}% complete${pctBar}</div>
+      <div class="map-popup-coords" style="color:#9CA3AF;">📍 ${site.geoLat.toFixed(5)} N, ${site.geoLng.toFixed(5)} E</div>
+    </div>`;
+  }
+
+  window.googleNavToComplaint = function(id) {
+    if (openInfoWindow) openInfoWindow.close();
     switchTab('complaints');
     renderComplaintsList();
     selectComplaint(id);
   };
 
-  function initLeafletMap() {
+  function initGoogleMap() {
     const mapEl = document.getElementById('liveMapCanvas');
-    if (!mapEl || !window.L) return;
-    if (leafletMap) return; // already initialized
+    if (!mapEl || !window.google || !window.google.maps) {
+      // Show a placeholder if API key not set
+      mapEl.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:linear-gradient(135deg,#1e293b,#0f172a);color:#94a3b8;gap:12px;">
+        <svg width="48" height="48" fill="none" stroke="#4F8EF7" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <div style="font-size:1rem;font-weight:700;color:#e2e8f0;">Google Maps API Key Required</div>
+        <div style="font-size:0.8rem;text-align:center;max-width:280px;line-height:1.6;">Open <strong>dashboard.html</strong> and replace <code style="background:#1e3a5f;padding:2px 6px;border-radius:4px;">YOUR_GOOGLE_MAPS_API_KEY</code> with your key from <a href="https://console.cloud.google.com" target="_blank" style="color:#4F8EF7;">Google Cloud Console</a></div>
+      </div>`;
+      return;
+    }
+    if (googleMap) return;
 
-    leafletMap = L.map('liveMapCanvas', {
+    googleMap = new google.maps.Map(mapEl, {
       center: WARD_LATLNG,
       zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.TOP_RIGHT,
+        mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain']
+      },
+      fullscreenControl: true,
+      streetViewControl: true,
       zoomControl: true,
-      attributionControl: false
+      gestureHandling: 'greedy',
+      styles: [
+        { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+        { featureType: 'transit', elementType: 'labels.icon', stylers: [{ visibility: 'off' }] }
+      ]
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
-    }).addTo(leafletMap);
-
-    // Add complaint markers
-    renderLeafletPins();
-
-    // Kick off realtime GPS
+    renderGoogleMapPins();
+    renderWorkSitePins();
     startRealtimeGPS();
   }
 
   function initMiniMap() {
     const miniEl = document.getElementById('miniMapContainer');
-    if (!miniEl || !window.L) return;
-    if (miniLeafletMap) return;
+    if (!miniEl || !window.google || !window.google.maps) return;
+    if (miniGoogleMap) return;
 
-    miniLeafletMap = L.map('miniMapContainer', {
+    miniGoogleMap = new google.maps.Map(miniEl, {
       center: WARD_LATLNG,
       zoom: 14,
-      zoomControl: false,
-      attributionControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      boxZoom: false,
-      keyboard: false,
-      touchZoom: false
+      disableDefaultUI: true,
+      draggable: false,
+      scrollwheel: false,
+      disableDoubleClickZoom: true,
+      gestureHandling: 'none',
+      styles: [
+        { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] }
+      ]
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(miniLeafletMap);
-
-    // Add a few complaint markers
     state.activeComplaints.forEach(c => {
       enrichComplaintLocation(c);
       if (c.geoLat && c.geoLng) {
-        L.marker([c.geoLat, c.geoLng], { icon: makeComplaintIcon(c.status) })
-          .addTo(miniLeafletMap);
+        new google.maps.Marker({
+          position: { lat: c.geoLat, lng: c.geoLng },
+          map: miniGoogleMap,
+          icon: makeComplaintPin(c.status)
+        });
       }
     });
 
@@ -993,23 +1104,71 @@ document.addEventListener('DOMContentLoaded', () => {
     if (miniStatus) miniStatus.textContent = 'Ward 14 · Bengaluru, KA';
   }
 
-  function renderLeafletPins() {
-    if (!leafletMap) return;
+  // Flash a newly filed complaint with animated pulse overlay
+  function flashNewComplaintOnMap(complaint) {
+    if (!googleMap || !complaint.geoLat || !complaint.geoLng) return;
 
-    // Clear old markers
-    complaintMarkers.forEach(m => m.remove());
+    const pos = { lat: complaint.geoLat, lng: complaint.geoLng };
+
+    // Fly to new complaint
+    googleMap.panTo(pos);
+    googleMap.setZoom(16);
+
+    // Create pulse overlay using a DOM element
+    class PulseOverlay extends google.maps.OverlayView {
+      constructor(pos) { super(); this.pos = pos; this.div = null; }
+      onAdd() {
+        const div = document.createElement('div');
+        div.innerHTML = `<div class="map-new-complaint-pulse"><div class="map-pulse-ring"></div><div class="map-pulse-dot"></div><div class="map-new-label">NEW</div></div>`;
+        div.style.position = 'absolute';
+        this.div = div;
+        this.getPanes().overlayMouseTarget.appendChild(div);
+      }
+      draw() {
+        if (!this.div) return;
+        const proj = this.getProjection();
+        const pt = proj.fromLatLngToDivPixel(new google.maps.LatLng(this.pos.lat, this.pos.lng));
+        this.div.style.left = (pt.x - 20) + 'px';
+        this.div.style.top  = (pt.y - 20) + 'px';
+      }
+      onRemove() { if (this.div && this.div.parentNode) this.div.parentNode.removeChild(this.div); this.div = null; }
+    }
+
+    const overlay = new PulseOverlay(pos);
+    overlay.setMap(googleMap);
+    setTimeout(() => overlay.setMap(null), 6000);
+  }
+  window.flashNewComplaintOnMap = flashNewComplaintOnMap;
+
+  function renderGoogleMapPins() {
+    if (!googleMap) return;
+    // Clear old
+    complaintMarkers.forEach(m => { m.setMap(null); if (m.infoWindow) m.infoWindow.close(); });
     complaintMarkers = [];
 
     getVisibleMapComplaints().forEach(c => {
       enrichComplaintLocation(c);
       if (!c.geoLat || !c.geoLng) return;
 
-      const marker = L.marker([c.geoLat, c.geoLng], { icon: makeComplaintIcon(c.status) })
-        .addTo(leafletMap)
-        .bindPopup(buildPopupHtml(c), {
-          maxWidth: 260,
-          className: 'leaflet-custom-popup'
-        });
+      const marker = new google.maps.Marker({
+        position: { lat: c.geoLat, lng: c.geoLng },
+        map: googleMap,
+        title: c.title,
+        icon: makeComplaintPin(c.status),
+        animation: google.maps.Animation.DROP
+      });
+
+      const iw = new google.maps.InfoWindow({
+        content: buildComplaintInfoWindow(c),
+        maxWidth: 260
+      });
+      marker.infoWindow = iw;
+
+      marker.addListener('click', () => {
+        if (openInfoWindow) openInfoWindow.close();
+        iw.open(googleMap, marker);
+        openInfoWindow = iw;
+      });
 
       complaintMarkers.push(marker);
     });
@@ -1018,12 +1177,38 @@ document.addEventListener('DOMContentLoaded', () => {
     updateComplaintStats();
   }
 
-  // Override old renderMapPins to use Leaflet
+  function renderWorkSitePins() {
+    if (!googleMap) return;
+    projectMarkers.forEach(m => { m.setMap(null); if (m.infoWindow) m.infoWindow.close(); });
+    projectMarkers = [];
+
+    WORK_SITES.forEach((site, idx) => {
+      const marker = new google.maps.Marker({
+        position: { lat: site.geoLat, lng: site.geoLng },
+        map: googleMap,
+        title: site.name,
+        icon: makeWorkSitePin(site),
+        animation: google.maps.Animation.DROP
+      });
+
+      const iw = new google.maps.InfoWindow({
+        content: buildWorkSiteInfoWindow(site),
+        maxWidth: 280
+      });
+      marker.infoWindow = iw;
+
+      marker.addListener('click', () => {
+        if (openInfoWindow) openInfoWindow.close();
+        iw.open(googleMap, marker);
+        openInfoWindow = iw;
+      });
+
+      projectMarkers.push(marker);
+    });
+  }
+
   function renderMapPins() {
-    if (leafletMap) {
-      renderLeafletPins();
-    }
-    // Also update the event list sidebar
+    if (googleMap) renderGoogleMapPins();
     renderMapEventList();
     updateComplaintStats();
   }
@@ -1031,42 +1216,76 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateUserLocationOnMap(location) {
     if (!location) return;
     state.currentLocation = location;
+    const pos = { lat: location.geoLat, lng: location.geoLng };
 
-    const latLng = [location.geoLat, location.geoLng];
-
-    // Main map
-    if (leafletMap) {
+    // Main map user marker
+    if (googleMap) {
       if (userMarker) {
-        userMarker.setLatLng(latLng);
+        userMarker.setPosition(pos);
       } else {
-        userMarker = L.marker(latLng, { icon: makeUserIcon(), zIndexOffset: 1000 })
-          .addTo(leafletMap)
-          .bindPopup(`<div class="map-popup-inner"><div class="map-popup-tag info">YOU</div><div class="map-popup-title">Your Location</div><div class="map-popup-coords">${location.geoLat.toFixed(5)} N, ${location.geoLng.toFixed(5)} E</div></div>`);
+        userMarker = new google.maps.Marker({
+          position: pos,
+          map: googleMap,
+          icon: makeUserPin(),
+          title: 'Your Location',
+          zIndex: 1000
+        });
+        const youIw = new google.maps.InfoWindow({
+          content: `<div class="map-popup-inner"><div class="map-popup-tag" style="background:#4F8EF7;color:#fff;">YOU</div><div class="map-popup-title">Your Live Location</div><div class="map-popup-coords">${location.geoLat.toFixed(5)} N, ${location.geoLng.toFixed(5)} E</div></div>`,
+          maxWidth: 220
+        });
+        userMarker.addListener('click', () => {
+          if (openInfoWindow) openInfoWindow.close();
+          youIw.open(googleMap, userMarker);
+          openInfoWindow = youIw;
+        });
       }
-      leafletMap.setView(latLng, Math.max(leafletMap.getZoom(), 15));
+
+      // Accuracy circle
+      if (location.accuracy) {
+        if (userAccuracyCircle) {
+          userAccuracyCircle.setCenter(pos);
+          userAccuracyCircle.setRadius(location.accuracy);
+        } else {
+          userAccuracyCircle = new google.maps.Circle({
+            map: googleMap,
+            center: pos,
+            radius: location.accuracy,
+            fillColor: '#4F8EF7',
+            fillOpacity: 0.1,
+            strokeColor: '#4F8EF7',
+            strokeOpacity: 0.4,
+            strokeWeight: 1
+          });
+        }
+      }
+
+      googleMap.panTo(pos);
     }
 
-    // Mini map
-    if (miniLeafletMap) {
+    // Mini map marker
+    if (miniGoogleMap) {
       if (miniUserMarker) {
-        miniUserMarker.setLatLng(latLng);
+        miniUserMarker.setPosition(pos);
       } else {
-        miniUserMarker = L.marker(latLng, { icon: makeUserIcon() }).addTo(miniLeafletMap);
+        miniUserMarker = new google.maps.Marker({
+          position: pos,
+          map: miniGoogleMap,
+          icon: makeUserPin()
+        });
       }
-      miniLeafletMap.setView(latLng, 14);
+      miniGoogleMap.panTo(pos);
     }
 
-    // Update GPS indicator in nav
+    // Nav bar GPS indicator
     const gpsIndicator = $('#gpsLiveIndicator');
     const gpsDisplay = $('#gpsCoordDisplay');
     if (gpsIndicator && gpsDisplay) {
       gpsIndicator.className = 'dash-gps-live';
       gpsDisplay.textContent = `${Number(location.geoLat).toFixed(4)}, ${Number(location.geoLng).toFixed(4)}`;
     }
-
     const miniStatus = $('#miniMapStatusText');
     if (miniStatus) miniStatus.textContent = `${location.ward || 'Ward 14'} · GPS active`;
-
     const gpsLabel = $('#mapGpsStatusLabel');
     if (gpsLabel) gpsLabel.textContent = location.confidence || 'Located';
     const liveLabel = $('#mapLiveLabel');
@@ -1079,7 +1298,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     updateGPSIndicator('searching', 'Locating...');
-
     watchId = navigator.geolocation.watchPosition(
       (position) => {
         const { latitude, longitude, accuracy } = position.coords;
@@ -1087,26 +1305,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const mapPos = geoToMapPosition(latitude, longitude);
         updateUserLocationOnMap({
           address: `GPS (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`,
-          ward: 'Ward 14',
-          zone: 'Live GPS',
-          mapTop: mapPos.mapTop,
-          mapLeft: mapPos.mapLeft,
-          geoLat: latitude,
-          geoLng: longitude,
+          ward: 'Ward 14', zone: 'Live GPS',
+          mapTop: mapPos.mapTop, mapLeft: mapPos.mapLeft,
+          geoLat: latitude, geoLng: longitude,
+          accuracy: accuracy,
           confidence: `±${Math.round(accuracy)}m`
         });
       },
       (err) => {
-        // Use fallback location (Bengaluru ward center)
         updateGPSIndicator('error', 'Denied');
         updateUserLocationOnMap({
-          address: 'Vasanth Nagar, Ward 14',
-          ward: 'Ward 14',
-          zone: 'Ward Center',
-          mapTop: 50,
-          mapLeft: 50,
-          geoLat: WARD_LATLNG[0],
-          geoLng: WARD_LATLNG[1],
+          address: 'Vasanth Nagar, Ward 14', ward: 'Ward 14', zone: 'Ward Center',
+          mapTop: 50, mapLeft: 50,
+          geoLat: WARD_LATLNG.lat, geoLng: WARD_LATLNG.lng,
           confidence: 'Approx'
         });
       },
@@ -1114,10 +1325,10 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  function updateGPSIndicator(state, text) {
+  function updateGPSIndicator(stateStr, text) {
     const el = $('#gpsLiveIndicator');
     const display = $('#gpsCoordDisplay');
-    if (el) el.className = `dash-gps-live ${state}`;
+    if (el) el.className = `dash-gps-live ${stateStr}`;
     if (display) display.textContent = text;
   }
 
@@ -1131,12 +1342,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const mapPosition = geoToMapPosition(latitude, longitude);
       const location = {
         address: `Current GPS position (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`,
-        ward: 'Ward 14',
-        zone: 'Live location',
-        mapTop: mapPosition.mapTop,
-        mapLeft: mapPosition.mapLeft,
-        geoLat: latitude,
-        geoLng: longitude,
+        ward: 'Ward 14', zone: 'Live location',
+        mapTop: mapPosition.mapTop, mapLeft: mapPosition.mapLeft,
+        geoLat: latitude, geoLng: longitude,
+        accuracy: accuracy,
         confidence: `GPS ±${Math.round(accuracy)}m`
       };
       updateUserLocationOnMap(location);
@@ -1153,19 +1362,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = $('#mapAddressSearch');
     if (!input) return;
     const value = input.value.trim();
-    if (!value) {
-      showToast('Enter an address or landmark to locate it on the map.', 'warning');
-      return;
+    if (!value) { showToast('Enter an address or landmark to locate it on the map.', 'warning'); return; }
+
+    // Try Google Geocoder first if available
+    if (window.google && window.google.maps && googleMap) {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: value + ', Bengaluru, India' }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+          const loc = results[0].geometry.location;
+          googleMap.panTo(loc);
+          googleMap.setZoom(16);
+          updateUserLocationOnMap({
+            address: results[0].formatted_address,
+            ward: 'Ward 14', zone: 'Search result',
+            mapTop: 50, mapLeft: 50,
+            geoLat: loc.lat(), geoLng: loc.lng(),
+            confidence: 'Geocoded'
+          });
+          if ($('#mapSearchHint')) $('#mapSearchHint').textContent = `Found: ${results[0].formatted_address}`;
+          showToast(`Located: ${results[0].formatted_address}`, 'success');
+        } else {
+          // Fallback to local lookup
+          const location = deriveLocation(value);
+          updateUserLocationOnMap(location);
+          if (googleMap) googleMap.panTo({ lat: location.geoLat, lng: location.geoLng });
+          if ($('#mapSearchHint')) $('#mapSearchHint').textContent = `${location.confidence}: ${location.address}`;
+          showToast(`Located: ${location.address}`, 'success');
+        }
+      });
+    } else {
+      const location = deriveLocation(value);
+      updateUserLocationOnMap(location);
+      if ($('#mapSearchHint')) $('#mapSearchHint').textContent = `${location.confidence}: ${location.address}`;
+      showToast(`Located: ${location.address}`, 'success');
     }
-    const location = deriveLocation(value);
-    updateUserLocationOnMap(location);
-    if (leafletMap) {
-      leafletMap.setView([location.geoLat, location.geoLng], 16);
-    }
-    if ($('#mapSearchHint')) {
-      $('#mapSearchHint').textContent = `${location.confidence}: ${location.address}`;
-    }
-    showToast(`Located: ${location.address}`, 'success');
   }
 
   $$('.map-sidebar-filters input[type="checkbox"]').forEach(input => {
@@ -1185,16 +1415,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize mini map on dashboard load
-  setTimeout(() => {
-    if (window.L) {
-      initMiniMap();
-      // Start GPS even on dashboard (for nav indicator)
-      if (!watchId) startRealtimeGPS();
-    }
-  }, 500);
+  // Initialize mini map + GPS — works whether Maps API loads first or after dashboard.js
+  function onMapsApiReady() {
+    initMiniMap();
+    if (!watchId) startRealtimeGPS();
+  }
 
-  // Map tab initialization is handled inside the main switchTab function above
+  // If Maps API already loaded (rare), run now; otherwise hook _dashReady callback
+  if (window.google && window.google.maps) {
+    setTimeout(onMapsApiReady, 300);
+  } else {
+    window._dashReady = onMapsApiReady;
+  }
 
   // Mini map expand button
   const miniMapExpandBtn = $('#miniMapExpandBtn');
