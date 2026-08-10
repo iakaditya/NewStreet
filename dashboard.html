@@ -27,27 +27,22 @@
   <!-- Chart.js — local copy for offline/sandbox support -->
   <script src="chart.min.js"></script>
 
+  <link rel="stylesheet" href="emergency.css" />
 </head>
 <body class="dash-body">
 
   <!-- ── TOP NAVIGATION BAR ────────────────────────────────────── -->
   <nav class="dash-top-nav">
     <div class="dash-top-left">
-      <div class="dash-brand">
-        <div class="dash-brand-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-        </div>
-        <span class="dash-brand-text">New <span>Street</span></span>
-      </div>
+      <a class="dash-brand" href="index.html" aria-label="New Street home">
+        <img src="newstreet-logo.png" alt="New Street" class="dash-brand-image" />
+      </a>
       <div class="dash-divider"></div>
       <div class="dash-loc-context" id="navLocContext">
         <span class="dash-loc-pin">📍</span>
         <div class="dash-loc-details">
-          <span class="dash-loc-city" id="navCityLabel">Bengaluru, KA</span>
-          <span class="dash-loc-ward" id="navWardLabel">Ward 14 (Vasanth Nagar)</span>
+          <span class="dash-loc-city" id="navCityLabel">Vadodara, GJ</span>
+          <span class="dash-loc-ward" id="navWardLabel">Ward 6 (Alkapuri)</span>
         </div>
         <div class="nav-address-tooltip" id="navAddressTooltip">Locating address...</div>
       </div>
@@ -70,7 +65,7 @@
         <div class="gps-address-row" id="gpsAddressDisplay">Acquiring signal...</div>
       </div>
       <div class="dash-divider"></div>
-      <div class="dash-weather-widget" title="Current weather in Bengaluru">
+      <div class="dash-weather-widget" title="Current weather in Vadodara">
         <span class="weather-icon">☀️</span>
         <span class="weather-temp">29°C</span>
         <span class="weather-desc">Sunny</span>
@@ -227,7 +222,7 @@
           <div class="alert-banner-left">
             <span class="alert-emoji">⚠️</span>
             <div>
-              <strong>Emergency Warning:</strong> Severe precipitation forecast for Vasanth Nagar. Disaster teams on standby.
+              <strong>Emergency Warning:</strong> Severe precipitation forecast for Alkapuri. Disaster teams on standby.
             </div>
           </div>
           <button class="alert-banner-close" aria-label="Dismiss Alert">✕</button>
@@ -353,7 +348,7 @@
               <div class="feed-v2-meta">
                 <span class="feed-meta-item">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  Ward 14, Vasanth Nagar
+                  Ward 6, Alkapuri
                 </span>
                 <span class="feed-v2-sep">·</span>
                 <span>Posted by Ravi Kumar</span>
@@ -430,7 +425,7 @@
               <div class="feed-v2-meta">
                 <span class="feed-meta-item">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  Ward 14, Vasanth Nagar
+                  Ward 6, Alkapuri
                 </span>
                 <span class="feed-v2-sep">·</span>
                 <span>Posted by Priya Nair</span>
@@ -652,7 +647,7 @@
                   <div class="ch-disc-meta">
                     <span class="ch-meta-loc">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      Ward 14, Vasanth Nagar
+                      Ward 6, Alkapuri
                     </span>
                     <span>·</span>
                     <span>Posted by Ravi Kumar</span>
@@ -682,11 +677,11 @@
                     <span class="ch-chip ch-chip-garbage">Garbage</span>
                   </div>
                   <h3 class="ch-disc-title">Garbage not collected near 5th Main, 2nd Block</h3>
-                  <p class="ch-disc-excerpt">Garbage is piling up since last 5 days. Requesting BBMP to take immediate action.</p>
+                  <p class="ch-disc-excerpt">Garbage is piling up since last 5 days. Requesting VMC to take immediate action.</p>
                   <div class="ch-disc-meta">
                     <span class="ch-meta-loc">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      Ward 14, Vasanth Nagar
+                      Ward 6, Alkapuri
                     </span>
                     <span>·</span>
                     <span>Posted by Priya Nair</span>
@@ -720,7 +715,7 @@
                   <div class="ch-disc-meta">
                     <span class="ch-meta-loc">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      Ward 14, Vasanth Nagar
+                      Ward 6, Alkapuri
                     </span>
                     <span>·</span>
                     <span>Posted by Suresh Anand</span>
@@ -754,7 +749,7 @@
                   <div class="ch-disc-meta">
                     <span class="ch-meta-loc">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      Ward 14, Vasanth Nagar
+                      Ward 6, Alkapuri
                     </span>
                     <span>·</span>
                     <span>Posted by Anitha R.</span>
@@ -864,7 +859,7 @@
                   <div class="ch-cit-avatar">AR</div>
                   <div class="ch-cit-info">
                     <div class="ch-cit-name">Arjun Reddy <span class="ch-verified-badge">Verified</span></div>
-                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">Ward 6, Alkapuri</div>
                     <div class="ch-cit-sub">1.2 km away · Community Score 875</div>
                   </div>
                   <button class="ch-btn-msg">Message</button>
@@ -874,7 +869,7 @@
                   <div class="ch-cit-avatar" style="background:#ECFDF5;color:#10B981;">PN</div>
                   <div class="ch-cit-info">
                     <div class="ch-cit-name">Priya Nair <span class="ch-verified-badge">Verified</span></div>
-                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">Ward 6, Alkapuri</div>
                     <div class="ch-cit-sub">0.8 km away · Community Score 642</div>
                   </div>
                   <button class="ch-btn-msg">Message</button>
@@ -884,7 +879,7 @@
                   <div class="ch-cit-avatar" style="background:#FEF3C7;color:#D97706;">SA</div>
                   <div class="ch-cit-info">
                     <div class="ch-cit-name">Suresh Anand <span class="ch-verified-badge">Verified</span></div>
-                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">Ward 6, Alkapuri</div>
                     <div class="ch-cit-sub">1.5 km away · Community Score 590</div>
                   </div>
                   <button class="ch-btn-msg">Message</button>
@@ -894,7 +889,7 @@
                   <div class="ch-cit-avatar" style="background:#F3E8FF;color:#9333EA;">MI</div>
                   <div class="ch-cit-info">
                     <div class="ch-cit-name">Meghana Iyer <span class="ch-verified-badge">Verified</span></div>
-                    <div class="ch-cit-sub">Ward 14, Vasanth Nagar</div>
+                    <div class="ch-cit-sub">Ward 6, Alkapuri</div>
                     <div class="ch-cit-sub">2.1 km away · Community Score 512</div>
                   </div>
                   <button class="ch-btn-msg">Message</button>
@@ -911,7 +906,7 @@
                 <h3 class="rp-card-title">Community Polls</h3>
                 <button class="btn-text-link">View All</button>
               </div>
-              <p class="rp-poll-question">Which road in Ward 14 needs urgent repair?</p>
+              <p class="rp-poll-question">Which road in Ward 6 needs urgent repair?</p>
               <div class="rp-poll-options">
                 <div class="rp-poll-opt">
                   <div class="rp-poll-opt-top">
@@ -961,10 +956,10 @@
                   <button class="btn-text-link" style="font-size:0.65rem;">View All</button>
                 </div>
                 <div style="font-size:0.72rem; font-weight:700; color:#0F172A; margin-bottom:4px;">
-                  📅 Clean Vasanth Nagar Drive
+                  📅 Clean Alkapuri Drive
                 </div>
                 <div style="font-size:0.63rem; color:#64748B; margin-bottom:2px;">🕒 Aug 10, 2025 · 7:00 AM</div>
-                <div style="font-size:0.63rem; color:#64748B; margin-bottom:8px;">📍 Central Park, Ward 14</div>
+                <div style="font-size:0.63rem; color:#64748B; margin-bottom:8px;">📍 Central Park, Ward 6</div>
                 <div style="display:flex; align-items:center; justify-content:space-between;">
                   <span style="font-size:0.62rem; color:#64748B; font-weight:700;">👥 +23 joined</span>
                   <button class="btn btn-primary btn-sm" style="font-size:0.65rem; padding:3px 8px;">Join</button>
@@ -1377,7 +1372,7 @@
 
         <!-- Bottom Stats Bar -->
         <div class="lm-stats-bar">
-          <div class="lm-stats-bar-title">Live Overview (Ward 14)</div>
+          <div class="lm-stats-bar-title">Live Overview (Ward 6)</div>
           <div class="lm-stats-row">
             <div class="lm-stat-item">
               <div class="lm-stat-label">Total Issues</div>
@@ -1637,13 +1632,13 @@
             <div class="gs-dept-grid">
               <div class="gs-dept-card">
                 <div class="gs-dept-icon">🏛️</div>
-                <div class="gs-dept-name">BBMP</div>
+                <div class="gs-dept-name">VMC</div>
                 <div class="gs-dept-count">32 Services</div>
                 <button class="gs-dept-btn">View Services →</button>
               </div>
               <div class="gs-dept-card">
                 <div class="gs-dept-icon">🏛️</div>
-                <div class="gs-dept-name">Karnataka Govt</div>
+                <div class="gs-dept-name">Gujarat Govt</div>
                 <div class="gs-dept-count">68 Services</div>
                 <button class="gs-dept-btn">View Services →</button>
               </div>
@@ -2117,7 +2112,7 @@
                   Filter
                 </button>
                 <select class="lm-select" style="width:auto;padding:6px 10px;font-size:0.78rem;">
-                  <option>All Departments</option><option>BBMP</option><option>BESCOM</option><option>BWSSB</option>
+                  <option>All Departments</option><option>VMC</option><option>MGVCL</option><option>VMC Water Works</option>
                 </select>
                 <select class="lm-select" style="width:auto;padding:6px 10px;font-size:0.78rem;">
                   <option>Sort: Newest</option><option>Sort: Budget</option><option>Sort: Progress</option>
@@ -2132,7 +2127,7 @@
                 <div class="dp-proj-body">
                   <span class="dp-status-badge inprog">In Progress</span>
                   <div class="dp-proj-title">Drainage Improvement (3rd Block)</div>
-                  <div class="dp-proj-meta"><span>🏢 Department: BBMP</span> · <span>📍 3rd Block, Vasanth Nagar</span></div>
+                  <div class="dp-proj-meta"><span>🏢 Department: VMC</span> · <span>📍 3rd Block, Alkapuri</span></div>
                 </div>
                 <div class="dp-proj-stats">
                   <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 82.40 L</div></div>
@@ -2146,7 +2141,7 @@
                 <div class="dp-proj-body">
                   <span class="dp-status-badge inprog">In Progress</span>
                   <div class="dp-proj-title">Park Renovation (Cunningham Park)</div>
-                  <div class="dp-proj-meta"><span>🏢 Department: Horticulture</span> · <span>📍 Cunningham Park, Vasanth Nagar</span></div>
+                  <div class="dp-proj-meta"><span>🏢 Department: Horticulture</span> · <span>📍 Cunningham Park, Alkapuri</span></div>
                 </div>
                 <div class="dp-proj-stats">
                   <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 50.00 L</div></div>
@@ -2160,7 +2155,7 @@
                 <div class="dp-proj-body">
                   <span class="dp-status-badge inprog">In Progress</span>
                   <div class="dp-proj-title">Street Light LED Upgrade</div>
-                  <div class="dp-proj-meta"><span>🏢 Department: BESCOM</span> · <span>📍 Multiple Locations in Ward 14</span></div>
+                  <div class="dp-proj-meta"><span>🏢 Department: MGVCL</span> · <span>📍 Multiple Locations in Ward 6</span></div>
                 </div>
                 <div class="dp-proj-stats">
                   <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 70.00 L</div></div>
@@ -2174,7 +2169,7 @@
                 <div class="dp-proj-body">
                   <span class="dp-status-badge inprog">In Progress</span>
                   <div class="dp-proj-title">Water Pipeline Replacement</div>
-                  <div class="dp-proj-meta"><span>🏢 Department: BWSSB</span> · <span>📍 4th Main Road, Vasanth Nagar</span></div>
+                  <div class="dp-proj-meta"><span>🏢 Department: VMC Water Works</span> · <span>📍 4th Main Road, Alkapuri</span></div>
                 </div>
                 <div class="dp-proj-stats">
                   <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 1.20 Cr</div></div>
@@ -2188,7 +2183,7 @@
                 <div class="dp-proj-body">
                   <span class="dp-status-badge completed">Completed</span>
                   <div class="dp-proj-title">Road Resurfacing (5th Main Road)</div>
-                  <div class="dp-proj-meta"><span>🏢 Department: BBMP</span> · <span>📍 5th Main Road, Vasanth Nagar</span></div>
+                  <div class="dp-proj-meta"><span>🏢 Department: VMC</span> · <span>📍 5th Main Road, Alkapuri</span></div>
                 </div>
                 <div class="dp-proj-stats">
                   <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 90.00 L</div></div>
@@ -2202,7 +2197,7 @@
                 <div class="dp-proj-body">
                   <span class="dp-status-badge upcoming">Upcoming</span>
                   <div class="dp-proj-title">Government School Building – Phase 2</div>
-                  <div class="dp-proj-meta"><span>🏢 Department: Education</span> · <span>📍 7th Cross, Vasanth Nagar</span></div>
+                  <div class="dp-proj-meta"><span>🏢 Department: Education</span> · <span>📍 7th Cross, Alkapuri</span></div>
                 </div>
                 <div class="dp-proj-stats">
                   <div class="dp-proj-stat"><div class="dp-proj-stat-lbl">Budget</div><div class="dp-proj-stat-val">₹ 2.80 Cr</div></div>
@@ -2366,7 +2361,7 @@
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                       <div>
                         <div style="font-weight:700;font-size:0.82rem;">Street light not working near Park Road</div>
-                        <div style="font-size:0.7rem;color:#64748B;">Park Road, Ward 14</div>
+                        <div style="font-size:0.7rem;color:#64748B;">Park Road, Ward 6</div>
                         <div style="font-size:0.7rem;color:#64748B;">Reported 2 days ago</div>
                       </div>
                       <span class="dp-status-badge inprog" style="margin-left:auto;">In Progress</span>
@@ -2395,7 +2390,7 @@
                   <div class="ai-complaint-card">
                     <div class="ai-comp-row"><span class="ai-comp-lbl">Complaint ID</span><span class="ai-comp-val">CMP-2026-0814-00126 <button class="ai-copy-btn">📋</button></span></div>
                     <div class="ai-comp-row"><span class="ai-comp-lbl">Category</span><span class="ai-comp-val">Street Light</span></div>
-                    <div class="ai-comp-row"><span class="ai-comp-lbl">Location</span><span class="ai-comp-val">Park Road, Ward 14, Vasanth Nagar</span></div>
+                    <div class="ai-comp-row"><span class="ai-comp-lbl">Location</span><span class="ai-comp-val">Park Road, Ward 6, Alkapuri</span></div>
                     <div class="ai-comp-row"><span class="ai-comp-lbl">Priority</span><span class="ai-comp-val"><span class="dp-status-badge upcoming" style="font-size:0.65rem;padding:2px 7px;">Medium</span></span></div>
                     <div class="ai-comp-row"><span class="ai-comp-lbl">Expected Resolution</span><span class="ai-comp-val">07 Aug 2026</span></div>
                     <div class="ai-comp-actions">
@@ -2494,64 +2489,201 @@
       </div>
 
       <div class="dash-view-tab" id="view-emergency" hidden>
-        <div class="view-header">
-          <div>
-            <h1 class="text-h1 text-danger">Emergency Safety Center</h1>
-            <p class="text-md text-secondary">One-click SOS triggers, local emergency directories, and medical cards.</p>
-          </div>
-        </div>
-
-        <div class="emergency-grid-layout">
-          <!-- SOS Box -->
-          <div class="sos-trigger-card">
-            <h2 class="sos-title">Emergency SOS</h2>
-            <p class="sos-desc">Tap the button to transmit your live GPS coordinates to local Police, Ward Disaster teams, and emergency contacts.</p>
-            <div class="sos-btn-wrapper">
-              <button class="giant-sos-btn" id="fullSOSBtn">
-                <span class="sos-pulse-ring" id="sosPulseRing"></span>
-                <span class="sos-lbl">SOS</span>
-              </button>
-            </div>
-            <div class="sos-status-line" id="sosStatusOutput">System Idle · Location Ready</div>
-          </div>
-
-          <!-- Emergency Directory -->
-          <div class="emergency-directory">
-            <h3 class="panel-title">Unified Emergency Directory</h3>
-            <div class="directory-list">
-              <div class="dir-item">
-                <div class="dir-icon">🚨</div>
-                <div class="dir-details">
-                  <h4 class="dir-name">National Emergency Response</h4>
-                  <p class="dir-number">Call: 112</p>
-                </div>
-                <a href="tel:112" class="btn btn-ghost btn-sm">Dial</a>
-              </div>
-              <div class="dir-item">
-                <div class="dir-icon">🚔</div>
-                <div class="dir-details">
-                  <h4 class="dir-name">Police Control Room</h4>
-                  <p class="dir-number">Call: 100</p>
-                </div>
-                <a href="tel:100" class="btn btn-ghost btn-sm">Dial</a>
-              </div>
-              <div class="dir-item">
-                <div class="dir-icon">🚒</div>
-                <div class="dir-details">
-                  <h4 class="dir-name">Fire Department</h4>
-                  <p class="dir-number">Call: 101</p>
-                </div>
-                <a href="tel:101" class="btn btn-ghost btn-sm">Dial</a>
-              </div>
-              <div class="dir-item">
-                <div class="dir-icon">🚑</div>
-                <div class="dir-details">
-                  <h4 class="dir-name">National Ambulance Service</h4>
-                  <p class="dir-number">Call: 108</p>
-                </div>
-                <a href="tel:108" class="btn btn-ghost btn-sm">Dial</a>
+        <div class="em-main-content" style="padding: 0;">
+          <!-- ACTIVE ALERTS BANNER -->
+          <div class="em-alert-banner" id="emAlertBanner">
+            <div class="alert-banner-left">
+              <span class="alert-emoji">⚠️</span>
+              <div>
+                <strong>Emergency Warning:</strong> Severe precipitation forecast for Alkapuri. Disaster teams on standby.
               </div>
             </div>
+            <button class="alert-banner-close" aria-label="Dismiss Alert" id="emAlertCloseBtn">✕</button>
+          </div>
+
+          <!-- MAIN HEADER & SOS -->
+          <div class="em-top-section">
+            <div class="em-header-left">
+              <h1>Emergency & Help</h1>
+              <p>Get the right assistance for urgent situations,<br>emergencies, animals, and civic hazards.</p>
+            </div>
+            <div class="em-header-center">
+              <div class="em-loc-card">
+                <div class="em-loc-main">
+                  <span class="icon">📍</span> <span class="city-text">Vadodara, GJ</span> <span class="dot">·</span> Ward 6
+                </div>
+                <div class="em-loc-status">
+                  <span class="status-dot"></span> Location Ready
+                </div>
+              </div>
+            </div>
+            <div class="em-sos-card">
+              <div class="em-sos-left">
+                <div class="em-sos-title">
+                  <span class="icon">🚨</span> IMMEDIATE DANGER?
+                </div>
+                <div class="em-sos-desc">Contact emergency response and<br>share your current location.</div>
+                <div class="em-sos-meta">
+                  <span class="status-dot"></span> Location Ready <span class="dot">·</span> GPS Accuracy ±12m
+                </div>
+              </div>
+              <div class="em-sos-right">
+                <button class="em-btn-sos" id="sosTriggerBtn">
+                  <span>SOS</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOUR PRIMARY HELP CATEGORIES -->
+          <div class="em-categories-grid">
+            <div class="em-cat-card cat-human">
+              <div class="em-cat-icon"><img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" alt="Ambulance" /></div>
+              <h3 class="em-cat-title">Human Emergency</h3>
+              <p class="em-cat-desc">Medical emergencies, accidents, personal safety, and urgent human assistance.</p>
+              <button class="em-cat-btn">Get Help <span class="arrow">→</span></button>
+            </div>
+            <div class="em-cat-card cat-animal">
+              <div class="em-cat-icon"><img src="https://cdn-icons-png.flaticon.com/512/1076/1076928.png" alt="Paw" /></div>
+              <h3 class="em-cat-title">Animal Help</h3>
+              <p class="em-cat-desc">Injured, trapped, abandoned animals and animal rescue assistance.</p>
+              <button class="em-cat-btn">Request Help <span class="arrow">→</span></button>
+            </div>
+            <div class="em-cat-card cat-fire">
+              <div class="em-cat-icon"><img src="https://cdn-icons-png.flaticon.com/512/785/785116.png" alt="Fire" /></div>
+              <h3 class="em-cat-title">Fire & Disaster</h3>
+              <p class="em-cat-desc">Fire incidents, floods, structural dangers, and natural disasters.</p>
+              <button class="em-cat-btn">Get Help <span class="arrow">→</span></button>
+            </div>
+            <div class="em-cat-card cat-civic">
+              <div class="em-cat-icon"><img src="https://cdn-icons-png.flaticon.com/512/1008/1008130.png" alt="Cone" /></div>
+              <h3 class="em-cat-title">Urgent Civic Help</h3>
+              <p class="em-cat-desc">Hazards, dangerous roads, leaks, open manholes, and other civic issues.</p>
+              <button class="em-cat-btn">Report Hazard <span class="arrow">→</span></button>
+            </div>
+          </div>
+
+          <!-- BOTTOM THREE COLUMNS -->
+          <div class="em-bottom-layout">
+            <div class="em-module-card module-nearby">
+              <div class="em-module-header">
+                <div>
+                  <h3>Nearby Help</h3>
+                  <p class="subtitle">Based on your current location</p>
+                </div>
+                <a href="#" class="view-all">View All <span class="arrow">›</span></a>
+              </div>
+              <div class="em-list">
+                <div class="em-list-item">
+                  <div class="item-icon icon-blue"><img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"/></div>
+                  <div class="item-content"><div class="item-title">Emergency Hospital</div><div class="item-desc">Sterling Hospital, Alkapuri</div></div>
+                  <div class="item-meta"><div class="distance">1.8 km</div><div class="status-open">● Open</div></div>
+                  <button class="item-action-btn">Directions</button>
+                </div>
+                <div class="em-list-item">
+                  <div class="item-icon icon-green"><img src="https://cdn-icons-png.flaticon.com/512/1076/1076928.png"/></div>
+                  <div class="item-content"><div class="item-title">Animal Care / Rescue</div><div class="item-desc">Vadodara Animal Care Trust</div></div>
+                  <div class="item-meta"><div class="distance">2.4 km</div><div class="status-open">● Open</div></div>
+                  <button class="item-action-btn">Directions</button>
+                </div>
+                <div class="em-list-item">
+                  <div class="item-icon icon-orange"><img src="https://cdn-icons-png.flaticon.com/512/785/785116.png"/></div>
+                  <div class="item-content"><div class="item-title">Fire Station</div><div class="item-desc">Alkapuri Fire Station</div></div>
+                  <div class="item-meta"><div class="distance">3.1 km</div><div class="status-open">● Open</div></div>
+                  <button class="item-action-btn">Directions</button>
+                </div>
+                <div class="em-list-item">
+                  <div class="item-icon icon-blue"><img src="https://cdn-icons-png.flaticon.com/512/912/912316.png"/></div>
+                  <div class="item-content"><div class="item-title">Police Station</div><div class="item-desc">Alkapuri Police Station</div></div>
+                  <div class="item-meta"><div class="distance">1.5 km</div><div class="status-open">● Open</div></div>
+                  <button class="item-action-btn">Directions</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="em-module-card module-directory">
+              <div class="em-module-header"><h3>Unified Emergency Directory</h3></div>
+              <div class="em-list">
+                <div class="em-list-item">
+                  <div class="item-icon icon-red"><img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"/></div>
+                  <div class="item-content"><div class="item-title">National Emergency Response</div><div class="item-desc">All India Emergency Number</div></div>
+                  <div class="item-meta-large number-red">112</div>
+                  <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+                </div>
+                <div class="em-list-item">
+                  <div class="item-icon icon-blue"><img src="https://cdn-icons-png.flaticon.com/512/912/912316.png"/></div>
+                  <div class="item-content"><div class="item-title">Police Control Room</div><div class="item-desc">Vadodara City Police</div></div>
+                  <div class="item-meta-large number-blue">100</div>
+                  <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+                </div>
+                <div class="em-list-item">
+                  <div class="item-icon icon-orange"><img src="https://cdn-icons-png.flaticon.com/512/785/785116.png"/></div>
+                  <div class="item-content"><div class="item-title">Fire Department</div><div class="item-desc">Vadodara Fire & Emergency</div></div>
+                  <div class="item-meta-large number-orange">101</div>
+                  <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+                </div>
+                <div class="em-list-item">
+                  <div class="item-icon icon-red"><img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"/></div>
+                  <div class="item-content"><div class="item-title">National Ambulance Service</div><div class="item-desc">Emergency Medical Service</div></div>
+                  <div class="item-meta-large number-green">108</div>
+                  <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+                </div>
+              </div>
+              <div class="em-module-footer center"><a href="#">More Contacts <span class="arrow">↓</span></a></div>
+            </div>
+
+            <div class="em-module-card module-recent">
+              <div class="em-module-header">
+                <h3>Recent Help Requests</h3>
+                <a href="#" class="view-all">View All</a>
+              </div>
+              <div class="em-list">
+                <div class="em-list-item request-item">
+                  <div class="item-icon icon-green"><img src="https://cdn-icons-png.flaticon.com/512/1076/1076928.png"/></div>
+                  <div class="item-content"><div class="item-title">Injured Dog on Road</div><div class="item-desc">Alkapuri Main Road</div></div>
+                  <div class="request-status-col"><span class="badge badge-resolved">Resolved</span><span class="time">2h ago</span></div>
+                </div>
+                <div class="em-list-item request-item">
+                  <div class="item-icon icon-orange"><img src="https://cdn-icons-png.flaticon.com/512/1008/1008130.png"/></div>
+                  <div class="item-content"><div class="item-title">Open Manhole</div><div class="item-desc">Near Alkapuri Circle</div></div>
+                  <div class="request-status-col"><span class="badge badge-progress">In Progress</span><span class="time">5h ago</span></div>
+                </div>
+                <div class="em-list-item request-item">
+                  <div class="item-icon icon-blue">💧</div>
+                  <div class="item-content"><div class="item-title">Water Leakage</div><div class="item-desc">Ravpura Road</div></div>
+                  <div class="request-status-col"><span class="badge badge-reported">Reported</span><span class="time">1d ago</span></div>
+                </div>
+                <div class="em-list-item request-item">
+                  <div class="item-icon icon-red"><img src="https://cdn-icons-png.flaticon.com/512/785/785116.png"/></div>
+                  <div class="item-content"><div class="item-title">Electric Wire Sparks</div><div class="item-desc">Gotri Road</div></div>
+                  <div class="request-status-col"><span class="badge badge-resolved">Resolved</span><span class="time">2d ago</span></div>
+                </div>
+              </div>
+              <div class="em-module-footer center"><a href="#">My Requests <span class="arrow">›</span></a></div>
+            </div>
+          </div>
+          
+          <!-- SAHAYAK AI MINI CARD (Optional Assist) -->
+          <div class="em-ai-assist-banner">
+            <div class="ai-left">
+              <span class="ai-emoji">🤖</span>
+              <div class="ai-text">
+                <strong>Not sure what to choose? Ask Sahayak AI</strong>
+                <p>Describe what happened and we will help identify the right assistance category.</p>
+              </div>
+            </div>
+            <div class="ai-right">
+              <button class="em-btn-secondary" id="aiAssistBtn">Start Chat</button>
+            </div>
+          </div>
+
+          <!-- SAFETY BAR -->
+          <div class="em-safety-bar">
+            <div class="safety-content">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #3B82F6;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Your safety is our priority. Use the right category for faster assistance.</span>
+            </div>
+            <a href="#" class="safety-link">Safety Tips <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
           </div>
         </div>
       </div>
@@ -2580,9 +2712,9 @@
             </div>
 
             <div class="profile-details-table">
-              <div class="detail-row"><span>Citizen ID</span> <strong>CVC-KA-48291</strong></div>
+              <div class="detail-row"><span>Citizen ID</span> <strong>CVC-GJ-48291</strong></div>
               <div class="detail-row"><span>Mobile Registered</span> <strong>+91 98765 43210</strong></div>
-              <div class="detail-row"><span>Primary Address</span> <strong id="profileAddressValue">42, MG Road, Ward 14, Bengaluru</strong></div>
+              <div class="detail-row"><span>Primary Address</span> <strong id="profileAddressValue">Alkapuri, Ward 6, Vadodara, Gujarat</strong></div>
               <div class="detail-row"><span>Language Preferences</span> <strong>English, Kannada</strong></div>
             </div>
             
@@ -2621,7 +2753,7 @@
                   <span class="doc-icon">🚗</span>
                   <div>
                     <h4 class="doc-name">Driving License (MORTH)</h4>
-                    <p class="doc-id-num">KA-03-2015-XXXX</p>
+                    <p class="doc-id-num">GJ-06-2015-XXXX</p>
                   </div>
                 </div>
                 <button class="btn btn-secondary btn-sm btn-view-doc" data-doc="Driving License">View</button>
@@ -2663,7 +2795,7 @@
               <div style="font-size:1.2rem;">⚠️</div>
               <div>
                 <div style="font-weight:700; font-size:0.88rem; color:#0F172A;">Scheduled Water Outage</div>
-                <div style="font-size:0.78rem; color:#475569;">BWSSB maintenance in Vasanth Nagar on Aug 7 from 10 PM to 6 AM. Please store water.</div>
+                <div style="font-size:0.78rem; color:#475569;">VMC Water Works maintenance in Alkapuri on Aug 7 from 10 PM to 6 AM. Please store water.</div>
                 <div style="font-size:0.65rem; color:#94A3B8; margin-top:4px;">2 hours ago</div>
               </div>
             </div>
@@ -2726,7 +2858,7 @@
         <div class="view-header">
           <div>
             <h1 class="text-h1">Help Center & Support</h1>
-            <p class="text-md text-secondary">Find answers to common civic queries or reach out to Ward 14 support team.</p>
+            <p class="text-md text-secondary">Find answers to common civic queries or reach out to Ward 6 support team.</p>
           </div>
         </div>
         <div class="rp-card" style="max-width: 800px; padding: 24px;">
@@ -2734,7 +2866,7 @@
           <div style="display:flex; flex-direction:column; gap:12px;">
             <details style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:12px; cursor:pointer;">
               <summary style="font-weight:700; font-size:0.85rem; color:#0F172A;">How long does it take for a complaint to be assigned?</summary>
-              <p style="font-size:0.78rem; color:#475569; margin-top:8px;">Complaints submitted on New Street are routed within 2 hours to the respective PWD, BESCOM, or BWSSB division engineer.</p>
+              <p style="font-size:0.78rem; color:#475569; margin-top:8px;">Complaints submitted on New Street are routed within 2 hours to the respective PWD, MGVCL, or VMC Water Works division engineer.</p>
             </details>
             <details style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:12px; cursor:pointer;">
               <summary style="font-weight:700; font-size:0.85rem; color:#0F172A;">How do I track my property tax payment status?</summary>
@@ -2921,7 +3053,7 @@
           <h3 class="rp-card-title">Community Voice</h3>
           <button class="btn-text-link" id="rpViewAllCommunity">View All</button>
         </div>
-        <p class="rp-poll-question">Which road in Ward 14 needs urgent repair?</p>
+        <p class="rp-poll-question">Which road in Ward 6 needs urgent repair?</p>
         <div class="rp-poll-options" id="commVoicePoll">
           <div class="rp-poll-opt">
             <div class="rp-poll-opt-top">
@@ -2987,7 +3119,7 @@
 
           <div class="reg-field-group">
             <label class="reg-label" for="compAddress">Address / Location Landmark <span class="reg-required">*</span></label>
-            <input type="text" class="reg-input" id="compAddress" value="8th Cross Main Road, Vasanth Nagar" required autocomplete="street-address" />
+            <input type="text" class="reg-input" id="compAddress" value="R. C. Dutt Road, Alkapuri, Vadodara" required autocomplete="street-address" />
             <div class="complaint-location-tools">
               <button type="button" class="btn btn-secondary btn-sm" id="useCurrentLocationBtn">Use Current Location</button>
               <button type="button" class="btn btn-ghost btn-sm" id="previewComplaintLocationBtn">Preview on Map</button>
@@ -2995,7 +3127,7 @@
             <div class="location-preview-card" id="complaintLocationPreview" aria-live="polite">
               <span class="location-preview-dot"></span>
               <div>
-                <strong>Ward 14 routing ready</strong>
+                <strong>Ward 6 routing ready</strong>
                 <p>Enter a landmark or use GPS to place this issue on the live map.</p>
               </div>
             </div>
@@ -3131,5 +3263,20 @@
 
   <!-- Dashboard JS -->
   <script src="dashboard.js"></script>
+  <!-- SOS CONFIRMATION MODAL -->
+  <div class="em-modal-overlay" id="sosModalOverlay">
+    <div class="em-modal-content">
+      <div class="em-modal-icon">🚨</div>
+      <h2>Are you in immediate danger?</h2>
+      <p>Your current location will be shared with the selected emergency response.</p>
+      
+      <div class="em-modal-actions">
+        <button class="em-btn-cancel" id="sosCancelBtn">Cancel</button>
+        <button class="em-btn-danger" id="sosContinueBtn">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="emergency.js"></script>
 </body>
 </html>

@@ -96,9 +96,9 @@
   --nav-h:             68px;
 
   /* ── Fonts ── */
-  --font-sans:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-alt:          'Outfit', 'Poppins', sans-serif;
-  --font-mono:         'Space Grotesk', 'SF Mono', monospace;
+  --font-sans:         'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-alt:          'Montserrat', 'Poppins', sans-serif;
+  --font-mono:         'Roboto Mono', 'SF Mono', monospace;
 }
 
 html {
@@ -260,6 +260,13 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   text-decoration: none;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.brand-logo-image {
+  height: 42px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .brand-logo-icon {
@@ -2323,6 +2330,13 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   margin-bottom: 16px;
 }
 
+.footer-brand-image {
+  height: 48px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
 .f-brand-name {
   font-size: 1.35rem;
   font-weight: 900;
@@ -2456,3 +2470,325 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   .metrics-grid { grid-template-columns: 1fr; }
   .hmg-metric-tiles { grid-template-columns: 1fr; }
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   OVERRIDE: CINEMATIC MONUMENT HERO (replaces original dark-gradient hero)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* Reset the old background/padding and switch to monument layout */
+.hero-section {
+  position: relative;
+  background: #0B1F4D !important;
+  overflow: hidden;
+  padding: 0 !important;
+  height: 100vh;
+  min-height: 650px;
+  max-height: 920px;
+  display: flex;
+  align-items: center;
+}
+
+/* Hide the old background layers */
+.hero-bg-overlay,
+.hero-radial-glow,
+.hero-grid-mesh,
+.hero-particles-canvas {
+  display: none !important;
+}
+
+/* ── Monument background image ─────────────────────────── */
+.hero-monument-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-monument-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  transform: scale(1.08);
+  transition: transform 5s ease-out;
+  will-change: transform;
+}
+
+/* Loaded class added by JS to trigger slow zoom-out */
+.hero-section.loaded .hero-monument-img {
+  transform: scale(1.0);
+}
+
+.hero-monument-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 31, 77, 0.60) 0%,
+    rgba(11, 31, 77, 0.40) 35%,
+    rgba(11, 31, 77, 0.55) 70%,
+    rgba(11, 31, 77, 0.82) 100%
+  );
+}
+
+/* ── Hero content wrapper ──────────────────────────────── */
+.hero-content-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-top: var(--nav-h, 64px);
+}
+
+.hero-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Hero layout override (was grid, now centered column) ─ */
+.hero-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+/* Hide old right-side HUD (kept in markup) */
+.hero-right-showcase {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  max-width: 380px;
+  z-index: 3;
+  opacity: 0.92;
+}
+
+/* ── Location prompt (frosted glass pill) ──────────────── */
+.hero-location-prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-full, 100px);
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 28px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-detect-btn,
+.hero-select-btn {
+  padding: 5px 14px;
+  border-radius: var(--radius-full, 100px);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero-detect-btn {
+  background: #F28C28;
+  color: #FFFFFF;
+}
+.hero-detect-btn:hover {
+  background: #e07d22;
+  transform: translateY(-1px);
+}
+
+.hero-select-btn {
+  background: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+.hero-select-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.hero-location-divider {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+}
+
+/* ── Headline override ─────────────────────────────────── */
+.hero-section .hero-headline {
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+  margin-bottom: 22px;
+  text-align: center;
+}
+
+.hero-section .hero-headline .highlight-word {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #7dd9a3 !important;
+  background-clip: unset !important;
+  color: #7dd9a3;
+}
+
+/* ── Subtitle override ─────────────────────────────────── */
+.hero-section .hero-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.80);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 36px;
+  text-align: center;
+}
+
+/* ── CTA group override ────────────────────────────────── */
+.hero-section .hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.hero-section .btn-hero-primary {
+  background: #168A4B !important;
+  box-shadow: 0 6px 20px rgba(22, 138, 75, 0.4) !important;
+  border-radius: 12px;
+}
+.hero-section .btn-hero-primary:hover {
+  background: #0f6035 !important;
+  box-shadow: 0 10px 30px rgba(22, 138, 75, 0.55) !important;
+  transform: translateY(-2px);
+}
+
+.hero-section .btn-hero-secondary {
+  border-radius: 12px;
+}
+
+/* ── Trust badges (keep them centered) ─────────────────── */
+.hero-section .hero-trust-badges {
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 24px;
+}
+
+/* ── City-ready feedback ───────────────────────────────── */
+.hero-city-ready {
+  min-height: 24px;
+  font-size: 0.9rem;
+  color: #7dd9a3;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+/* ── Scroll cue ────────────────────────────────────────── */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.45);
+  animation: heroScrollFade 2.5s ease-in-out infinite;
+}
+
+.hsc-text {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hsc-arrow {
+  animation: heroScrollArrow 2.5s ease-in-out infinite;
+}
+
+@keyframes heroScrollFade {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
+}
+@keyframes heroScrollArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* ── Responsive overrides for monument hero ────────────── */
+@media (max-width: 1024px) {
+  .hero-right-showcase {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    max-width: 100%;
+    margin-top: 32px;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 100svh !important;
+    max-height: none !important;
+  }
+
+  .hero-inner {
+    padding: 40px 16px;
+  }
+
+  .hero-location-prompt {
+    font-size: 0.75rem;
+    padding: 7px 12px;
+  }
+
+  .hero-section .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-section .btn-hero-primary,
+  .hero-section .btn-hero-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-right-showcase {
+    display: none !important;
+  }
+
+  .hero-scroll-cue {
+    bottom: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section .hero-headline {
+    font-size: 2.2rem !important;
+  }
+
+  .hero-section .hero-subtitle {
+    font-size: 0.92rem !important;
+  }
+}
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-monument-img {
+    transform: scale(1.0) !important;
+    transition: none !important;
+  }
+  .hero-scroll-cue,
+  .hsc-arrow {
+    animation: none !important;
+  }
+}
+

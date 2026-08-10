@@ -6,6 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
+  initMonumentHero();
   initParticles();
   initSmartLocation();
   initAnimatedCounters();
@@ -25,8 +26,15 @@ function initNavbar() {
   const ham = document.getElementById('hamburgerBtn');
   const drawer = document.getElementById('mobileDrawer');
 
+  let navTicking = false;
   window.addEventListener('scroll', () => {
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+    if (!navTicking) {
+      window.requestAnimationFrame(() => {
+        if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+        navTicking = false;
+      });
+      navTicking = true;
+    }
   }, { passive: true });
 
   if (ham && drawer) {
@@ -66,15 +74,15 @@ function initParticles() {
 
 /* ── 3. SMART LOCATION DATABASE & PERSONALIZATION ── */
 const CITY_DATABASE = {
-  'Bengaluru': {
-    state: 'Karnataka',
-    corporation: 'BBMP (Bruhat Bengaluru Mahanagara Palike)',
+  'Vadodara': {
+    state: 'Gujarat',
+    corporation: 'VMC (Vadodara Municipal Corporation)',
     activeIssues: 214,
     resolvedToday: 162,
     budget: '₹840 Cr',
     aqi: '42 AQI (Good)',
     projects: 412,
-    emergency: '112 / 080-22660000'
+    emergency: '112 / 1800-233-0265'
   },
   'Mumbai': {
     state: 'Maharashtra',
@@ -168,7 +176,21 @@ const CITY_DATABASE = {
   }
 };
 
-let currentSelectedCity = 'Bengaluru';
+let currentSelectedCity = 'Vadodara';
+
+const CITY_COORDINATES = {
+  Vadodara: [22.3072, 73.1812], Mumbai: [19.0760, 72.8777], Delhi: [28.6139, 77.2090],
+  Hyderabad: [17.3850, 78.4867], Ahmedabad: [23.0225, 72.5714], Pune: [18.5204, 73.8567],
+  Jaipur: [26.9124, 75.7873], Chennai: [13.0827, 80.2707], Kolkata: [22.5726, 88.3639],
+  Lucknow: [26.8467, 80.9462]
+};
+
+function nearestSupportedCity(latitude, longitude) {
+  return Object.entries(CITY_COORDINATES).reduce((nearest, [city, coords]) => {
+    const distance = Math.hypot(latitude - coords[0], longitude - coords[1]);
+    return distance < nearest.distance ? { city, distance } : nearest;
+  }, { city: 'Vadodara', distance: Infinity }).city;
+}
 
 function initSmartLocation() {
   const gpsBtn = document.getElementById('btnGpsDetect');
@@ -190,13 +212,20 @@ function initSmartLocation() {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
         Detecting GPS location...
       `;
-      setTimeout(() => {
-        applyCityPersonalization('Bengaluru');
+      if (!navigator.geolocation) {
+        gpsBtn.textContent = 'GPS is unavailable — choose a city below';
+        return;
+      }
+      navigator.geolocation.getCurrentPosition((position) => {
+        const city = nearestSupportedCity(position.coords.latitude, position.coords.longitude);
+        applyCityPersonalization(city, position.coords);
         gpsBtn.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          Location Detected: Bengaluru (Ward 14)
+          Live location: ${city} · ±${Math.round(position.coords.accuracy)}m
         `;
-      }, 850);
+      }, () => {
+        gpsBtn.textContent = 'Location access was not granted — choose a city below';
+      }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 });
     });
   }
 
@@ -221,7 +250,7 @@ function initSmartLocation() {
   }
 }
 
-function applyCityPersonalization(cityName) {
+function applyCityPersonalization(cityName, coordinates = null) {
   currentSelectedCity = cityName;
   const data = CITY_DATABASE[cityName] || {
     state: 'India',
@@ -267,6 +296,16 @@ function applyCityPersonalization(cityName) {
   document.querySelectorAll('.city-pill').forEach(pill => {
     pill.classList.toggle('active', pill.dataset.city === cityName);
   });
+
+  try {
+    localStorage.setItem('ns_city', cityName);
+    if (coordinates) localStorage.setItem('ns_live_location', JSON.stringify({
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      accuracy: coordinates.accuracy,
+      updatedAt: new Date().toISOString()
+    }));
+  } catch (_) { /* Storage is optional. */ }
 }
 
 /* ── 4. ANIMATED COUNTERS ── */
@@ -326,10 +365,10 @@ function initWorkflowSimulator() {
 
 /* ── 6. SAHAYAK AI CHAT SANDBOX ── */
 const AI_KNOWLEDGE_BASE = {
-  'water': '💧 <strong>BWSSB Kaveri Water Status:</strong> Normal pressure (4.2 Bar) in Ward 14. Your bill is <strong>₹480</strong> due on Aug 18, 2026. <a href="dashboard.html" style="color:#60A5FA;font-weight:700;">Pay via UPI →</a>',
+  'water': '💧 <strong>VMC Water Works Vadodara Water Status:</strong> Normal pressure (4.2 Bar) in Ward 6. Your bill is <strong>₹480</strong> due on Aug 18, 2026. <a href="dashboard.html" style="color:#60A5FA;font-weight:700;">Pay via UPI →</a>',
   'hospital': '🏥 <strong>Nearest Emergency Care:</strong> <strong>St. John’s Hospital</strong> (1.4 km away) has 14 ICU beds & 24x7 trauma ready. Helpline: <code>080-2206-5000</code>. <a href="dashboard.html" style="color:#60A5FA;font-weight:700;">Open Map →</a>',
   'track': '🔍 <strong>Complaint #CMP-4821 Status:</strong> Pothole on 8th Cross Road. Priority: P1. Assigned to Junior Engineer <strong>R. Anand</strong>. Field truck on site. Estimated fix in 1.5 hours.',
-  'scheme': '🎓 <strong>Eligible Government Schemes:</strong> You qualify for <strong>PM Awas Yojana (Urban)</strong> subsidy & <strong>Gruha Jyothi (200 units free power)</strong>. Would you like me to auto-fill the application?',
+  'scheme': '🎓 <strong>Eligible Government Schemes:</strong> You qualify for <strong>PM Awas Yojana (Urban)</strong> subsidy & <strong>Gujarat welfare schemes (200 units free power)</strong>. Would you like me to auto-fill the application?',
   'default': '🤖 <strong>Sahayak AI:</strong> I can help you pay utility bills, check scheme subsidies, track ward complaints, or locate 24x7 emergency medical centers. How may I assist you today?'
 };
 
@@ -381,7 +420,7 @@ function initAiChatSandbox() {
 
 /* ── 7. LIVE FEED TICKER ── */
 const LIVE_FEED_ITEMS = [
-  { icon: '🔧', color: 'rgba(37,99,235,0.15)', text: 'Pothole patch completed on 5th Main', city: 'Bengaluru · Ward 14', time: 'Just now' },
+  { icon: '🔧', color: 'rgba(37,99,235,0.15)', text: 'Pothole patch completed on R. C. Dutt Road', city: 'Vadodara · Ward 6', time: 'Just now' },
   { icon: '💧', color: 'rgba(6,182,212,0.15)', text: 'Water pipeline leak repaired near Metro Station', city: 'Mumbai · Ward G/North', time: '2m ago' },
   { icon: '⚡', color: 'rgba(245,158,11,0.15)', text: 'High-voltage transformer upgraded', city: 'Delhi · Karol Bagh', time: '5m ago' },
   { icon: '🌳', color: 'rgba(16,185,129,0.15)', text: 'New Miyawaki urban forest planted (400 saplings)', city: 'Hyderabad · Gachibowli', time: '8m ago' },
@@ -447,7 +486,7 @@ function initCommunityPoll() {
       if (countEl) {
         countEl.textContent = `1,421 votes (85%)`;
       }
-      alert('✓ Thank you for voting! Your voice has been registered in the Ward 14 Democratic Ledger.');
+      alert('✓ Thank you for voting! Your voice has been registered in the Ward 6 Democratic Ledger.');
     });
   });
 }
@@ -488,4 +527,68 @@ function initMapPins() {
       if (city) applyCityPersonalization(city);
     });
   });
+}
+
+/* ── 13. MONUMENT HERO (cinematic zoom + parallax) ── */
+function initMonumentHero() {
+  const heroSection = document.querySelector('.hero-section');
+  const monumentImg = document.getElementById('heroMonumentImg');
+
+  // Trigger slow zoom-out after initial load
+  if (heroSection) {
+    requestAnimationFrame(() => {
+      setTimeout(() => heroSection.classList.add('loaded'), 120);
+    });
+  }
+
+  // Subtle parallax on scroll (only if monument bg exists)
+  if (heroSection && monumentImg) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            const heroH = heroSection.offsetHeight || 700;
+            if (scrollY < heroH) {
+              const pct = scrollY / heroH;
+              monumentImg.style.transform = `scale(${1.0 + pct * 0.06}) translateY(${scrollY * 0.22}px)`;
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
+  }
+
+  // "Detect My Location" button in hero
+  const heroDetectBtn = document.getElementById('heroDetectBtn');
+  if (heroDetectBtn) {
+    heroDetectBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser. Please select your city manually.');
+        return;
+      }
+      heroDetectBtn.textContent = 'Detecting…';
+      heroDetectBtn.disabled = true;
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          heroDetectBtn.textContent = 'Detect My Location';
+          heroDetectBtn.disabled = false;
+          const ready = document.getElementById('heroCityReady');
+          if (ready) ready.textContent = '✓ Location detected — showing local services';
+          const locText = document.getElementById('heroLocationText');
+          if (locText) locText.textContent = 'Location detected';
+        },
+        () => {
+          heroDetectBtn.textContent = 'Detect My Location';
+          heroDetectBtn.disabled = false;
+          alert('Location access denied. Please select your city manually.');
+        },
+        { timeout: 8000 }
+      );
+    });
+  }
 }

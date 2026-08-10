@@ -65,15 +65,15 @@ function initParticles() {
 
 /* ── 3. SMART LOCATION EXPERIENCE & DYNAMIC PERSONALIZATION ── */
 const CITY_DATABASE = {
-  'Bengaluru': {
-    state: 'Karnataka',
-    corporation: 'BBMP (Bruhat Bengaluru Mahanagara Palike)',
+  'Vadodara': {
+    state: 'Gujarat',
+    corporation: 'VMC (Vadodara Municipal Corporation)',
     activeIssues: 214,
     resolvedToday: 162,
     budget: '₹840 Cr',
     aqi: '42 AQI (Good)',
     projects: 412,
-    emergency: '112 / 080-22660000',
+    emergency: '112 / 1800-233-0265',
     topScheme: 'Gruha Jyothi & Namma Clinic'
   },
   'Mumbai': {
@@ -177,7 +177,7 @@ const CITY_DATABASE = {
   }
 };
 
-let currentSelectedCity = 'Bengaluru';
+let currentSelectedCity = 'Vadodara';
 
 function initSmartLocation() {
   const gpsBtn = document.getElementById('btnGpsDetect');
@@ -202,10 +202,10 @@ function initSmartLocation() {
         Detecting GPS location...
       `;
       setTimeout(() => {
-        applyCityPersonalization('Bengaluru');
+        applyCityPersonalization('Vadodara');
         gpsBtn.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          Location Detected: Bengaluru (Ward 14)
+          Location Detected: Vadodara (Ward 6)
         `;
       }, 900);
     });
@@ -345,7 +345,7 @@ function initWorkflowSimulator() {
 
 /* ── 6. SAHAYAK AI ASSISTANT CHAT SANDBOX ── */
 const AI_KNOWLEDGE_BASE = {
-  'water': '💧 <strong>BWSSB Water Supply Status:</strong> Your ward (Ward 14) has normal Kaveri water pressure (4.2 Bar). Your latest bill is <strong>₹480</strong> due on Aug 18, 2026. <a href="dashboard.html" style="color:#60A5FA;font-weight:700;">Pay Now via UPI →</a>',
+  'water': '💧 <strong>VMC Water Works Water Supply Status:</strong> Your ward (Ward 6) has normal Kaveri water pressure (4.2 Bar). Your latest bill is <strong>₹480</strong> due on Aug 18, 2026. <a href="dashboard.html" style="color:#60A5FA;font-weight:700;">Pay Now via UPI →</a>',
   'hospital': '🏥 <strong>Nearest Emergency Healthcare:</strong> <strong>St. John’s Hospital</strong> (1.4 km away) has 14 ICU beds & 24x7 trauma ready. Helpline: <code>080-2206-5000</code>. <a href="dashboard.html" style="color:#60A5FA;font-weight:700;">Open Map Directions →</a>',
   'track': '🔍 <strong>Complaint #CMP-4821 Status:</strong> Pothole on 8th Cross Road. Priority: P1. Assigned to Junior Engineer <strong>R. Anand</strong>. Field truck on site. Estimated fix in 1.5 hours.',
   'scheme': '🎓 <strong>Eligible Government Schemes:</strong> You qualify for <strong>PM Awas Yojana (Urban)</strong> subsidy & <strong>Gruha Jyothi (200 units free power)</strong>. Would you like me to auto-fill the application with your DigiLocker data?',
@@ -402,7 +402,7 @@ function initAiChatSandbox() {
 
 /* ── 7. LIVE FEED AUTO TICKER ── */
 const LIVE_FEED_ITEMS = [
-  { icon: '🔧', color: 'rgba(37,99,235,0.15)', text: 'Pothole patch completed on 5th Main', city: 'Bengaluru · Ward 14', time: 'Just now' },
+  { icon: '🔧', color: 'rgba(37,99,235,0.15)', text: 'Pothole patch completed on 5th Main', city: 'Vadodara · Ward 6', time: 'Just now' },
   { icon: '💧', color: 'rgba(6,182,212,0.15)', text: 'Water pipeline leak repaired near Metro Station', city: 'Mumbai · Ward G/North', time: '2m ago' },
   { icon: '⚡', color: 'rgba(245,158,11,0.15)', text: 'High-voltage transformer upgraded', city: 'Delhi · Karol Bagh', time: '5m ago' },
   { icon: '🌳', color: 'rgba(16,185,129,0.15)', text: 'New Miyawaki urban forest planted (400 saplings)', city: 'Hyderabad · Gachibowli', time: '8m ago' },
@@ -470,7 +470,7 @@ function initCommunityPoll() {
         let count = parseInt(countEl.textContent);
         countEl.textContent = `${count + 1} votes (84%)`;
       }
-      alert('✓ Thank you for voting! Your voice has been registered in the Ward 14 Democratic Ledger.');
+      alert('✓ Thank you for voting! Your voice has been registered in the Ward 6 Democratic Ledger.');
     });
   });
 }

@@ -14,13 +14,7 @@
 <!-- ── MINIMAL NAV ──────────────────────────────────────────── -->
 <nav class="reg-nav">
   <a href="index.html" class="nav-logo" aria-label="New Street Home">
-    <div class="nav-logo-mark">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="1.5"/>
-        <polyline points="9 22 9 12 15 12 15 22" stroke="white" stroke-width="1.5" fill="none"/>
-      </svg>
-    </div>
-    <span class="nav-logo-text">New <span>Street</span></span>
+    <img src="newstreet-logo.png" alt="New Street" class="reg-brand-image" />
   </a>
   <div style="display:flex;align-items:center;gap:10px;">
     <span class="reg-nav-link">Already have an account?</span>
@@ -167,9 +161,9 @@
             <option>Andhra Pradesh</option><option>Assam</option>
             <option>Bihar</option><option>Chhattisgarh</option>
             <option>Delhi</option><option>Goa</option>
-            <option>Gujarat</option><option>Haryana</option>
+            <option selected>Gujarat</option><option>Haryana</option>
             <option>Himachal Pradesh</option><option>Jharkhand</option>
-            <option selected>Karnataka</option><option>Kerala</option>
+            <option>Karnataka</option><option>Kerala</option>
             <option>Madhya Pradesh</option><option>Maharashtra</option>
             <option>Odisha</option><option>Punjab</option>
             <option>Rajasthan</option><option>Tamil Nadu</option>
@@ -180,12 +174,12 @@
 
         <div class="reg-field-group">
           <label class="reg-label" for="cityInput">City / Town</label>
-          <input class="reg-input" id="cityInput" type="text" placeholder="e.g. Bengaluru" autocomplete="address-level2" value="Bengaluru" />
+          <input class="reg-input" id="cityInput" type="text" placeholder="e.g. Vadodara" autocomplete="address-level2" value="Vadodara" />
         </div>
 
         <div class="reg-field-group">
           <label class="reg-label" for="pincodeInput">Pincode</label>
-          <input class="reg-input" id="pincodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="560001" value="560001" />
+          <input class="reg-input" id="pincodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="390007" value="390007" />
           <div class="reg-field-help" id="pinHelp">Used to identify your ward and nearby civic alerts.</div>
         </div>
 
@@ -330,7 +324,7 @@
 
         <div class="reg-field-group">
           <label class="reg-label" for="addressInput">Home Address <span class="reg-required">*</span></label>
-          <input class="reg-input" id="addressInput" type="text" placeholder="e.g. 42, MG Road, Ward 14" value="42, MG Road, Ward 14" aria-required="true" />
+          <input class="reg-input" id="addressInput" type="text" placeholder="e.g. 42, MG Road, Ward 6" value="42, MG Road, Ward 6" aria-required="true" />
           <div class="reg-location-actions">
             <button class="btn btn-secondary btn-sm" type="button" id="profileUseLocationBtn">Use Current Location</button>
             <span class="reg-location-status" id="profileLocationStatus">Location will improve complaint routing.</span>
@@ -379,12 +373,12 @@
           <p class="reg-success-sub">
             Your account has been created successfully.<br/>
             <strong id="successName">Rahul Sharma</strong>, your Citizen ID is
-            <strong class="reg-citizen-id" id="citizenIdDisplay">CVC-KA-2025-48291</strong>
+            <strong class="reg-citizen-id" id="citizenIdDisplay">CVC-GJ-2026-48291</strong>
           </p>
           <div class="reg-success-card">
             <div class="reg-success-detail">
               <span class="reg-success-detail-label">Location</span>
-              <span class="reg-success-detail-value" id="successLocation">Ward 14, Bengaluru</span>
+              <span class="reg-success-detail-value" id="successLocation">Ward 6, Vadodara</span>
             </div>
             <div class="reg-success-detail">
               <span class="reg-success-detail-label">Language</span>

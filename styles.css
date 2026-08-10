@@ -2,19 +2,19 @@
    NEW STREET — ORIGINAL LIGHT THEME RESTORED
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap');
 
 /* ── DESIGN TOKENS ─────────────────────────────────────────── */
 :root {
   /* ── Brand Palette ── */
-  --primary:         #3B82F6;
-  --primary-dark:    #1D4ED8;
-  --primary-light:   #EFF6FF;
-  --primary-glow:    rgba(59,130,246,0.25);
+  --primary:         #0B1F4D;
+  --primary-dark:    #071435;
+  --primary-light:   #EAF0FB;
+  --primary-glow:    rgba(11,31,77,0.22);
 
-  --violet:          #7C3AED;
-  --violet-light:    #EDE9FE;
-  --violet-glow:     rgba(124,58,237,0.2);
+  --violet:          #168A4B;
+  --violet-light:    #EAF8EF;
+  --violet-glow:     rgba(22,138,75,0.2);
 
   --emerald:         #10B981;
   --emerald-light:   #ECFDF5;
@@ -32,16 +32,16 @@
   --cyan-light:      #ECFEFF;
 
   /* Legacy semantic aliases */
-  --secondary:       var(--cyan);
-  --secondary-light: var(--cyan-light);
+  --secondary:       #168A4B;
+  --secondary-light: #EAF8EF;
   --success:         var(--emerald);
   --success-light:   var(--emerald-light);
   --warning:         var(--amber);
   --warning-light:   var(--amber-light);
   --danger:          var(--rose);
   --danger-light:    var(--rose-light);
-  --orange:          #F97316;
-  --orange-light:    #FFF7ED;
+  --orange:          #F28C28;
+  --orange-light:    #FEF3E2;
 
   /* ── Light Background Layers ── */
   --bg:              #F1F5F9;
@@ -69,13 +69,13 @@
   --text-inverse:    #FFFFFF;
 
   /* ── Gradients ── */
-  --grad-primary:    linear-gradient(135deg, #3B82F6 0%, #7C3AED 100%);
-  --grad-emerald:    linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+  --grad-primary:    linear-gradient(135deg, #0B1F4D 0%, #168A4B 100%);
+  --grad-emerald:    linear-gradient(135deg, #168A4B 0%, #28A862 100%);
   --grad-rose:       linear-gradient(135deg, #EF4444 0%, #F97316 100%);
   --grad-amber:      linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
   --grad-dark:       linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
   --grad-sidebar:    linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-  --grad-card-glow:  linear-gradient(135deg, rgba(59,130,246,0.04), rgba(124,58,237,0.04));
+  --grad-card-glow:  linear-gradient(135deg, rgba(11,31,77,0.04), rgba(22,138,75,0.05));
 
   /* ── Shadows ── */
   --shadow-xs:  0 1px 2px rgba(0,0,0,0.05);
@@ -112,8 +112,8 @@
   --space-12: 120px;
 
   /* ── Typography ── */
-  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-alt:     'Poppins', sans-serif;
+  --font-sans:    'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-alt:     'Sora', 'Manrope', sans-serif;
   --font-mono:    'SF Mono', 'Fira Code', monospace;
 
   /* ── Transitions ── */

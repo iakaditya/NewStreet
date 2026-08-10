@@ -27,6 +27,14 @@
   color: var(--text-secondary);
 }
 
+.reg-brand-image {
+  display: block;
+  width: 142px;
+  height: 48px;
+  object-fit: contain;
+  object-position: left center;
+}
+
 /* ── MAIN LAYOUT ────────────────────────────────────────────── */
 .reg-main {
   flex: 1;
@@ -282,6 +290,10 @@
 
 .reg-location-status.error {
   color: var(--danger);
+}
+
+.reg-location-status.loading {
+  color: var(--primary);
 }
 
 /* Language Select */

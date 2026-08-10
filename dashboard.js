@@ -19,16 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Open Manhole on Busy Sidewalk',
         category: 'safety',
         details: 'Deep open manhole right in the middle of the pedestrian pathway. High risk of someone falling in, especially at night.',
-        address: '2nd Cross, Vasanth Nagar',
+        address: '2nd Cross, Alkapuri',
         status: 'Critical',
         date: 'Aug 9, 2026',
         officer: 'Emergency Response Unit',
         eta: 'Immediate',
         lat: 50, lng: 60,
-        geoLat: 12.9865,
-        geoLng: 77.5925,
+        geoLat: 22.3085,
+        geoLng: 73.1789,
         severity: 'high',
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/safety_hazard_1786262361716.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 9, 08:00 AM · Reported by Rahul Sharma', completed: true },
@@ -42,16 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Broken Traffic Signal Causing Chaos',
         category: 'traffic',
         details: 'All lights at the 4-way intersection are out. Complete gridlock and dangerous near-misses happening continuously.',
-        address: 'Vasanth Nagar Main Intersection',
+        address: 'Alkapuri Main Intersection',
         status: 'In Progress',
         date: 'Aug 9, 2026',
         officer: 'Traffic Police Dept',
         eta: 'Aug 9, 2026',
         lat: 45, lng: 55,
-        geoLat: 12.9875,
-        geoLng: 77.5930,
+        geoLat: 22.3095,
+        geoLng: 73.1794,
         severity: 'high',
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/traffic_signal_broken_1786262346616.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 9, 07:45 AM · Reported by Rahul Sharma', completed: true },
@@ -65,16 +65,16 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Dangerous Sparking Wires',
         category: 'electricity',
         details: 'Low hanging live wires from street pole short-circuiting and sparking on the road. High electrocution risk.',
-        address: '3rd Main Rd, Vasanth Nagar',
+        address: '3rd Main Rd, Alkapuri',
         status: 'Critical',
         date: 'Aug 9, 2026',
-        officer: 'BESCOM Emergency Team',
+        officer: 'MGVCL Emergency Team',
         eta: 'Immediate',
         lat: 40, lng: 30,
-        geoLat: 12.9880,
-        geoLng: 77.5910,
+        geoLat: 22.3100,
+        geoLng: 73.1774,
         severity: 'high',
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/electricity_hazard_1786262332779.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 9, 06:30 AM · Reported by Rahul Sharma', completed: true },
@@ -88,16 +88,16 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Massive Garbage Pile on Street Corner',
         category: 'garbage',
         details: 'A huge pile of uncollected garbage has accumulated at the corner of 1st Main Road. The smell is terrible and it is attracting stray animals.',
-        address: 'Corner of 1st Main Road, Vasanth Nagar',
+        address: 'Corner of 1st Main Road, Alkapuri',
         status: 'Pending',
         date: 'Aug 8, 2026',
         officer: 'Sanjay Kumar (Sanitation Dept)',
         eta: 'Aug 10, 2026',
         lat: 60, lng: 70,
-        geoLat: 12.9860,
-        geoLng: 77.5960,
+        geoLat: 22.3080,
+        geoLng: 73.1824,
         severity: 'high',
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/garbage_pile_complaint_1786261725860.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 8, 09:12 AM · Reported by Rahul Sharma', completed: true },
@@ -113,17 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
         id: 'CVC-2026-98124',
         title: 'Pothole Hazard & Road Damage',
         category: 'roads',
-        details: 'Deep dangerous crater forming near the main entrance street of Ward 14.',
-        address: '8th Cross Main Road, Vasanth Nagar',
+        details: 'Deep dangerous crater forming near the main entrance street of Ward 6.',
+        address: '8th Cross Main Road, Alkapuri',
         status: 'In Progress',
         date: 'Aug 4, 2026',
         officer: 'Anil Sharma (PWD Division Engineer)',
         eta: 'Aug 8, 2026',
         lat: 30, lng: 45,
-        geoLat: 12.9872,
-        geoLng: 77.5945,
+        geoLat: 22.3092,
+        geoLng: 73.1809,
         severity: 'medium',
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         timeline: [
           { title: 'Submitted', desc: 'Aug 4, 10:15 AM · Reported by Rahul Sharma', completed: true },
           { title: 'Assigned & Scheduled', desc: 'Aug 4, 2:30 PM · Assigned to Engineer Anil Sharma (PWD)', completed: true },
@@ -139,16 +139,16 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Broken Water Pipe Spill',
         category: 'water',
         details: 'Water spilling continuously from municipal pipeline opposite Community Park.',
-        address: 'Opposite Community Park, Ward 14',
+        address: 'Opposite Community Park, Ward 6',
         status: 'Resolved',
         date: 'Aug 3, 2026',
         officer: 'Sunil Gowda (Water Inspector)',
         eta: 'Completed',
         lat: 55, lng: 25,
-        geoLat: 12.9844,
-        geoLng: 77.5902,
+        geoLat: 22.3064,
+        geoLng: 73.1766,
         severity: 'low',
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         timeline: [
           { title: 'Submitted', desc: 'Aug 3, 08:30 AM · Reported by Rahul Sharma', completed: true },
           { title: 'Assigned', desc: 'Aug 3, 11:00 AM · Assigned to Sunil Gowda', completed: true },
@@ -169,25 +169,25 @@ document.addEventListener('DOMContentLoaded', () => {
     pollVoted: false,
     documents: [
       { name: 'Aadhaar Card', provider: 'UIDAI', idNum: 'XXXX-XXXX-8429', icon: '🪪' },
-      { name: 'Driving License', provider: 'MORTH', idNum: 'KA-03-2015-XXXX', icon: '🚗' }
+      { name: 'Driving License', provider: 'MORTH', idNum: 'GJ-06-2015-XXXX', icon: '🚗' }
     ]
   };
 
-  const WARD_CENTER = { geoLat: 12.9852, geoLng: 77.5948 };
+  const WARD_CENTER = { geoLat: 22.3072, geoLng: 73.1812 };
   const MAP_BOUNDS = {
-    north: 12.9934,
-    south: 12.9765,
-    west: 77.5858,
-    east: 77.6064
+    north: 22.3154,
+    south: 22.2985,
+    west: 73.1722,
+    east: 73.1928
   };
   const KNOWN_LOCATIONS = [
-    { terms: ['8th cross', 'eighth cross', '8th main', 'main road'], label: '8th Cross Main Road, Vasanth Nagar', mapTop: 30, mapLeft: 45, geoLat: 12.9872, geoLng: 77.5945, zone: 'Vasanth Nagar central grid' },
-    { terms: ['mg road', 'mahatma gandhi'], label: 'MG Road Junction, Ward 14', mapTop: 48, mapLeft: 58, geoLat: 12.9759, geoLng: 77.6037, zone: 'MG Road transit corridor' },
-    { terms: ['community park', 'park'], label: 'Community Park, Ward 14', mapTop: 55, mapLeft: 25, geoLat: 12.9844, geoLng: 77.5902, zone: 'Community Park block' },
-    { terms: ['5th cross', 'fifth cross'], label: '5th Cross, Vasanth Nagar', mapTop: 37, mapLeft: 37, geoLat: 12.9891, geoLng: 77.5924, zone: 'Residential cross street' },
-    { terms: ['queen', 'queens road', 'queen road'], label: "Queen's Road, Ward 14", mapTop: 70, mapLeft: 64, geoLat: 12.9827, geoLng: 77.5988, zone: "Queen's Road arterial" },
-    { terms: ['subhash', 'subhash nagar'], label: 'Subhash Nagar, Ward 14', mapTop: 63, mapLeft: 33, geoLat: 12.9818, geoLng: 77.5919, zone: 'Subhash Nagar service lane' },
-    { terms: ['ward office', 'bbmp'], label: 'Ward 14 Office, Vasanth Nagar', mapTop: 76, mapLeft: 20, geoLat: 12.9804, geoLng: 77.5894, zone: 'Ward office block' }
+    { terms: ['rc dutt', 'r. c. dutt', 'alkapuri', 'main road'], label: 'R. C. Dutt Road, Alkapuri', mapTop: 30, mapLeft: 45, geoLat: 22.3092, geoLng: 73.1809, zone: 'Alkapuri central grid' },
+    { terms: ['mg road', 'mahatma gandhi'], label: 'MG Road Junction, Ward 6', mapTop: 48, mapLeft: 58, geoLat: 22.2979, geoLng: 73.1901, zone: 'MG Road transit corridor' },
+    { terms: ['kamati baug', 'sayaji baug', 'park'], label: 'Kamati Baug, Ward 6', mapTop: 55, mapLeft: 25, geoLat: 22.3064, geoLng: 73.1766, zone: 'Kamati Baug block' },
+    { terms: ['5th cross', 'fifth cross'], label: '5th Cross, Alkapuri', mapTop: 37, mapLeft: 37, geoLat: 22.3111, geoLng: 73.1788, zone: 'Residential cross street' },
+    { terms: ['queen', 'queens road', 'queen road'], label: "Queen's Road, Ward 6", mapTop: 70, mapLeft: 64, geoLat: 22.3047, geoLng: 73.1852, zone: "Queen's Road arterial" },
+    { terms: ['subhash', 'subhash nagar'], label: 'Subhash Nagar, Ward 6', mapTop: 63, mapLeft: 33, geoLat: 22.3038, geoLng: 73.1783, zone: 'Subhash Nagar service lane' },
+    { terms: ['ward office', 'vmc'], label: 'Ward 6 Office, Alkapuri', mapTop: 76, mapLeft: 20, geoLat: 22.3024, geoLng: 73.1758, zone: 'Ward office block' }
   ];
 
   let complaintLocationOverride = null;
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (known) {
       return {
         address: known.label,
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         zone: known.zone,
         mapTop: known.mapTop,
         mapLeft: known.mapLeft,
@@ -242,9 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapTop = 18 + (hash % 58);
     const mapLeft = 18 + ((hash >> 3) % 58);
     return {
-      address: address || 'Ward 14, Vasanth Nagar',
-      ward: 'Ward 14',
-      zone: 'Ward 14 local grid',
+      address: address || 'Ward 6, Alkapuri',
+      ward: 'Ward 6',
+      zone: 'Ward 6 local grid',
       mapTop,
       mapLeft,
       geoLat: +(WARD_CENTER.geoLat + (mapTop - 50) * -0.00012).toFixed(5),
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     preview.innerHTML = `
       <span class="location-preview-dot"></span>
       <div>
-        <strong>${escapeHTML(location.ward || 'Ward 14')} · ${escapeHTML(location.confidence || 'Location ready')}</strong>
+        <strong>${escapeHTML(location.ward || 'Ward 6')} · ${escapeHTML(location.confidence || 'Location ready')}</strong>
         <p>${escapeHTML(location.address)} · ${Number(location.geoLat).toFixed(5)}, ${Number(location.geoLng).toFixed(5)}</p>
       </div>
     `;
@@ -455,9 +455,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(' ').trim() || 'Rahul Sharma';
     const initials = fullName.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase() || 'RS';
-    const city = profile.city || 'Bengaluru';
-    const stateCode = profile.state === 'Karnataka' ? 'KA' : (profile.state || 'KA');
-    const address = profile.address || '42, MG Road, Ward 14, Bengaluru';
+    const city = profile.city || 'Vadodara';
+    const stateCode = profile.state === 'Gujarat' ? 'GJ' : (profile.state || 'GJ');
+    const address = profile.address || 'Alkapuri, Ward 6, Vadodara, Gujarat';
     const location = deriveLocation(address);
 
     const welcome = $('#view-dashboard .view-header h1');
@@ -582,7 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (triggerReportTile) triggerReportTile.addEventListener('click', openComplaintModal);
   if (triggerComplaintFromList) triggerComplaintFromList.addEventListener('click', openComplaintModal);
   if (triggerComplaintFromMap) triggerComplaintFromMap.addEventListener('click', () => {
-    const address = $('#mapAddressSearch')?.value.trim() || 'MG Road, Ward 14';
+    const address = $('#mapAddressSearch')?.value.trim() || 'MG Road, Ward 6';
     openComplaintModal({ address });
   });
   if (closeComplaintModal) closeComplaintModal.addEventListener('click', hideComplaintModal);
@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (previewComplaintLocationBtn) {
     previewComplaintLocationBtn.addEventListener('click', () => {
       updateComplaintPreviewFromAddress();
-      showToast('Location preview refreshed for Ward 14 routing.', 'info');
+      showToast('Location preview refreshed for Ward 6 routing.', 'info');
     });
   }
 
@@ -612,8 +612,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const { latitude, longitude, accuracy } = position.coords;
         const mapPosition = geoToMapPosition(latitude, longitude);
         complaintLocationOverride = {
-          address: `Current GPS position near Ward 14 (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`,
-          ward: 'Ward 14',
+          address: `Current GPS position near Ward 6 (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`,
+          ward: 'Ward 6',
           zone: 'Live GPS point',
           mapTop: mapPosition.mapTop,
           mapLeft: mapPosition.mapLeft,
@@ -1084,24 +1084,24 @@ document.addEventListener('DOMContentLoaded', () => {
   window.projectMarkers = projectMarkers;
   window.heatmapLayer = heatmapLayer;
 
-  const WARD_LATLNG = { lat: 12.9852, lng: 77.5948 };
+  const WARD_LATLNG = { lat: 22.3072, lng: 73.1812 };
 
   // Work-site / project data with geo coordinates
   const WORK_SITES = [
-    { id: 'ws-1', name: 'Drainage Improvement (3rd Block)',   dept: 'BBMP',        pct: 80, status: 'inprog',   geoLat: 12.9872, geoLng: 77.5925, color: '#3B82F6', emoji: '🏗️' },
-    { id: 'ws-2', name: 'Park Renovation (Cunningham Park)',  dept: 'Horticulture', pct: 57, status: 'inprog',   geoLat: 12.9840, geoLng: 77.5902, color: '#10B981', emoji: '🌳' },
-    { id: 'ws-3', name: 'Street Light LED Upgrade',           dept: 'BESCOM',       pct: 70, status: 'inprog',   geoLat: 12.9864, geoLng: 77.5965, color: '#F59E0B', emoji: '💡' },
-    { id: 'ws-4', name: 'Water Pipeline Replacement',         dept: 'BWSSB',        pct: 65, status: 'inprog',   geoLat: 12.9825, geoLng: 77.5942, color: '#06B6D4', emoji: '🚰' },
-    { id: 'ws-5', name: 'Road Resurfacing (5th Main Road)',   dept: 'BBMP',         pct: 25, status: 'pending',  geoLat: 12.9891, geoLng: 77.5978, color: '#8B5CF6', emoji: '🛣️' },
-    { id: 'ws-6', name: 'Govt. School Building – Phase 2',   dept: 'Education',    pct: 0,  status: 'upcoming', geoLat: 12.9804, geoLng: 77.5894, color: '#F97316', emoji: '🏫' }
+    { id: 'ws-1', name: 'Drainage Improvement (3rd Block)',   dept: 'VMC',        pct: 80, status: 'inprog',   geoLat: 22.3092, geoLng: 73.1789, color: '#3B82F6', emoji: '🏗️' },
+    { id: 'ws-2', name: 'Park Renovation (Cunningham Park)',  dept: 'Horticulture', pct: 57, status: 'inprog',   geoLat: 22.3060, geoLng: 73.1766, color: '#10B981', emoji: '🌳' },
+    { id: 'ws-3', name: 'Street Light LED Upgrade',           dept: 'MGVCL',       pct: 70, status: 'inprog',   geoLat: 22.3084, geoLng: 73.1829, color: '#F59E0B', emoji: '💡' },
+    { id: 'ws-4', name: 'Water Pipeline Replacement',         dept: 'VMC Water Works',        pct: 65, status: 'inprog',   geoLat: 22.3045, geoLng: 73.1806, color: '#06B6D4', emoji: '🚰' },
+    { id: 'ws-5', name: 'Road Resurfacing (5th Main Road)',   dept: 'VMC',         pct: 25, status: 'pending',  geoLat: 22.3111, geoLng: 73.1842, color: '#8B5CF6', emoji: '🛣️' },
+    { id: 'ws-6', name: 'Govt. School Building – Phase 2',   dept: 'Education',    pct: 0,  status: 'upcoming', geoLat: 22.3024, geoLng: 73.1758, color: '#F97316', emoji: '🏫' }
   ];
 
   // -- PRESENTATION MOCK DATA GENERATOR --
   function generateMockPresentationData() {
     const targets = { roads: 33, garbage: 20, water: 17, electricity: 15, traffic: 11, safety: 7 };
     let idCounter = 2000;
-    const centerLat = 12.9852;
-    const centerLng = 77.5948;
+    const centerLat = 22.3072;
+    const centerLng = 73.1812;
     const radius = 0.015;
 
     for (const [category, count] of Object.entries(targets)) {
@@ -1111,7 +1111,7 @@ document.addEventListener('DOMContentLoaded', () => {
           title: `Reported ${category} issue in sector ${Math.floor(Math.random()*20)}`,
           category: category,
           details: 'Autogenerated mock data for presentation.',
-          address: 'Vasanth Nagar Local Area',
+          address: 'Alkapuri Local Area',
           status: Math.random() > 0.3 ? 'Pending' : (Math.random() > 0.5 ? 'In Progress' : 'Resolved'),
           date: 'Aug ' + Math.floor(Math.random()*9 + 1) + ', 2026',
           officer: 'System Assigned',
@@ -1119,7 +1119,7 @@ document.addEventListener('DOMContentLoaded', () => {
           geoLat: centerLat + (Math.random() - 0.5) * radius * 2,
           geoLng: centerLng + (Math.random() - 0.5) * radius * 2,
           severity: Math.random() > 0.5 ? 'medium' : 'high',
-          ward: 'Ward 14',
+          ward: 'Ward 6',
           timeline: [],
           chatHistory: []
         });
@@ -1130,7 +1130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       WORK_SITES.push({
         id: `ws-mock-${i}`,
         name: `Infrastructure Upgrade Phase ${i+1}`,
-        dept: 'BBMP',
+        dept: 'VMC',
         pct: Math.floor(Math.random()*100),
         status: Math.random() > 0.5 ? 'inprog' : 'pending',
         geoLat: centerLat + (Math.random() - 0.5) * radius * 2.5,
@@ -1344,7 +1344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const miniStatus = $('#miniMapStatusText');
-    if (miniStatus) miniStatus.textContent = 'Ward 14 · Bengaluru, KA';
+    if (miniStatus) miniStatus.textContent = 'Ward 6 · Vadodara, GJ';
   }
 
   // Flash a newly filed complaint with animated pulse overlay
@@ -1586,14 +1586,28 @@ document.addEventListener('DOMContentLoaded', () => {
       if (gpsAddrDisplay) gpsAddrDisplay.textContent = 'Acquiring address...';
     }
     const miniStatus = $('#miniMapStatusText');
-    if (miniStatus) miniStatus.textContent = `${location.ward || 'Ward 14'} · GPS active`;
+    if (miniStatus) miniStatus.textContent = `${location.ward || 'Ward 6'} · GPS active`;
     const gpsLabel = $('#mapGpsStatusLabel');
     if (gpsLabel) gpsLabel.textContent = location.confidence || 'Located';
     const liveLabel = $('#mapLiveLabel');
-    if (liveLabel) liveLabel.textContent = `${location.ward || 'Ward 14'} · ${location.zone || 'GPS'}`;
+    if (liveLabel) liveLabel.textContent = `${location.ward || 'Ward 6'} · ${location.zone || 'GPS'}`;
   }
 
   function startRealtimeGPS() {
+    // Show the most recently consented location immediately while a fresh GPS fix is acquired.
+    try {
+      const savedLocation = JSON.parse(localStorage.getItem('ns_live_location') || 'null');
+      if (savedLocation && Number.isFinite(savedLocation.latitude) && Number.isFinite(savedLocation.longitude)) {
+        const mapPos = geoToMapPosition(savedLocation.latitude, savedLocation.longitude);
+        updateUserLocationOnMap({
+          address: 'Recent consented location', ward: 'Your ward', zone: 'Saved location',
+          mapTop: mapPos.mapTop, mapLeft: mapPos.mapLeft,
+          geoLat: savedLocation.latitude, geoLng: savedLocation.longitude,
+          accuracy: savedLocation.accuracy,
+          confidence: 'Refreshing GPS…'
+        });
+      }
+    } catch (_) { /* Storage is optional. */ }
     if (!navigator.geolocation) {
       updateGPSIndicator('error', 'No GPS');
       return;
@@ -1606,7 +1620,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const mapPos = geoToMapPosition(latitude, longitude);
         updateUserLocationOnMap({
           address: `GPS (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`,
-          ward: 'Ward 14', zone: 'Live GPS',
+          ward: 'Ward 6', zone: 'Live GPS',
           mapTop: mapPos.mapTop, mapLeft: mapPos.mapLeft,
           geoLat: latitude, geoLng: longitude,
           accuracy: accuracy,
@@ -1616,7 +1630,7 @@ document.addEventListener('DOMContentLoaded', () => {
       (err) => {
         updateGPSIndicator('error', 'Denied');
         updateUserLocationOnMap({
-          address: 'Vasanth Nagar, Ward 14', ward: 'Ward 14', zone: 'Ward Center',
+          address: 'Alkapuri, Ward 6', ward: 'Ward 6', zone: 'Ward Center',
           mapTop: 50, mapLeft: 50,
           geoLat: WARD_LATLNG.lat, geoLng: WARD_LATLNG.lng,
           confidence: 'Approx'
@@ -1645,7 +1659,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const mapPosition = geoToMapPosition(latitude, longitude);
       const location = {
         address: `Current GPS position (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`,
-        ward: 'Ward 14', zone: 'Live location',
+        ward: 'Ward 6', zone: 'Live location',
         mapTop: mapPosition.mapTop, mapLeft: mapPosition.mapLeft,
         geoLat: latitude, geoLng: longitude,
         accuracy: accuracy,
@@ -1670,14 +1684,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Try Google Geocoder first if available
     if (window.google && window.google.maps && googleMap) {
       const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ address: value + ', Bengaluru, India' }, (results, status) => {
+      geocoder.geocode({ address: value + ', Vadodara, India' }, (results, status) => {
         if (status === 'OK' && results[0]) {
           const loc = results[0].geometry.location;
           googleMap.panTo(loc);
           googleMap.setZoom(16);
           updateUserLocationOnMap({
             address: results[0].formatted_address,
-            ward: 'Ward 14', zone: 'Search result',
+            ward: 'Ward 6', zone: 'Search result',
             mapTop: 50, mapLeft: 50,
             geoLat: loc.lat(), geoLng: loc.lng(),
             confidence: 'Geocoded'
@@ -1835,8 +1849,8 @@ document.addEventListener('DOMContentLoaded', () => {
             sosStatus.textContent = `TRANSMITTING BEACON IN ${seconds}s...`;
           } else {
             clearInterval(countdownTimer);
-            const baseLat = state.currentLocation?.geoLat || 12.9716;
-            const baseLng = state.currentLocation?.geoLng || 77.5946;
+            const baseLat = state.currentLocation?.geoLat || 22.2936;
+            const baseLng = state.currentLocation?.geoLng || 73.1810;
             sosStatus.textContent = `BEACON LIVE - L: ${baseLat.toFixed(4)}° N, L: ${baseLng.toFixed(4)}° E`;
             showToast('SOS broadcast sent to disaster management and police grids.', 'danger');
             
@@ -2175,7 +2189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="post-user-avatar">RS</div>
             <div>
               <div class="post-user-name">Rahul Sharma <span class="badge-volunteer">Volunteer</span></div>
-              <div class="post-user-meta">Ward 14 · Just now · Contribution Score: ${state.userXP} XP</div>
+              <div class="post-user-meta">Ward 6 · Just now · Contribution Score: ${state.userXP} XP</div>
             </div>
           </div>
           <h4 class="post-title">${escapeHTML(title)}</h4>
@@ -2200,7 +2214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.remove();
         state.userXP += 20; // bonus XP for posting
         updateXPDisplay();
-        showToast(`Post published to Ward 14 Community Feed. +20 XP!`, 'success');
+        showToast(`Post published to Ward 6 Community Feed. +20 XP!`, 'success');
       });
     });
   }
@@ -2261,7 +2275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <strong>Name:</strong> Rahul Sharma<br/>
                 <strong>DOB:</strong> 15/04/1990<br/>
                 <strong>Gender:</strong> Male<br/>
-                <strong>Address:</strong> 42, MG Road, Ward 14, Bengaluru, KA
+                <strong>Address:</strong> Alkapuri, Ward 6, Vadodara, GJ
               </div>
             </div>
             <div class="aadhaar-num">1284 9471 8429</div>
@@ -2270,17 +2284,17 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (docType === 'Driving License') {
         html = `
           <div class="mock-aadhaar-card" style="border-color:#1e3a8a;">
-            <div class="aadhaar-header" style="color:#1e3a8a; border-bottom-color:#1e3a8a;">TRANSPORT DEPT, GOVERNMENT OF KARNATAKA</div>
+            <div class="aadhaar-header" style="color:#1e3a8a; border-bottom-color:#1e3a8a;">TRANSPORT DEPT, GOVERNMENT OF GUJARAT</div>
             <div style="display:flex; gap:12px; margin-bottom:10px;">
               <div class="aadhaar-photo">👤</div>
               <div class="aadhaar-info">
-                <strong>License No:</strong> KA-03-2015-0048291<br/>
+                <strong>License No:</strong> GJ-06-2015-0048291<br/>
                 <strong>Name:</strong> Rahul Sharma<br/>
                 <strong>COV (Class of Vehicle):</strong> MCWG, LMV<br/>
                 <strong>Validity:</strong> 14/04/2035
               </div>
             </div>
-            <div class="aadhaar-num" style="font-size:0.95rem; color:#1e3a8a;">KA-03-2015-0048291</div>
+            <div class="aadhaar-num" style="font-size:0.95rem; color:#1e3a8a;">GJ-06-2015-0048291</div>
           </div>
         `;
       }
@@ -2300,7 +2314,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let notifPanel = null;
   const notifications = [
     { icon: '🔧', text: 'PWD Engineer updated Complaint CVC-2026-98124: "Work commenced tonight."', time: '2 min ago', unread: true },
-    { icon: '🌧️', text: 'Emergency Alert: Heavy rain warning for Ward 14. Stay indoors.', time: '1 hr ago', unread: true },
+    { icon: '🌧️', text: 'Emergency Alert: Heavy rain warning for Ward 6. Stay indoors.', time: '1 hr ago', unread: true },
     { icon: '🗳️', text: 'Community poll closing in 2 days. Cast your vote now.', time: '3 hrs ago', unread: true },
     { icon: '✅', text: 'Water Pipe complaint CVC-2026-77341 resolved and closed.', time: 'Yesterday', unread: false },
     { icon: '💸', text: 'Property tax assessment FY25-26 is due in 15 days.', time: 'Yesterday', unread: false },
@@ -2416,13 +2430,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const aiResponses = {
     'kisan': 'Based on your registered Aadhaar (XXXX-8429), you are listed as an eligible farmer under PM-Kisan Samman Nidhi. The 17th installment of ₹2,000 was credited on June 18, 2026. Your next installment is due in October 2026.',
-    'income certificate': 'To apply for an income certificate in Karnataka: (1) Visit e-District portal at edistrict.karnataka.gov.in, (2) Login with Aadhaar, (3) Apply under Revenue Department → Income Certificate. Processing time: 7 days. Fee: ₹25. Required documents: Aadhaar, Ration Card, Bank Statement.',
+    'income certificate': 'To apply for an income certificate in Gujarat: open the Digital Gujarat citizen services portal, sign in with Aadhaar, and choose Revenue Department → Income Certificate. Keep Aadhaar, ration-card, and bank-statement details ready.',
     'pothole': 'I found your active complaint CVC-2026-98124 (Pothole at 8th Cross). Current status: Work In Progress. PWD Engineer Anil Sharma estimates completion by Aug 8. Shall I send a reminder to the assigned officer?',
-    'water': 'Active water outage alert: Municipal water supply is suspended in Vasanth Nagar until 8:00 PM tonight due to pipeline valve repair. For emergencies, BWSSB helpline: 1916.',
+    'water': 'Active water outage alert: Municipal water supply is suspended in Alkapuri until 8:00 PM tonight due to pipeline valve repair. For emergencies, VMC Water Works helpline: 1916.',
     'complaint': 'I can help you register a complaint. Please describe the issue and I will auto-fill the form. Common categories: Road Damage, Water Leakage, Garbage, Streetlight, Sewage.',
     'translate': 'I can translate your document. Please upload the file or paste the text. I support: Hindi, Kannada, Tamil, Telugu, Marathi, Bengali.',
     'scheme': 'Based on your citizen profile, you may be eligible for: (1) Ayushman Bharat - PM-JAY health insurance, (2) PMAY-Urban housing scheme, (3) PM Mudra Yojana for small businesses. Shall I check detailed eligibility for any of these?',
-    'emergency': 'Emergency contacts for Ward 14: Police (100), Fire (101), Ambulance (108), Women Helpline (1091), BBMP Emergency (1533). Nearest hospital: Victoria Hospital, 1.2 km away. Shall I trigger your SOS beacon?',
+    'emergency': 'Emergency contacts for Ward 6: Police (100), Fire (101), Ambulance (108), Women Helpline (1091), VMC Emergency (1533). Nearest hospital: Victoria Hospital, 1.2 km away. Shall I trigger your SOS beacon?',
     'hello': 'Namaste Rahul! How can I assist you today? I can help with government schemes, complaints, certificates, emergency services, or translate documents.',
     'tax': 'Your property tax for Assessment Code Ward14-8291 is due in 15 days. Outstanding amount: ₹4,250. You can pay via UPI, Net Banking, or card. Shall I take you to the payment screen?',
   };
@@ -2432,7 +2446,7 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const key in aiResponses) {
       if (lower.includes(key)) return aiResponses[key];
     }
-    return `I am checking our government databases for "${input}"... This topic may involve multiple departments. Please visit the relevant service page or call the Ward 14 helpline at 080-22221188 for further assistance.`;
+    return `I am checking our government databases for "${input}"... This topic may involve multiple departments. Please visit the relevant service page or call the Ward 6 helpline at 080-22221188 for further assistance.`;
   }
 
   function appendChatMessage(text, sender, historyEl) {
@@ -2571,7 +2585,7 @@ document.addEventListener('DOMContentLoaded', () => {
       profileMenu.innerHTML = `
         <div style="padding:14px; background:var(--primary-light); border-bottom:1px solid var(--border);">
           <div style="font-weight:800; font-size:0.9rem;">Rahul Sharma</div>
-          <div style="font-size:0.7rem; color:var(--text-secondary);">CVC-KA-48291 · ${state.userXP} XP</div>
+          <div style="font-size:0.7rem; color:var(--text-secondary);">CVC-GJ-48291 · ${state.userXP} XP</div>
         </div>
         <div style="padding:6px;">
           <button class="profile-menu-item" data-tab="profile">👤 View Profile</button>
@@ -2675,7 +2689,7 @@ document.addEventListener('DOMContentLoaded', () => {
       category: 'roads',
       author: 'Ravi Kumar',
       avatar: 'RK',
-      ward: 'Ward 14',
+      ward: 'Ward 6',
       time: '2 hours ago',
       votes: 214,
       urgent: true,
@@ -2687,18 +2701,18 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       comments: [
         { id: 'c1', author: 'Priya Nair', avatar: 'PN', text: 'I witnessed two bikes swerving to avoid it this morning. It is extremely dangerous at night with no street light either.', time: '1 hr ago', votes: 47, isGov: false },
-        { id: 'c2', author: 'BBMP Ward Office', avatar: 'BW', text: 'Noted. We have escalated to PWD. Work order CWO-2026-8491 has been raised. Expected resolution by Aug 8.', time: '1 hr ago', votes: 89, isGov: true },
+        { id: 'c2', author: 'VMC Ward Office', avatar: 'BW', text: 'Noted. We have escalated to PWD. Work order CWO-2026-8491 has been raised. Expected resolution by Aug 8.', time: '1 hr ago', votes: 89, isGov: true },
         { id: 'c3', author: 'Suresh Anand', avatar: 'SA', text: 'They said the same thing 2 months ago. Still waiting. Please hold them accountable this time.', time: '30 min ago', votes: 33, isGov: false },
       ]
     },
     {
       id: 'cb-002',
       title: 'Streetlight on Domlur Flyover out for 2 weeks — serious safety concern for night walkers',
-      body: 'The stretch from Domlur junction to the service road is pitch dark after 8 PM. Two purse-snatchings reported near this zone in the last week. BESCOM has not responded to calls.',
+      body: 'The stretch from Domlur junction to the service road is pitch dark after 8 PM. Two purse-snatchings reported near this zone in the last week. MGVCL has not responded to calls.',
       category: 'electricity',
       author: 'Meena Venugopal',
       avatar: 'MV',
-      ward: 'Ward 14',
+      ward: 'Ward 6',
       time: '5 hours ago',
       votes: 178,
       urgent: true,
@@ -2706,7 +2720,7 @@ document.addEventListener('DOMContentLoaded', () => {
       govResponse: null,
       comments: [
         { id: 'c4', author: 'Karthik S', avatar: 'KS', text: 'Yes, I walk this stretch daily. Even the traffic police have stopped patrolling here because they can\'t see clearly. Dangerous situation.', time: '4 hrs ago', votes: 52, isGov: false },
-        { id: 'c5', author: 'Ananya Reddy', avatar: 'AR', text: 'Already reported on BESCOM app but it says "in queue" since July 27. Zero accountability.', time: '3 hrs ago', votes: 41, isGov: false },
+        { id: 'c5', author: 'Ananya Reddy', avatar: 'AR', text: 'Already reported on MGVCL app but it says "in queue" since July 27. Zero accountability.', time: '3 hrs ago', votes: 41, isGov: false },
       ]
     },
     {
@@ -2716,30 +2730,30 @@ document.addEventListener('DOMContentLoaded', () => {
       category: 'garbage',
       author: 'Deepa Krishnamurthy',
       avatar: 'DK',
-      ward: 'Ward 14',
+      ward: 'Ward 6',
       time: '1 day ago',
       votes: 312,
       urgent: true,
       resolved: false,
       govResponse: {
-        officer: 'Sanitation Inspector — BBMP Zone 4',
+        officer: 'Sanitation Inspector — VMC Zone 4',
         text: 'We are deploying a special daily pickup unit to this location effective immediately. Burning of garbage is a cognizable offence — FIR will be filed if found again.',
         time: '6 hrs ago'
       },
       comments: [
         { id: 'c6', author: 'Rakesh Nair', avatar: 'RN', text: 'My daughter has been coughing for a week. We thought it was seasonal but the doctor confirmed irritant-induced cough. This is criminal negligence.', time: '22 hrs ago', votes: 104, isGov: false },
-        { id: 'c7', author: 'BBMP Ward Office', avatar: 'BW', text: 'This issue has been escalated to the health department as well. Immediate action being taken. Thank you for bringing it to light.', time: '14 hrs ago', votes: 62, isGov: true },
+        { id: 'c7', author: 'VMC Ward Office', avatar: 'BW', text: 'This issue has been escalated to the health department as well. Immediate action being taken. Thank you for bringing it to light.', time: '14 hrs ago', votes: 62, isGov: true },
         { id: 'c8', author: 'Vijay Menon', avatar: 'VM', text: 'The garbage dump has been there for 6 months. Only now action because it made the news?', time: '10 hrs ago', votes: 88, isGov: false },
       ]
     },
     {
       id: 'cb-004',
-      title: 'Park benches in Ward 14 community garden vandalized — third time this month',
+      title: 'Park benches in Ward 6 community garden vandalized — third time this month',
       body: 'The newly installed benches have been damaged again. Elderly residents and mothers with children have no place to sit. Security camera also seems to have been disabled.',
       category: 'parks',
       author: 'Lalitha Venkat',
       avatar: 'LV',
-      ward: 'Ward 14',
+      ward: 'Ward 6',
       time: '2 days ago',
       votes: 91,
       urgent: false,
@@ -2751,34 +2765,34 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'cb-005',
-      title: 'Water pipeline leak fixed at Community Park junction — thanks to Ward 14 officials',
-      body: 'The broken water pipe that was wasting thousands of litres daily has finally been repaired. Took 3 days and several community posts but it got done. Thanks to BWSSB team.',
+      title: 'Water pipeline leak fixed at Community Park junction — thanks to Ward 6 officials',
+      body: 'The broken water pipe that was wasting thousands of litres daily has finally been repaired. Took 3 days and several community posts but it got done. Thanks to VMC Water Works team.',
       category: 'water',
       author: 'Anjali Prabhu',
       avatar: 'AP',
-      ward: 'Ward 14',
+      ward: 'Ward 6',
       time: '3 days ago',
       votes: 156,
       urgent: false,
       resolved: true,
       govResponse: {
-        officer: 'Sunil Gowda — BWSSB Water Inspector',
+        officer: 'Sunil Gowda — VMC Water Works Water Inspector',
         text: 'Pipeline repair completed on Aug 3. Pressure tested and confirmed leak-free. Thank you citizens for the vigilance.',
         time: '3 days ago'
       },
       comments: [
         { id: 'c10', author: 'Mahesh P', avatar: 'MP', text: 'This is how the system is supposed to work. Post, escalate, resolve. Glad it worked this time.', time: '2 days ago', votes: 37, isGov: false },
-        { id: 'c11', author: 'BWSSB Office', avatar: 'BW', text: 'We are glad to serve. All complaint references are tracked internally. Keep posting — we are watching.', time: '2 days ago', votes: 44, isGov: true },
+        { id: 'c11', author: 'VMC Water Works Office', avatar: 'BW', text: 'We are glad to serve. All complaint references are tracked internally. Keep posting — we are watching.', time: '2 days ago', votes: 44, isGov: true },
       ]
     },
     {
       id: 'cb-006',
-      title: 'Stray dogs attacking school children near Indiranagar Bus Stop 4B',
-      body: 'Pack of 6-8 dogs has been spotted multiple times attacking schoolchildren near Bus Stop 4B. Two minor injuries reported. BBMP animal control has not responded in 2 weeks.',
+      title: 'Stray dogs attacking school children near Alkapuri Bus Stop 4B',
+      body: 'Pack of 6-8 dogs has been spotted multiple times attacking schoolchildren near Bus Stop 4B. Two minor injuries reported. VMC animal control has not responded in 2 weeks.',
       category: 'safety',
       author: 'Venkat Rao',
       avatar: 'VR',
-      ward: 'Ward 14',
+      ward: 'Ward 6',
       time: '6 hours ago',
       votes: 203,
       urgent: true,
@@ -2786,7 +2800,7 @@ document.addEventListener('DOMContentLoaded', () => {
       govResponse: null,
       comments: [
         { id: 'c12', author: 'Sunita Bose', avatar: 'SB', text: 'My son was chased by them yesterday. I had to file a report with the local police too. This is absolutely dangerous.', time: '5 hrs ago', votes: 78, isGov: false },
-        { id: 'c13', author: 'Ravi A', avatar: 'RA', text: 'BBMP animal control app just says "under review" — same since last week. Someone needs to be held accountable.', time: '4 hrs ago', votes: 55, isGov: false },
+        { id: 'c13', author: 'Ravi A', avatar: 'RA', text: 'VMC animal control app just says "under review" — same since last week. Someone needs to be held accountable.', time: '4 hrs ago', votes: 55, isGov: false },
       ]
     },
   ];
@@ -3023,7 +3037,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── SHARE ────────────────────────────────────────────────────
     card.querySelector('.btn-share-post').addEventListener('click', () => {
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(`Ward 14 Complaint: "${post.title}" — New Street Platform`);
+        navigator.clipboard.writeText(`Ward 6 Complaint: "${post.title}" — New Street Platform`);
         showBoxToast('Link copied to clipboard!', 'success');
       }
     });
@@ -3039,7 +3053,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (detailsInput) detailsInput.value = post.body;
       if (catSelect) catSelect.value = post.category;
       if (addressInput) {
-        addressInput.value = `${post.ward}, Vasanth Nagar`;
+        addressInput.value = `${post.ward}, Alkapuri`;
         addressInput.dispatchEvent(new Event('input'));
       }
       // Navigate to complaints tab and open modal
@@ -3150,7 +3164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         category,
         author: 'Rahul Sharma',
         avatar: 'RS',
-        ward: 'Ward 14',
+        ward: 'Ward 6',
         time: 'Just now',
         votes: 1,
         urgent,
@@ -3172,7 +3186,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (newBtn) newBtn.classList.add('active');
 
       renderFeed();
-      showBoxToast('Complaint posted to Ward 14 Open Feed. Citizens will see this immediately.', 'success');
+      showBoxToast('Complaint posted to Ward 6 Open Feed. Citizens will see this immediately.', 'success');
 
       // Simulate a civic bot response after 3 seconds
       setTimeout(() => {
@@ -3377,7 +3391,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const startDiscBtn = document.getElementById('startDiscussionBtn');
   if (startDiscBtn) {
     startDiscBtn.addEventListener('click', () => {
-      if (window.showToast) window.showToast('Discussion creator opened for Ward 14.', 'info');
+      if (window.showToast) window.showToast('Discussion creator opened for Ward 6.', 'info');
     });
   }
 });
@@ -3533,7 +3547,7 @@ document.addEventListener('DOMContentLoaded', () => {
           pctEl.style.fontWeight = '800';
         }
 
-        if (window.showToast) window.showToast('Vote recorded! Thank you for participating in Ward 14 governance.', 'success');
+        if (window.showToast) window.showToast('Vote recorded! Thank you for participating in Ward 6 governance.', 'success');
       }
     });
 
@@ -3555,8 +3569,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         wardMenu.innerHTML = `
           <div style="font-size:0.68rem; font-weight:800; color:#94A3B8; text-transform:uppercase; padding:6px 8px;">Select Ward Jurisdiction</div>
-          <button class="ward-opt-btn" data-ward="Ward 14, Vasanth Nagar" style="display:block; width:100%; text-align:left; padding:8px; border-radius:6px; background:#EFF6FF; color:#2563EB; font-size:0.78rem; font-weight:700; border:none; cursor:pointer; margin-bottom:2px;">📍 Ward 14, Vasanth Nagar ✓</button>
-          <button class="ward-opt-btn" data-ward="Ward 12, Indiranagar" style="display:block; width:100%; text-align:left; padding:8px; border-radius:6px; background:none; color:#0F172A; font-size:0.78rem; font-weight:600; border:none; cursor:pointer; margin-bottom:2px;">📍 Ward 12, Indiranagar</button>
+          <button class="ward-opt-btn" data-ward="Ward 6, Alkapuri" style="display:block; width:100%; text-align:left; padding:8px; border-radius:6px; background:#EFF6FF; color:#2563EB; font-size:0.78rem; font-weight:700; border:none; cursor:pointer; margin-bottom:2px;">📍 Ward 6, Alkapuri ✓</button>
+          <button class="ward-opt-btn" data-ward="Ward 12, Alkapuri" style="display:block; width:100%; text-align:left; padding:8px; border-radius:6px; background:none; color:#0F172A; font-size:0.78rem; font-weight:600; border:none; cursor:pointer; margin-bottom:2px;">📍 Ward 12, Alkapuri</button>
           <button class="ward-opt-btn" data-ward="Ward 18, Koramangala" style="display:block; width:100%; text-align:left; padding:8px; border-radius:6px; background:none; color:#0F172A; font-size:0.78rem; font-weight:600; border:none; cursor:pointer;">📍 Ward 18, Koramangala</button>
         `;
 
@@ -3846,11 +3860,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const responses = [
-    "I'm looking into that for you. Based on recent Ward 14 data, this issue has been reported by 3 other citizens recently.",
+    "I'm looking into that for you. Based on recent Ward 6 data, this issue has been reported by 3 other citizens recently.",
     "I can help you file a complaint or track an existing one. Which would you prefer?",
     "Great question! You can apply for this service online through Government Services. Would you like me to navigate you there?",
-    "This falls under BBMP jurisdiction. Your complaint will be assigned to a Division Engineer within 2 hours.",
-    "Based on your complaint history in Ward 14, the average resolution time for this category is 4.6 days."
+    "This falls under VMC jurisdiction. Your complaint will be assigned to a Division Engineer within 2 hours.",
+    "Based on your complaint history in Ward 6, the average resolution time for this category is 4.6 days."
   ];
   let resIdx = 0;
 
@@ -4497,7 +4511,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const detail = document.createElement('div');
         detail.className = 'alert-pill-detail';
         detail.style.cssText = 'font-size:0.72rem;color:#475569;padding:8px 0 4px 0;border-top:1px solid #E2E8F0;margin-top:8px;';
-        detail.textContent = 'Tap for more information. This alert was issued by the Municipal Corporation of Bengaluru.';
+        detail.textContent = 'Tap for more information. This alert was issued by the Municipal Corporation of Vadodara.';
         pill.appendChild(detail);
         btn.style.transform = 'rotate(180deg)';
       } else {
@@ -4579,11 +4593,11 @@ window.PF_ENGINE = (function() {
       { name: 'Others',                     alloc: 0.18, util: 0.12, color: '#F97316' }
     ],
     projects: [
-      { name: 'Drainage Improvement (3rd Block)',   dept:'BBMP',         budget:80,   util:64,   pct:80, status:'inprog'  },
+      { name: 'Drainage Improvement (3rd Block)',   dept:'VMC',         budget:80,   util:64,   pct:80, status:'inprog'  },
       { name: 'Park Renovation (Cunningham Park)', dept:'Horticulture', budget:50,   util:28.5, pct:57, status:'inprog'  },
-      { name: 'Street Light LED Upgrade',          dept:'BESCOM',       budget:70,   util:49.1, pct:70, status:'inprog'  },
-      { name: 'Water Pipeline Replacement',        dept:'BWSSB',        budget:120,  util:78.3, pct:65, status:'inprog'  },
-      { name: 'Road Resurfacing (5th Main Road)',  dept:'BBMP',         budget:90,   util:22.6, pct:25, status:'pending' },
+      { name: 'Street Light LED Upgrade',          dept:'MGVCL',       budget:70,   util:49.1, pct:70, status:'inprog'  },
+      { name: 'Water Pipeline Replacement',        dept:'VMC Water Works',        budget:120,  util:78.3, pct:65, status:'inprog'  },
+      { name: 'Road Resurfacing (5th Main Road)',  dept:'VMC',         budget:90,   util:22.6, pct:25, status:'pending' },
       { name: 'Govt. School Building – Phase 2',  dept:'Education',    budget:280,  util:0,    pct:0,  status:'upcoming'}
     ],
     monthly: {
@@ -4602,11 +4616,11 @@ window.PF_ENGINE = (function() {
       util:   [5.80, 6.10, 5.20]
     },
     wards: [
-      { name: 'Ward 14 – Vasanth Nagar',      alloc: '₹ 1.20 Cr', pct: 78, color: '#2563EB' },
+      { name: 'Ward 6 – Alkapuri',      alloc: '₹ 1.20 Cr', pct: 78, color: '#2563EB' },
       { name: 'Ward 15 – Shivajinagar',        alloc: '₹ 0.95 Cr', pct: 62, color: '#06B6D4' },
       { name: 'Ward 16 – Rajajinagar',         alloc: '₹ 1.45 Cr', pct: 85, color: '#10B981' },
       { name: 'Ward 17 – Malleshwaram',        alloc: '₹ 1.10 Cr', pct: 55, color: '#F59E0B' },
-      { name: 'Ward 18 – Hebbal',              alloc: '₹ 0.80 Cr', pct: 42, color: '#8B5CF6' },
+      { name: 'Ward 18 – Sayajigunj',              alloc: '₹ 0.80 Cr', pct: 42, color: '#8B5CF6' },
       { name: 'Ward 19 – Yelahanka',           alloc: '₹ 0.90 Cr', pct: 68, color: '#F97316' },
       { name: 'Ward 20 – Dasarahalli',         alloc: '₹ 0.75 Cr', pct: 50, color: '#EF4444' },
       { name: 'Ward 21 – Byatarayanapura',     alloc: '₹ 1.25 Cr', pct: 72, color: '#0891B2' }
@@ -4627,7 +4641,7 @@ window.PF_ENGINE = (function() {
     ],
     activities: [
       { type:'release', amt:'₹ 45.60 L', desc:'Drainage Improvement Project',  time:'2 hours ago', color:'#10B981' },
-      { type:'spend',   amt:'₹ 12.80 L', desc:'Street Light Maintenance',       time:'5 hours ago', color:'#EF4444' },
+      { type:'spend',   amt:'₹ 22.1220 L', desc:'Street Light Maintenance',       time:'5 hours ago', color:'#EF4444' },
       { type:'alloc',   amt:'₹ 30.00 L', desc:'Park Renovation Project',         time:'Yesterday',   color:'#2563EB' },
       { type:'spend',   amt:'₹ 18.75 L', desc:'Water Pipeline Repair',           time:'2 days ago',  color:'#EF4444' },
       { type:'alloc',   amt:'₹ 25.00 L', desc:'Road Resurfacing Project',        time:'2 days ago',  color:'#2563EB' }
@@ -5231,7 +5245,7 @@ window.PF_ENGINE = (function() {
       const view = el('view-transparency');
       if (!list || !view || view.hasAttribute('hidden')) return;
       const pool = [
-        { type:'spend', amt:'₹ 8.40 L', desc:'Footpath Repair – Ward 14', color:'#EF4444' },
+        { type:'spend', amt:'₹ 8.40 L', desc:'Footpath Repair – Ward 6', color:'#EF4444' },
         { type:'alloc', amt:'₹ 14.50 L', desc:'Park Bench Installation', color:'#2563EB' },
         { type:'spend', amt:'₹ 5.20 L', desc:'CCTV Maintenance', color:'#EF4444' },
         { type:'alloc', amt:'₹ 22.00 L', desc:'Stormwater Drain Clearing', color:'#2563EB' }

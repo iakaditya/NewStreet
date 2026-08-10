@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emergency & Help — New Street</title>
+  <meta name="description" content="Get the right assistance for urgent situations, emergencies, animals, and civic hazards." />
+  
+  <script>
+    function initGoogleMapsCallback() {
+      if (window._dashReady) window._dashReady();
+    }
+  </script>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initGoogleMapsCallback&libraries=geometry,visualization" async defer></script> -->
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="emergency.css" />
+  
+  <!-- Google Fonts: Outfit + Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="dash-body">
+
+  <!-- ── TOP NAVIGATION BAR ────────────────────────────────────── -->
+  <nav class="dash-top-nav">
+    <div class="dash-top-left">
+      <a class="dash-brand" href="index.html" aria-label="New Street home">
+        <img src="newstreet-logo.png" alt="New Street" class="dash-brand-image" />
+      </a>
+      <div class="dash-divider"></div>
+      <div class="dash-loc-context" id="navLocContext">
+        <span class="dash-loc-pin">📍</span>
+        <div class="dash-loc-details">
+          <span class="dash-loc-city" id="navCityLabel">Vadodara, GJ</span>
+          <span class="dash-loc-ward" id="navWardLabel">Ward 6 (Alkapuri)</span>
+        </div>
+        <div class="nav-address-tooltip" id="navAddressTooltip">Locating address...</div>
+      </div>
+    </div>
+
+    <div class="dash-top-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" placeholder="Search services, schemes, complaints, or funds..." aria-label="Search platform" id="globalSearch" />
+    </div>
+
+    <div class="dash-top-right">
+      <div class="dash-gps-live searching" id="gpsLiveIndicator" title="Real-time GPS location">
+        <div class="gps-top-row">
+          <span class="gps-dot"></span>
+          <span id="gpsCoordDisplay">22.3072, 73.1812</span>
+        </div>
+        <div class="gps-address-row" id="gpsAddressDisplay">● Location Ready</div>
+      </div>
+      <div class="dash-divider"></div>
+      <div class="dash-weather-widget" title="Current weather in Vadodara">
+        <span class="weather-icon">☀️</span>
+        <span class="weather-temp">29°C</span>
+        <span class="weather-desc">Morning · 10:37 am</span>
+      </div>
+      <div class="dash-divider"></div>
+      
+      <div class="dash-lang-dropdown">
+        <button class="dash-lang-btn" aria-label="Choose language" id="langSelectorBtn">
+          <span>🌐</span> English <span class="arrow-down">▼</span>
+        </button>
+      </div>
+
+      <button class="dash-nav-icon-btn" aria-label="Open notifications" id="topNotifBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="dash-notif-badge" id="notifBadgeCount">3</span>
+      </button>
+
+      <div class="dash-user-profile" id="userMenuBtn" role="button" aria-haspopup="true" tabindex="0">
+        <div class="dash-user-avatar">RS</div>
+        <div class="dash-user-info">
+          <span class="dash-user-name">Rahul Sharma</span>
+          <span class="dash-user-id" id="headerRepXP">XP: 420</span>
+        </div>
+        <span class="arrow-down">▼</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── LAYOUT WRAPPER ────────────────────────────────────────── -->
+  <div class="dash-container">
+
+    <!-- ── LEFT SIDEBAR NAVIGATION ────────────────────────────── -->
+    <aside class="dash-sidebar-nav">
+      <nav aria-label="Sidebar Navigation">
+        <ul class="sidebar-menu">
+          <li>
+            <a href="dashboard.html" class="sidebar-item" data-tab="dashboard">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="community">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Community Hub
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="complaints">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              My Complaints
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="map">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              Live Map
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="services">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/></svg>
+              Gov Services
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="transparency">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Fund Transparency
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="projects">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              Development Projects
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="ai">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.1 12a10 10 0 0 0 9.9 10V12z"/><path d="M12 12V2a10 10 0 0 1 10 10H12z"/></svg>
+              Sahayak AI
+            </a>
+          </li>
+          <li>
+            <a href="emergency.html" class="sidebar-item active emergency-nav-item" data-tab="emergency" style="border: 1px solid rgba(59,130,246,0.3); background: rgba(30,58,138,0.1); color: #60A5FA;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Emergency & Help
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-divider"></div>
+
+        <ul class="sidebar-menu secondary-menu">
+          <li>
+            <a href="#" class="sidebar-item" data-tab="notifications">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              Notifications <span class="sidebar-badge" style="margin-left:auto; background:#2563EB; color:white; font-size:0.65rem; padding:2px 7px; border-radius:10px; font-weight:700;">3</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="profile">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Profile &amp; Documents
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="settings">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Settings
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" data-tab="help">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Help Center
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-item" id="sidebarLogout">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Logout
+            </a>
+          </li>
+        </ul>
+        
+        <div class="sidebar-champion-card" style="margin: 16px 12px; background: linear-gradient(135deg, #1E40AF, #3B82F6); border-radius: 14px; padding: 14px; color: white; text-align: center; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
+          <div style="font-size: 0.88rem; font-weight: 800; margin-bottom: 4px;">Be a Civic Champion!</div>
+          <div style="font-size: 0.68rem; opacity: 0.9; margin-bottom: 10px; line-height: 1.35;">Help your community, earn points and unlock badges.</div>
+          <button class="btn" id="viewProgressBtn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; width: 100%; padding: 6px; font-size: 0.72rem; font-weight: 700; cursor: pointer; backdrop-filter: blur(4px);">View My Progress</button>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ── MAIN CONTENT AREA ────────────────────────────────────── -->
+    <main class="dash-main-content em-main-content">
+      
+      <!-- ACTIVE ALERTS BANNER -->
+      <div class="em-alert-banner" id="emAlertBanner">
+        <div class="alert-banner-left">
+          <span class="alert-emoji">⚠️</span>
+          <div>
+            <strong>Emergency Warning:</strong> Severe precipitation forecast for Alkapuri. Disaster teams on standby.
+          </div>
+        </div>
+        <button class="alert-banner-close" aria-label="Dismiss Alert" id="emAlertCloseBtn">✕</button>
+      </div>
+
+      <!-- MAIN HEADER & SOS -->
+      <div class="em-top-section">
+        
+        <div class="em-header-left">
+          <h1>Emergency & Help</h1>
+          <p>Get the right assistance for urgent situations,<br>emergencies, animals, and civic hazards.</p>
+        </div>
+        
+        <div class="em-header-center">
+          <div class="em-loc-card">
+            <div class="em-loc-main">
+              <span class="icon">📍</span> <span class="city-text">Vadodara, GJ</span> <span class="dot">·</span> Ward 6
+            </div>
+            <div class="em-loc-status">
+              <span class="status-dot"></span> Location Ready
+            </div>
+          </div>
+        </div>
+
+        <div class="em-sos-card">
+          <div class="em-sos-left">
+            <div class="em-sos-title">
+              <span class="icon">🚨</span> IMMEDIATE DANGER?
+            </div>
+            <div class="em-sos-desc">Contact emergency response and<br>share your current location.</div>
+            <div class="em-sos-meta">
+              <span class="status-dot"></span> Location Ready <span class="dot">·</span> GPS Accuracy ±12m
+            </div>
+          </div>
+          <div class="em-sos-right">
+            <button class="em-btn-sos" id="sosTriggerBtn">
+              <span>SOS</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOUR PRIMARY HELP CATEGORIES -->
+      <div class="em-categories-grid">
+        
+        <!-- CARD 1 -->
+        <div class="em-cat-card cat-human">
+          <div class="em-cat-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" alt="Ambulance" />
+          </div>
+          <h3 class="em-cat-title">Human Emergency</h3>
+          <p class="em-cat-desc">Medical emergencies, accidents, personal safety, and urgent human assistance.</p>
+          <button class="em-cat-btn">Get Help <span class="arrow">→</span></button>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="em-cat-card cat-animal">
+          <div class="em-cat-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/1076/1076928.png" alt="Paw" />
+          </div>
+          <h3 class="em-cat-title">Animal Help</h3>
+          <p class="em-cat-desc">Injured, trapped, abandoned animals and animal rescue assistance.</p>
+          <button class="em-cat-btn">Request Help <span class="arrow">→</span></button>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="em-cat-card cat-fire">
+          <div class="em-cat-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/785/785116.png" alt="Fire" />
+          </div>
+          <h3 class="em-cat-title">Fire & Disaster</h3>
+          <p class="em-cat-desc">Fire incidents, floods, structural dangers, and natural disasters.</p>
+          <button class="em-cat-btn">Get Help <span class="arrow">→</span></button>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="em-cat-card cat-civic">
+          <div class="em-cat-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/1008/1008130.png" alt="Cone" />
+          </div>
+          <h3 class="em-cat-title">Urgent Civic Help</h3>
+          <p class="em-cat-desc">Hazards, dangerous roads, leaks, open manholes, and other civic issues.</p>
+          <button class="em-cat-btn">Report Hazard <span class="arrow">→</span></button>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM THREE COLUMNS -->
+      <div class="em-bottom-layout">
+        
+        <!-- COL 1: Nearby Help -->
+        <div class="em-module-card module-nearby">
+          <div class="em-module-header">
+            <div>
+              <h3>Nearby Help</h3>
+              <p class="subtitle">Based on your current location</p>
+            </div>
+            <a href="#" class="view-all">View All <span class="arrow">›</span></a>
+          </div>
+          <div class="em-list">
+            
+            <div class="em-list-item">
+              <div class="item-icon icon-blue"><img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Emergency Hospital</div>
+                <div class="item-desc">Sterling Hospital, Alkapuri</div>
+              </div>
+              <div class="item-meta">
+                <div class="distance">1.8 km</div>
+                <div class="status-open">● Open</div>
+              </div>
+              <button class="item-action-btn">Directions</button>
+            </div>
+
+            <div class="em-list-item">
+              <div class="item-icon icon-green"><img src="https://cdn-icons-png.flaticon.com/512/1076/1076928.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Animal Care / Rescue</div>
+                <div class="item-desc">Vadodara Animal Care Trust</div>
+              </div>
+              <div class="item-meta">
+                <div class="distance">2.4 km</div>
+                <div class="status-open">● Open</div>
+              </div>
+              <button class="item-action-btn">Directions</button>
+            </div>
+
+            <div class="em-list-item">
+              <div class="item-icon icon-orange"><img src="https://cdn-icons-png.flaticon.com/512/785/785116.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Fire Station</div>
+                <div class="item-desc">Alkapuri Fire Station</div>
+              </div>
+              <div class="item-meta">
+                <div class="distance">3.1 km</div>
+                <div class="status-open">● Open</div>
+              </div>
+              <button class="item-action-btn">Directions</button>
+            </div>
+
+            <div class="em-list-item">
+              <div class="item-icon icon-blue"><img src="https://cdn-icons-png.flaticon.com/512/912/912316.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Police Station</div>
+                <div class="item-desc">Alkapuri Police Station</div>
+              </div>
+              <div class="item-meta">
+                <div class="distance">1.5 km</div>
+                <div class="status-open">● Open</div>
+              </div>
+              <button class="item-action-btn">Directions</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- COL 2: Unified Emergency Directory -->
+        <div class="em-module-card module-directory">
+          <div class="em-module-header">
+            <h3>Unified Emergency Directory</h3>
+          </div>
+          <div class="em-list">
+            
+            <div class="em-list-item">
+              <div class="item-icon icon-red"><img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"/></div>
+              <div class="item-content">
+                <div class="item-title">National Emergency Response</div>
+                <div class="item-desc">All India Emergency Number</div>
+              </div>
+              <div class="item-meta-large number-red">112</div>
+              <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+            </div>
+
+            <div class="em-list-item">
+              <div class="item-icon icon-blue"><img src="https://cdn-icons-png.flaticon.com/512/912/912316.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Police Control Room</div>
+                <div class="item-desc">Vadodara City Police</div>
+              </div>
+              <div class="item-meta-large number-blue">100</div>
+              <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+            </div>
+
+            <div class="em-list-item">
+              <div class="item-icon icon-orange"><img src="https://cdn-icons-png.flaticon.com/512/785/785116.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Fire Department</div>
+                <div class="item-desc">Vadodara Fire & Emergency</div>
+              </div>
+              <div class="item-meta-large number-orange">101</div>
+              <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+            </div>
+
+            <div class="em-list-item">
+              <div class="item-icon icon-red"><img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"/></div>
+              <div class="item-content">
+                <div class="item-title">National Ambulance Service</div>
+                <div class="item-desc">Emergency Medical Service</div>
+              </div>
+              <div class="item-meta-large number-green">108</div>
+              <button class="item-action-btn with-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</button>
+            </div>
+            
+          </div>
+          <div class="em-module-footer center">
+            <a href="#">More Contacts <span class="arrow">↓</span></a>
+          </div>
+        </div>
+
+        <!-- COL 3: Recent Help Requests -->
+        <div class="em-module-card module-recent">
+          <div class="em-module-header">
+            <h3>Recent Help Requests</h3>
+            <a href="#" class="view-all">View All</a>
+          </div>
+          <div class="em-list">
+            
+            <div class="em-list-item request-item">
+              <div class="item-icon icon-green"><img src="https://cdn-icons-png.flaticon.com/512/1076/1076928.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Injured Dog on Road</div>
+                <div class="item-desc">Alkapuri Main Road</div>
+              </div>
+              <div class="request-status-col">
+                <span class="badge badge-resolved">Resolved</span>
+                <span class="time">2h ago</span>
+              </div>
+            </div>
+
+            <div class="em-list-item request-item">
+              <div class="item-icon icon-orange"><img src="https://cdn-icons-png.flaticon.com/512/1008/1008130.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Open Manhole</div>
+                <div class="item-desc">Near Alkapuri Circle</div>
+              </div>
+              <div class="request-status-col">
+                <span class="badge badge-progress">In Progress</span>
+                <span class="time">5h ago</span>
+              </div>
+            </div>
+
+            <div class="em-list-item request-item">
+              <div class="item-icon icon-blue">💧</div>
+              <div class="item-content">
+                <div class="item-title">Water Leakage</div>
+                <div class="item-desc">Ravpura Road</div>
+              </div>
+              <div class="request-status-col">
+                <span class="badge badge-reported">Reported</span>
+                <span class="time">1d ago</span>
+              </div>
+            </div>
+
+            <div class="em-list-item request-item">
+              <div class="item-icon icon-red"><img src="https://cdn-icons-png.flaticon.com/512/785/785116.png"/></div>
+              <div class="item-content">
+                <div class="item-title">Electric Wire Sparks</div>
+                <div class="item-desc">Gotri Road</div>
+              </div>
+              <div class="request-status-col">
+                <span class="badge badge-resolved">Resolved</span>
+                <span class="time">2d ago</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="em-module-footer center">
+            <a href="#">My Requests <span class="arrow">›</span></a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SAHAYAK AI MINI CARD (Optional Assist) -->
+      <div class="em-ai-assist-banner">
+        <div class="ai-left">
+          <span class="ai-emoji">🤖</span>
+          <div class="ai-text">
+            <strong>Not sure what to choose? Ask Sahayak AI</strong>
+            <p>Describe what happened and we will help identify the right assistance category.</p>
+          </div>
+        </div>
+        <div class="ai-right">
+          <button class="em-btn-secondary" id="aiAssistBtn">Start Chat</button>
+        </div>
+      </div>
+
+      <!-- SAFETY BAR -->
+      <div class="em-safety-bar">
+        <div class="safety-content">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #3B82F6;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Your safety is our priority. Use the right category for faster assistance.</span>
+        </div>
+        <a href="#" class="safety-link">Safety Tips <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- SOS CONFIRMATION MODAL -->
+  <div class="em-modal-overlay" id="sosModalOverlay">
+    <div class="em-modal-content">
+      <div class="em-modal-icon">🚨</div>
+      <h2>Are you in immediate danger?</h2>
+      <p>Your current location will be shared with the selected emergency response.</p>
+      
+      <div class="em-modal-actions">
+        <button class="em-btn-cancel" id="sosCancelBtn">Cancel</button>
+        <button class="em-btn-danger" id="sosContinueBtn">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="emergency.js"></script>
+</body>
+</html>

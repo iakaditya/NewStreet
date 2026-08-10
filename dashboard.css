@@ -51,6 +51,14 @@
 }
 .dash-brand:hover { transform: scale(1.02); }
 
+.dash-brand-image {
+  display: block;
+  width: 142px;
+  height: 48px;
+  object-fit: contain;
+  object-position: left center;
+}
+
 .dash-brand-icon {
   width: 36px;
   height: 36px;

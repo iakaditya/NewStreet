@@ -71,6 +71,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ── LIVE LOCATION (optional, consent-based) ────────────────
+  const profileLocationBtn = $('#profileUseLocationBtn');
+  const profileLocationStatus = $('#profileLocationStatus');
+  let profileLocation = null;
+  if (profileLocationBtn) {
+    profileLocationBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        profileLocationStatus.textContent = 'Location is not supported by this browser.';
+        profileLocationStatus.className = 'reg-location-status error';
+        return;
+      }
+      profileLocationBtn.disabled = true;
+      profileLocationBtn.textContent = 'Locating…';
+      profileLocationStatus.textContent = 'Requesting your permission…';
+      profileLocationStatus.className = 'reg-location-status loading';
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude, accuracy } = position.coords;
+        profileLocation = { latitude, longitude, accuracy, updatedAt: new Date().toISOString() };
+        profileLocationStatus.textContent = `Live location attached · accurate to ±${Math.round(accuracy)}m`;
+        profileLocationStatus.className = 'reg-location-status success';
+        profileLocationBtn.disabled = false;
+        profileLocationBtn.textContent = 'Location Attached ✓';
+      }, () => {
+        profileLocationStatus.textContent = 'Location wasn’t shared. You can continue with your address.';
+        profileLocationStatus.className = 'reg-location-status error';
+        profileLocationBtn.disabled = false;
+        profileLocationBtn.textContent = 'Use Current Location';
+      }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 });
+    });
+  }
+
   // ── STEP 2: OTP VERIFICATION ─────────────────────────────────
   
   // OTP Input logic
@@ -190,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Basic validation mock
     const fname = $('#firstNameInput').value.trim() || 'Rahul';
     const lname = $('#lastNameInput').value.trim() || 'Sharma';
-    const address = $('#addressInput').value.trim() || 'Indiranagar 100ft Road, Bengaluru';
+    const address = $('#addressInput').value.trim() || 'Alkapuri, Vadodara, Gujarat';
     const mobile = $('#mobileInput').value || '9876543210';
     
     // Save to localStorage for dashboard personalization
@@ -201,15 +232,17 @@ document.addEventListener('DOMContentLoaded', () => {
         name: `${fname} ${lname}`,
         address: address,
         mobile: mobile,
-        id: 'CVC-KA-2026-48291'
+        id: 'CVC-GJ-2026-48291',
+        liveLocation: profileLocation
       }));
+      if (profileLocation) localStorage.setItem('ns_live_location', JSON.stringify(profileLocation));
     } catch(err) {
       console.warn('LocalStorage save skipped:', err);
     }
     
     // Set success screen details
     $('#successName').textContent = `${fname} ${lname}`;
-    $('#successLocation').textContent = address.split(',').slice(-2).join(', ').trim() || 'Bengaluru';
+    $('#successLocation').textContent = address.split(',').slice(-2).join(', ').trim() || 'Vadodara, Gujarat';
     
     const activeLangBtn = $('.reg-lang-btn.active');
     if(activeLangBtn) {
