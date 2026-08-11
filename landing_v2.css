@@ -14,67 +14,68 @@
 }
 
 :root {
-  /* ── Dashboard Signature Brand Palette ── */
-  --primary:           #3B82F6;
-  --primary-dark:      #1D4ED8;
-  --primary-deep:      #1E3A8A;
-  --primary-light:     #EFF6FF;
-  --primary-glow:      rgba(59, 130, 246, 0.28);
+  /* ── Custom Brand Palette ── */
+  --primary:           #0B1733; /* Deep Navy */
+  --primary-dark:      #050C1F;
+  --primary-deep:      #020610;
+  --primary-light:     #E6EAF2;
+  --primary-glow:      rgba(11, 23, 51, 0.28);
 
-  --violet:            #7C3AED;
-  --violet-dark:       #6D28D9;
-  --violet-light:      #EDE9FE;
-  --violet-glow:       rgba(124, 58, 237, 0.25);
+  --violet:            #2563EB; /* Information Blue */
+  --violet-dark:       #1D4ED8;
+  --violet-light:      #EFF6FF;
+  --violet-glow:       rgba(37, 99, 235, 0.25);
 
-  --emerald:           #10B981;
-  --emerald-light:     #ECFDF5;
-  --emerald-glow:      rgba(16, 185, 129, 0.25);
+  --emerald:           #168A55; /* Civic Action Green */
+  --emerald-light:     #E3F4EB;
+  --emerald-glow:      rgba(22, 138, 85, 0.25);
 
   --cyan:              #06B6D4;
   --cyan-light:        #ECFEFF;
 
-  --amber:             #F59E0B;
-  --amber-light:       #FFFBEB;
+  --amber:             #F59E0B; /* Indian Accent Saffron */
+  --amber-light:       #FEF3C7;
 
-  --rose:              #EF4444;
-  --rose-light:        #FEF2F2;
+  --rose:              #DC2626; /* Emergency */
+  --rose-light:        #FEE2E2;
 
-  /* ── Dark Accent & Contrast Surfaces (Matching Dashboard Dark Gradients) ── */
+  /* ── Dark Accent & Contrast Surfaces ── */
   --navy-darkest:      #050814;
   --navy-dark:         #0F172A;
   --navy-card:         #1E293B;
   --navy-surface:      #334155;
 
   /* ── Light Background Layers ── */
-  --bg:                #F1F5F9;
-  --bg-2:              #F8FAFC;
-  --bg-3:              #FFFFFF;
+  --bg:                #F6F8FB; /* Background */
+  --bg-2:              #FFFFFF;
+  --bg-3:              #F1F5F9;
+  --bg-subtle:         #F3F4F6;
   --surface:           #FFFFFF;
-  --surface-2:         #F8FAFC;
+  --surface-2:         #F6F8FB;
   --surface-3:         #F1F5F9;
-  --surface-hover:     #E2E8F0;
+  --surface-hover:     #E5E7EB;
 
   /* ── Borders & Glass ── */
-  --border:            #E2E8F0;
-  --border-light:      #F1F5F9;
-  --border-strong:     #CBD5E1;
+  --border:            #E5E7EB;
+  --border-light:      #F3F4F6;
+  --border-strong:     #D1D5DB;
   --glass-bg:          rgba(255, 255, 255, 0.92);
   --glass-border:      rgba(0, 0, 0, 0.08);
 
   /* ── Text ── */
-  --text-primary:      #0F172A;
-  --text-secondary:    #475569;
-  --text-tertiary:     #94A3B8;
+  --text-primary:      #111827; /* Text */
+  --text-secondary:    #4B5563;
+  --text-tertiary:     #9CA3AF;
   --text-inverse:      #FFFFFF;
 
   /* ── Gradients ── */
-  --grad-primary:      linear-gradient(135deg, #3B82F6 0%, #7C3AED 100%);
-  --grad-emerald:      linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
-  --grad-rose:         linear-gradient(135deg, #EF4444 0%, #F97316 100%);
-  --grad-amber:        linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
-  --grad-dark:         linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-  --grad-sidebar:      linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-  --grad-card-glow:    linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(124, 58, 237, 0.05));
+  --grad-primary:      linear-gradient(135deg, #0B1733 0%, #2563EB 100%);
+  --grad-emerald:      linear-gradient(135deg, #168A55 0%, #06B6D4 100%);
+  --grad-rose:         linear-gradient(135deg, #DC2626 0%, #F59E0B 100%);
+  --grad-amber:        linear-gradient(135deg, #F59E0B 0%, #DC2626 100%);
+  --grad-dark:         linear-gradient(180deg, #111827 0%, #0B1733 100%);
+  --grad-sidebar:      linear-gradient(180deg, #111827 0%, #0B1733 100%);
+  --grad-card-glow:    linear-gradient(135deg, rgba(11, 23, 51, 0.05), rgba(37, 99, 235, 0.05));
 
   /* ── Elevation Shadows ── */
   --shadow-xs:         0 1px 2px rgba(0, 0, 0, 0.05);
@@ -96,9 +97,9 @@
   --nav-h:             68px;
 
   /* ── Fonts ── */
-  --font-sans:         'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-alt:          'Montserrat', 'Poppins', sans-serif;
-  --font-mono:         'Roboto Mono', 'SF Mono', monospace;
+  --font-sans:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-alt:          'Outfit', 'Poppins', sans-serif;
+  --font-mono:         'Space Grotesk', 'SF Mono', monospace;
 }
 
 html {

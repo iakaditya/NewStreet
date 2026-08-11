@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geoLng: 73.1789,
         severity: 'high',
         ward: 'Ward 6',
-        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/safety_hazard_1786262361716.jpg',
+        image: 'pothole.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 9, 08:00 AM · Reported by Rahul Sharma', completed: true },
           { title: 'Emergency Dispatch', desc: 'Aug 9, 08:05 AM · ERU Dispatched', completed: true, active: true },
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geoLng: 73.1794,
         severity: 'high',
         ward: 'Ward 6',
-        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/traffic_signal_broken_1786262346616.jpg',
+        image: 'pothole.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 9, 07:45 AM · Reported by Rahul Sharma', completed: true },
           { title: 'Police Deployed', desc: 'Aug 9, 08:15 AM · Manual traffic regulation active.', completed: true, active: true },
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geoLng: 73.1774,
         severity: 'high',
         ward: 'Ward 6',
-        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/electricity_hazard_1786262332779.jpg',
+        image: 'dark_street.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 9, 06:30 AM · Reported by Rahul Sharma', completed: true },
           { title: 'Power Cut', desc: 'Aug 9, 06:45 AM · Sector power isolated.', completed: true },
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geoLng: 73.1824,
         severity: 'high',
         ward: 'Ward 6',
-        image: '/Users/iakadityaraj/.gemini/antigravity/brain/76b01535-1e4e-4f0c-9b52-6b40e1f16062/garbage_pile_complaint_1786261725860.jpg',
+        image: 'garbage.jpg',
         timeline: [
           { title: 'Submitted', desc: 'Aug 8, 09:12 AM · Reported by Rahul Sharma', completed: true },
           { title: 'Assigned', desc: 'Aug 8, 10:05 AM · Assigned to Sanitation Dept', completed: true, active: true },
@@ -775,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>🏢 ${escapeHTML(c.category.toUpperCase())}</span> • <span>Raised on ${escapeHTML(c.date)}</span>
         </div>
 
-        <img src="${c.image || '/Users/iakadityaraj/.gemini/antigravity/brain/fe32c3c1-5e2a-4d88-af52-8d4018d9ff7f/pothole_road_photo_1786037248976.jpg'}" class="cs-image" alt="Complaint Image" onerror="this.src='/Users/iakadityaraj/.gemini/antigravity/brain/fe32c3c1-5e2a-4d88-af52-8d4018d9ff7f/.user_uploaded/media_1786035969178.png'" />
+        <img src="${c.image || 'pothole.jpg'}" class="cs-image" alt="Complaint Image" onerror="this.src='pothole.jpg'" />
 
         <div class="cs-timeline-hoz">
           ${timelineHtml}

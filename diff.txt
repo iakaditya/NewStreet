@@ -1,0 +1,302 @@
+diff --git a/index.html b/index.html
+index aff4cfb..ea0c00a 100644
+--- a/index.html
++++ b/index.html
+@@ -13,130 +13,190 @@
+ </head>
+ <body>
+ 
+-<!-- ─── 1. NAVBAR ─── -->
+-<nav class="navbar" id="mainNav">
+-  <div class="nav-container">
+-    <a href="index.html" class="brand-wrapper">
+-      <img src="newstreet-logo.png" alt="New Street — Citizens, Government, Progress" class="brand-logo-image" />
+-    </a>
+-
+-    <div class="nav-menu">
+-      <a href="#features" class="nav-link">Features</a>
+-      <a href="#how" class="nav-link">How It Works</a>
+-      <a href="#ai" class="nav-link">Sahayak AI</a>
+-      <a href="#services" class="nav-link">Services</a>
+-      <a href="#transparency" class="nav-link">Transparency</a>
+-      <a href="#community" class="nav-link">Community</a>
+-    </div>
+-
+-    <div class="nav-actions">
+-      <button class="nav-location-btn" id="navLocationBtn" title="Click to change city">
+-        <span class="nav-location-dot"></span>
+-        <span id="navLocationText">Vadodara</span>
+-      </button>
++<!-- Navbar -->
++  <nav class="navbar" id="mainNav">
++    <div class="nav-container">
++      
++      <!-- Brand -->
++      <div class="nav-brand">
++        <div class="logo">
++          <span class="logo-new">New</span><span class="logo-street">Street</span>
++        </div>
++        <div class="logo-tagline">One Platform. Every Citizen. Every Service.</div>
++      </div>
+ 
+-      <a href="dashboard.html" class="btn-nav-outline">Dashboard</a>
+-      <a href="register.html" class="btn-nav-primary">Get Started →</a>
++      <!-- Links -->
++      <div class="nav-links">
++        <a href="#features">Features</a>
++        <a href="#how-it-works">How It Works</a>
++        <a href="#sahayak">Sahayak AI</a>
++        <a href="#services">Services</a>
++        <a href="#transparency">Transparency</a>
++        <a href="#community">Community</a>
++      </div>
+ 
+-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+-        <span></span><span></span><span></span>
+-      </button>
++      <!-- Actions -->
++      <div class="nav-actions">
++        <button class="nav-location" id="navCityBtn">
++          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="loc-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
++          <span id="navCityLabel">Vadodara</span>
++          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
++        </button>
++        <a href="dashboard.html" class="btn-dashboard">Dashboard</a>
++        <a href="register.html" class="btn-get-started">Get Started <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
++        
++        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu" style="display:none;">
++          <span></span><span></span><span></span>
++        </button>
++      </div>
+     </div>
+-  </div>
+-</nav>
+-
+-<!-- Mobile Navigation Drawer -->
+-<div class="mobile-drawer" id="mobileDrawer">
+-  <a href="#locationHub">🏙️ Select City</a>
+-  <a href="#features">⚡ Features</a>
+-  <a href="#how">🔄 How It Works</a>
+-  <a href="#ai">🤖 Sahayak AI</a>
+-  <a href="#services">🏛️ 100+ Services</a>
+-  <a href="#transparency">📊 Fund Transparency</a>
+-  <a href="#community">👥 Community Hub</a>
+-  <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;padding-top:14px;border-top:1px solid var(--border-light);">
+-    <a href="dashboard.html" class="btn-nav-outline text-center">Open Dashboard</a>
+-    <a href="register.html" class="btn-nav-primary text-center">Get Started Free →</a>
+-  </div>
+-</div>
+-
+-<!-- ─── 2. CINEMATIC MONUMENT HERO SECTION ─── -->
+-<section class="hero-section" id="hero">
+-  <!-- Monument Background (India Gate) -->
+-  <div class="hero-monument-wrap" id="heroMonumentWrap" aria-hidden="true">
+-    <img src="india_gate_hero.jpg" alt="" class="hero-monument-img" id="heroMonumentImg" />
+-    <div class="hero-monument-overlay"></div>
+-  </div>
++  </nav>
+ 
+-  <div class="hero-content-wrap">
+-    <div class="hero-inner">
++  <!-- Mobile Navigation Drawer -->
++  <div class="mobile-drawer" id="mobileDrawer" style="display:none;">
++    <a href="#locationHub">🏙️ Select City</a>
++  </div>
+ 
+-      <!-- Location prompt -->
+-      <div class="hero-location-prompt" id="heroLocationPrompt">
+-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+-        <span id="heroLocationText">Where are you located?</span>
+-        <button class="hero-detect-btn" id="heroDetectBtn">Detect My Location</button>
+-        <span class="hero-location-divider">or</span>
+-        <button class="hero-select-btn" id="heroSelectCityBtn" onclick="document.getElementById('locationHub')?.scrollIntoView({behavior:'smooth'})">Select City</button>
++  <!-- Hero Section -->
++  <header class="hero hero-section" id="hero">
++    <div class="hero-bg" id="heroBgImg" style="background-image: url('india_gate_hero.jpg');"></div>
++    <div class="hero-overlay"></div>
++    
++    <div class="hero-container">
++      
++      <!-- Left Content -->
++      <div class="hero-content">
++        <div class="platform-tag">
++          <span class="dot"></span> India's Digital Civic Platform
++        </div>
++        
++        <h1 class="hero-title">
++          Your Voice.<br />
++          <span class="text-highlight">Connected to</span><br />
++          Government.
++        </h1>
++        
++        <p class="hero-subtitle">
++          Report issues, access services, track progress, and stay connected with your city from one trusted platform.
++        </p>
++        
++        <div class="hero-buttons">
++          <a href="dashboard.html" class="btn-primary">
++            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
++            Report a Grievance
++          </a>
++          <a href="#services" class="btn-secondary">
++            Explore Services 
++            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
++          </a>
++        </div>
++
++        <div class="trust-indicators">
++          <div class="trust-pill">
++            <div class="trust-icon text-green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
++            <div class="trust-text">Government<br>Verified</div>
++          </div>
++          <div class="trust-pill">
++            <div class="trust-icon text-blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
++            <div class="trust-text">AI-Assisted<br>Routing</div>
++          </div>
++          <div class="trust-pill">
++            <div class="trust-icon text-purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
++            <div class="trust-text">Secure &<br>Private</div>
++          </div>
++          <div class="trust-pill">
++            <div class="trust-icon text-orange"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
++            <div class="trust-text">Real-Time<br>Tracking</div>
++          </div>
++        </div>
+       </div>
++      
++      <!-- Right Content -->
++      <div class="hero-location-card">
++        <button class="loc-detect-btn" id="cityDetectBtn">
++          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
++          Detect My Location
++        </button>
++        
++        <div class="loc-divider">
++          <span>or</span>
++        </div>
++        
++        <button class="loc-select-btn" id="heroChangeCityBtn">
++          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="22" x2="9" y2="22"></line><line x1="15" y1="22" x2="15" y2="22"></line><line x1="9" y1="6" x2="9" y2="6"></line><line x1="15" y1="6" x2="15" y2="6"></line><line x1="9" y1="10" x2="9" y2="10"></line><line x1="15" y1="10" x2="15" y2="10"></line><line x1="9" y1="14" x2="9" y2="14"></line><line x1="15" y1="14" x2="15" y2="14"></line><line x1="9" y1="18" x2="9" y2="18"></line><line x1="15" y1="18" x2="15" y2="18"></line></svg>
++          Select City
++        </button>
+ 
+-      <!-- Main Headline -->
+-      <h1 class="hero-headline reveal">
+-        Your Voice.<br/>
+-        <span class="highlight-word">Connected to</span><br/>
+-        Government.
+-      </h1>
++        <button class="loc-current-btn">
++          <div style="display: flex; align-items: center; gap: 8px;">
++            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3" fill="#334155"></circle></svg>
++            <span id="heroCityDisplay">Vadodara</span>, Gujarat
++          </div>
++          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
++        </button>
++      </div>
+ 
+-      <p class="hero-subtitle reveal" style="transition-delay:0.1s;">
+-        Report civic issues, access government services, track progress, and stay connected with your city from one trusted platform.
+-      </p>
++    </div>
+ 
+-      <!-- CTA Buttons -->
+-      <div class="hero-cta-group reveal" style="transition-delay:0.2s;">
+-        <a href="dashboard.html" class="btn-hero-primary">
+-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+-          Report a Grievance
+-        </a>
+-        <a href="#features" class="btn-hero-secondary">
+-          Explore Services
+-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+-        </a>
++    <!-- Scroll Indicator -->
++    <div class="scroll-indicator">
++      <div class="mouse-icon">
++        <div class="mouse-wheel"></div>
+       </div>
++      <span>Scroll to explore</span>
++    </div>
+ 
+-      <!-- Trust Badges -->
+-      <div class="hero-trust-badges">
+-        <div class="htb-item">
+-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+-          <span>Government Verified</span>
+-        </div>
+-        <div class="htb-item">
+-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+-          <span>AI-Assisted Routing</span>
+-        </div>
+-        <div class="htb-item">
+-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+-          <span>Secure & Private</span>
++    <!-- Pillars Banner Overlapping the Bottom -->
++    <div class="pillars-banner-container">
++      <div class="pillars-banner">
++        <div class="pillar-item">
++          <div class="pillar-icon bg-green">
++            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
++          </div>
++          <div class="pillar-content">
++            <h4>Citizens First</h4>
++            <p>Built for every citizen</p>
++          </div>
+         </div>
+-        <div class="htb-item">
+-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+-          <span>Real-Time Tracking</span>
++        
++        <div class="pillar-divider"></div>
++
++        <div class="pillar-item">
++          <div class="pillar-icon bg-blue">
++            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>
++          </div>
++          <div class="pillar-content">
++            <h4>One Platform</h4>
++            <p>All services. One place.</p>
++          </div>
+         </div>
+-      </div>
+ 
+-      <!-- City ready state -->
+-      <div class="hero-city-ready" id="heroCityReady" aria-live="polite"></div>
++        <div class="pillar-divider"></div>
+ 
+-    </div>
+-  </div>
++        <div class="pillar-item">
++          <div class="pillar-icon bg-orange">
++            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line><polyline points="4 16 12 8 18 14 24 8"></polyline></svg>
++          </div>
++          <div class="pillar-content">
++            <h4>Transparent</h4>
++            <p>See progress. Build trust.</p>
++          </div>
++        </div>
+ 
+-  <!-- Scroll Cue -->
+-  <div class="hero-scroll-cue" aria-hidden="true">
+-    <div class="hsc-text">Scroll to explore</div>
+-    <div class="hsc-arrow">
+-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
++        <div class="pillar-divider"></div>
++
++        <div class="pillar-item">
++          <div class="pillar-icon bg-purple">
++            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 11.5L6.5 16 2 11.5 6.5 7 11 11.5z"></path><path d="M22 11.5L17.5 16 13 11.5 17.5 7 22 11.5z"></path></svg>
++          </div>
++          <div class="pillar-content">
++            <h4>Stronger Together</h4>
++            <p>Community drives change.</p>
++          </div>
++        </div>
++      </div>
+     </div>
+-  </div>
+-</section>
++  </header>
+ 
+ <!-- ─── 3. SMART LOCATION EXPERIENCE ─── -->
+ <section class="smart-location-section" id="locationHub">
