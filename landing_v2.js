@@ -22,12 +22,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Service Category Chips Toggle
   const serviceChips = document.querySelectorAll('.s-tab-btn');
+  const serviceCards = document.querySelectorAll('.svc-catalog-card');
+  
   serviceChips.forEach(chip => {
     chip.addEventListener('click', (e) => {
       // Remove active from all
       serviceChips.forEach(c => c.classList.remove('active'));
       // Add active to clicked
       e.target.classList.add('active');
+      
+      const category = e.target.dataset.category;
+      
+      serviceCards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     });
   });
 

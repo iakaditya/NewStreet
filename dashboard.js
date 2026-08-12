@@ -2220,15 +2220,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── 18. GOVERNMENT SERVICES CATEGORY FILTERING ────────────────
-  const servicesCategoryFilters = $('#servicesCategoryFilters');
-  if (servicesCategoryFilters) {
-    $$('.srv-cat-tab', servicesCategoryFilters).forEach(tab => {
+  const gsCatTabs = $('#gsCatTabs');
+  if (gsCatTabs) {
+    $$('.gs-cat-tab', gsCatTabs).forEach(tab => {
       tab.addEventListener('click', (e) => {
-        $$('.srv-cat-tab', servicesCategoryFilters).forEach(t => t.classList.remove('active'));
-        e.target.classList.add('active');
-        const cat = e.target.dataset.cat;
-        $$('.service-application-card').forEach(card => {
-          if (cat === 'all' || card.dataset.cat === cat) {
+        const btn = e.target.closest('.gs-cat-tab');
+        if (!btn) return;
+        
+        $$('.gs-cat-tab', gsCatTabs).forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const cat = btn.dataset.gsCat;
+        $$('.gs-service-card').forEach(card => {
+          const cardCats = card.dataset.gsCat ? card.dataset.gsCat.split(' ') : [];
+          if (cat === 'all' || cardCats.includes(cat)) {
             card.style.display = 'flex';
           } else {
             card.style.display = 'none';
