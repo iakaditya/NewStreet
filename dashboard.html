@@ -3322,70 +3322,22 @@
     </div>
   </div>
 
-  <!-- Quick Complaint Modal & Script -->
-  <div id="quickComplaintModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-    <div style="background-color: var(--bg-card, #fff); padding: 32px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; border: 1px solid var(--border-color, #e2e8f0);">
-      <button type="button" id="closeQuickComplaintBtn" style="position: absolute; top: 16px; right: 16px; background: none; border: none; cursor: pointer; color: var(--text-secondary, #64748b);">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-      <h3 style="margin-top: 0; margin-bottom: 24px; color: var(--text-primary, #0f172a); font-size: 1.5rem; display: flex; align-items: center; gap: 8px;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary, #2563EB)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        File a Complaint
-      </h3>
-      <form id="quickComplaintForm">
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; color: var(--text-primary, #0f172a);">Category</label>
-          <select id="qcCategory" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); background: var(--bg-body, #f8fafc); color: var(--text-primary, #0f172a); font-family: inherit;">
-            <option value="roads">Roads & Potholes</option>
-            <option value="water">Water Supply</option>
-            <option value="electricity">Electricity & Streetlights</option>
-            <option value="garbage">Garbage & Sanitation</option>
-            <option value="traffic">Traffic & Safety</option>
-          </select>
-          <p id="qcCategoryTip" style="margin-top: 6px; font-size: 0.8rem; color: var(--text-secondary, #64748b);"><strong>Tip:</strong> Use this for potholes, broken pavements, or unpaved roads. Routes to PWD.</p>
-        </div>
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; color: var(--text-primary, #0f172a);">Title</label>
-          <input type="text" id="qcTitle" required placeholder="Brief description of the issue" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); background: var(--bg-body, #f8fafc); color: var(--text-primary, #0f172a); font-family: inherit;" />
-        </div>
-        <div style="margin-bottom: 24px;">
-          <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; color: var(--text-primary, #0f172a);">Details & Location</label>
-          <textarea id="qcDetails" required rows="4" placeholder="Provide more details about the location and problem..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); background: var(--bg-body, #f8fafc); color: var(--text-primary, #0f172a); font-family: inherit; resize: vertical;"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 8px; background: var(--primary, #2563EB); color: white;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Submit Complaint
-        </button>
-      </form>
-    </div>
-  </div>
-
+  <!-- Dashboard Onboarding & Setup Script -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Connect the Quick Complaint buttons in the feed to the main Complaint Modal
       const openBtns = [document.getElementById('openQuickComplaintBtn'), document.getElementById('openQuickComplaintBtnAlt')];
-      const modal = document.getElementById('quickComplaintModal');
-      const closeBtn = document.getElementById('closeQuickComplaintBtn');
-      const form = document.getElementById('quickComplaintForm');
-      const feedList = document.getElementById('dashboardFeedList');
-      const categorySelect = document.getElementById('qcCategory');
-      const categoryTip = document.getElementById('qcCategoryTip');
+      const mainModalTrigger = document.getElementById('openComplaintFormModalBtn');
 
-      const categoryInstructions = {
-        'roads': 'Use this for potholes, broken pavements, or unpaved roads. Routes to PWD.',
-        'water': 'Use this for pipeline leaks, contaminated water, or no supply. Routes to Water Board.',
-        'electricity': 'Use this for broken streetlights, sparking wires, or power cuts. Routes to Electricity Board.',
-        'garbage': 'Use this for uncollected trash, dead animals, or illegal dumping. Routes to Sanitation Dept.',
-        'traffic': 'Use this for broken signals, abandoned vehicles, or severe bottlenecks. Routes to Traffic Police.'
-      };
+      openBtns.forEach(btn => {
+        if(btn && mainModalTrigger) {
+          btn.addEventListener('click', () => {
+            mainModalTrigger.click();
+          });
+        }
+      });
 
-      if(categorySelect && categoryTip) {
-        categorySelect.addEventListener('change', (e) => {
-          const instruction = categoryInstructions[e.target.value];
-          categoryTip.innerHTML = '<strong>Tip:</strong> ' + instruction;
-          alert("Category Instruction:\\n\\n" + instruction);
-        });
-      }
-
+      // Dashboard Instruction Modal Logic
       const dashModal = document.getElementById('dashInstructionModal');
       const closeDashBtn = document.getElementById('closeDashInstructionBtn');
       const gotItDashBtn = document.getElementById('gotItDashBtn');
@@ -3404,74 +3356,39 @@
         if(closeDashBtn) closeDashBtn.addEventListener('click', closeDashModal);
         if(gotItDashBtn) gotItDashBtn.addEventListener('click', () => {
           closeDashModal();
-          // Open the Quick Complaint Modal after onboarding
-          if(modal) modal.style.display = 'flex';
+          if (mainModalTrigger) mainModalTrigger.click();
         });
         window.addEventListener('click', (e) => { if (e.target === dashModal) closeDashModal(); });
       }
+      
+      // Auto category instructions in the main modal
+      const compCategory = document.getElementById('compCategory');
+      if (compCategory) {
+        let categoryTip = document.getElementById('mainModalCategoryTip');
+        if (!categoryTip) {
+          categoryTip = document.createElement('p');
+          categoryTip.id = 'mainModalCategoryTip';
+          categoryTip.style.marginTop = '6px';
+          categoryTip.style.fontSize = '0.8rem';
+          categoryTip.style.color = 'var(--text-secondary, #64748b)';
+          compCategory.parentNode.insertBefore(categoryTip, compCategory.nextSibling);
+        }
 
-      if(modal && form) {
-        openBtns.forEach(btn => {
-          if(btn) btn.addEventListener('click', () => modal.style.display = 'flex');
-        });
-        
-        const closeModal = () => modal.style.display = 'none';
-        if(closeBtn) closeBtn.addEventListener('click', closeModal);
-        window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        const categoryInstructions = {
+          'roads': 'Use this for potholes, broken pavements, or unpaved roads. Routes to PWD.',
+          'water': 'Use this for pipeline leaks, contaminated water, or no supply. Routes to Water Board.',
+          'electricity': 'Use this for broken streetlights, sparking wires, or power cuts. Routes to Electricity Board.',
+          'garbage': 'Use this for uncollected trash, dead animals, or illegal dumping. Routes to Sanitation Dept.',
+          'traffic': 'Use this for broken signals, abandoned vehicles, or severe bottlenecks. Routes to Traffic Police.'
+        };
 
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const category = document.getElementById('qcCategory').value;
-          const title = document.getElementById('qcTitle').value;
-          const details = document.getElementById('qcDetails').value;
-          
-          let icon = '';
-          let color = '';
-          if(category === 'roads') { icon = '<path d="M4 19L10 5"/><path d="M20 19L14 5"/><line x1="12" y1="8" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="16"/>'; color = '#64748b'; }
-          else if(category === 'water') { icon = '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>'; color = '#3B82F6'; }
-          else if(category === 'electricity') { icon = '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'; color = '#F59E0B'; }
-          else if(category === 'garbage') { icon = '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'; color = '#10B981'; }
-          else { icon = '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>'; color = '#EF4444'; }
-
-          const newCardHTML = 
-            '<div class="feed-v2-card" style="animation: fade-in 0.3s ease-out; border-left: 4px solid ' + color + ';">' +
-              '<div class="feed-v2-vote">' +
-                '<button class="feed-v2-vote-btn" aria-label="Upvote"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>' +
-                '<span class="feed-v2-vote-count">1</span>' +
-              '</div>' +
-              '<div class="feed-v2-body-main">' +
-                '<div class="feed-v2-header-row">' +
-                  '<div class="feed-v2-content">' +
-                    '<div class="feed-v2-chips">' +
-                      '<span class="feed-chip" style="color: ' + color + '; background: ' + color + '20;">' +
-                        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + icon + '</svg>' +
-                        (category.charAt(0).toUpperCase() + category.slice(1)) +
-                      '</span>' +
-                      '<span class="feed-chip feed-chip-medium" style="background: var(--bg-body, #f1f5f9);">Just Now</span>' +
-                    '</div>' +
-                    '<h3 class="feed-v2-title">' + title + '</h3>' +
-                    '<p class="feed-v2-desc">' + details + '</p>' +
-                  '</div>' +
-                '</div>' +
-                '<div class="feed-v2-meta">' +
-                  '<span class="feed-meta-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Your Location</span>' +
-                  '<span class="feed-v2-sep">·</span><span>Posted by You</span><span class="feed-v2-sep">·</span><span>Just now</span>' +
-                '</div>' +
-                '<div class="feed-v2-actions" style="margin-top: 12px; border-top: 1px solid var(--border-color, #e2e8f0); padding-top: 12px;">' +
-                  '<span style="color: var(--primary, #2563EB); font-size: 0.85rem; font-weight: 600;">✓ Complaint Submitted Successfully</span>' +
-                '</div>' +
-              '</div>' +
-            '</div>';
-
-          const quickCard = document.querySelector('.quick-complaint-card');
-          if (quickCard) {
-            quickCard.insertAdjacentHTML('afterend', newCardHTML);
-          } else if (feedList) {
-            feedList.insertAdjacentHTML('afterbegin', newCardHTML);
+        compCategory.addEventListener('change', (e) => {
+          const val = e.target.value;
+          if (categoryInstructions[val]) {
+            const instruction = categoryInstructions[val];
+            categoryTip.innerHTML = '<strong>Tip:</strong> ' + instruction;
+            alert("Category Instruction:\\n\\n" + instruction);
           }
-
-          closeModal();
-          form.reset();
         });
       }
     });

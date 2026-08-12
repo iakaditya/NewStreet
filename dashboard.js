@@ -2673,6 +2673,18 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMapPins();
   updateXPDisplay();
 
+  // ── EXPOSE GLOBAL API ───────────────────────────────────────
+  window.addGlobalComplaint = function(complaint) {
+    state.activeComplaints.unshift(complaint);
+    renderComplaintsList();
+    if (typeof renderMapPins === 'function') renderMapPins();
+    
+    const activeStat = document.getElementById('statActiveComplaintsCount');
+    if (activeStat) {
+      activeStat.textContent = parseInt(activeStat.textContent || '214') + 1;
+    }
+  };
+
 });
 
 /* ============================================================
