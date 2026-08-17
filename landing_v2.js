@@ -11,7 +11,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Subtle Hero Parallax (if applicable)
+  // 1b. Mobile Drawer Toggle
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  if (hamburgerBtn && mobileDrawer) {
+      hamburgerBtn.addEventListener('click', () => {
+          mobileDrawer.classList.toggle('open');
+      });
+      // Close drawer when clicking a link
+      mobileDrawer.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+              mobileDrawer.classList.remove('open');
+          });
+      });
+  }
+
+  // 2. Subtle Hero Parallax & Zoom effect
+  const heroSection = document.querySelector('.hero-section');
+  if (heroSection) {
+      setTimeout(() => {
+          heroSection.classList.add('loaded');
+      }, 100);
+  }
+
   const heroMonumentWrap = document.getElementById('heroMonumentWrap');
   if (heroMonumentWrap) {
     window.addEventListener('scroll', () => {
@@ -43,6 +65,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // 3b. FAQ Accordion
+  const faqQuestions = document.querySelectorAll('.faq-question-btn');
+  faqQuestions.forEach(btn => {
+      btn.addEventListener('click', () => {
+          const faqItem = btn.parentElement;
+          // Toggle current
+          faqItem.classList.toggle('open');
+
+          // Optionally close others
+          // faqQuestions.forEach(otherBtn => {
+          //     if (otherBtn !== btn) {
+          //         otherBtn.parentElement.classList.remove('open');
+          //     }
+          // });
+      });
+  });
+
   // 4. Scroll Reveal Animations
   const revealElements = document.querySelectorAll('.reveal');
   if (revealElements.length > 0) {
@@ -64,10 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. GPS Location Detection
+  // 5. GPS Location Detection & City Pills
   const btnGpsDetect = document.getElementById('btnGpsDetect');
   const citySearchInput = document.getElementById('citySearchInput');
   const cityPills = document.querySelectorAll('.city-pill');
+  const navLocationText = document.getElementById('navLocationText');
+  const cityPersonalizedBanner = document.getElementById('cityPersonalizedBanner');
+  const servicesDynamicCity = document.getElementById('servicesDynamicCity');
+  const treasuryDynamicCity = document.getElementById('treasuryDynamicCity');
 
   if (btnGpsDetect) {
     btnGpsDetect.addEventListener('click', () => {
@@ -75,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnGpsDetect.innerHTML = '<span style="opacity:0.7">Detecting...</span>';
 
       setTimeout(() => {
-        const city = "Parul University";
+        const city = "Vadodara";
         if (citySearchInput) {
           citySearchInput.value = city;
         }
@@ -90,9 +133,34 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
         
-        btnGpsDetect.innerHTML = `<span style="color:var(--auth-emerald)">📍 ${city}</span>`;
+        btnGpsDetect.innerHTML = `<span style="color:var(--emerald)">📍 ${city} Detected</span>`;
+        if (navLocationText) navLocationText.textContent = city;
+        if (cityPersonalizedBanner) {
+            cityPersonalizedBanner.innerHTML = `<span>Switched to ${city} Database</span> <span>✓ Active</span>`;
+            cityPersonalizedBanner.classList.add('active');
+        }
+        if (servicesDynamicCity) servicesDynamicCity.textContent = `Services available in ${city}`;
+        if (treasuryDynamicCity) treasuryDynamicCity.textContent = `VMC ${city.toUpperCase()} · LIVE TREASURY`;
       }, 800);
     });
+  }
+
+  if (cityPills) {
+      cityPills.forEach(pill => {
+          pill.addEventListener('click', (e) => {
+              cityPills.forEach(p => p.classList.remove('active'));
+              e.target.classList.add('active');
+              const city = e.target.dataset.city;
+              if (citySearchInput) citySearchInput.value = city;
+              if (navLocationText) navLocationText.textContent = city;
+              if (cityPersonalizedBanner) {
+                  cityPersonalizedBanner.innerHTML = `<span>Switched to ${city} Database</span> <span>✓ Active</span>`;
+                  cityPersonalizedBanner.classList.add('active');
+              }
+              if (servicesDynamicCity) servicesDynamicCity.textContent = `Services available in ${city}`;
+              if (treasuryDynamicCity) treasuryDynamicCity.textContent = `${city.toUpperCase()} · LIVE TREASURY`;
+          });
+      });
   }
 
   // 6. AI Chat Sandbox
@@ -135,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (msg.toLowerCase().includes('track') || msg.toLowerCase().includes('cmp')) {
           botBubble.innerHTML = 'Complaint #CMP-4821 is currently marked as <strong>In Progress</strong>. Expected resolution by tomorrow 5 PM.';
         } else if (msg.toLowerCase().includes('scheme') || msg.toLowerCase().includes('awas')) {
-          botBubble.innerHTML = 'Yes, based on the standard income criteria, you may be eligible for PM Awas Yojana. <a href="#" style="color:var(--primary-color)">Click here to check full eligibility.</a>';
+          botBubble.innerHTML = 'Yes, based on the standard income criteria, you may be eligible for PM Awas Yojana. <a href="#" style="color:var(--primary)">Click here to check full eligibility.</a>';
         } else {
           botBubble.innerHTML = 'I am your Sahayak AI. I can assist you with tracking complaints, utility bills, and finding nearby services. Could you please specify your ward or location?';
         }
