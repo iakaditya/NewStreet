@@ -9,6 +9,13 @@
   <!-- ⚠️  Replace YOUR_GOOGLE_MAPS_API_KEY below with your actual key -->
   <!-- Get a key FREE at: https://console.cloud.google.com/apis/credentials -->
   <!-- Enable: Maps JavaScript API + Geocoding API -->
+  <!-- Auth session guard — must run first before any other script -->
+  <script src="auth.js"></script>
+  <script>
+    // Redirect to register if not authenticated — fires synchronously
+    // so the dashboard never renders for unauthenticated users.
+    NS_Auth.requireAuth();
+  </script>
   <script>
     // Callback called once the Maps JS API finishes loading
     function initGoogleMapsCallback() {
@@ -95,9 +102,9 @@
 
       <!-- Profile Avatar -->
       <div class="dash-user-profile" id="userMenuBtn" role="button" aria-haspopup="true" tabindex="0">
-        <div class="dash-user-avatar">RS</div>
+        <div class="dash-user-avatar">…</div>
         <div class="dash-user-info">
-          <span class="dash-user-name">Rahul Sharma</span>
+          <span class="dash-user-name">Loading…</span>
           <span class="dash-user-id" id="headerRepXP">XP: 420</span>
         </div>
         <span class="arrow-down">▼</span>

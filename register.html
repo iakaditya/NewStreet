@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="auth.js"></script>
 </head>
 
 <body class="auth-body">
@@ -75,7 +76,7 @@
           </button>
         </div>
 
-        <form action="dashboard.html" method="GET">
+        <form action="#" method="GET">
 
           <div class="auth-form-group">
             <input type="text" id="regName" class="auth-input" placeholder=" " required />
@@ -202,7 +203,7 @@
 
           <div class="auth-divider">OR</div>
 
-          <button type="button" class="auth-btn-outline" onclick="window.location.href='dashboard.html'">
+          <button type="button" class="auth-btn-outline" id="googleRegisterBtn">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
             Continue with Google
           </button>
@@ -241,22 +242,72 @@
   </main>
 
   <script>
-    // Form Validation
+    // ── AUTH: Skip registration if already logged in ─────────────
+    if (window.NS_Auth) NS_Auth.redirectIfAuthed();
+
+    // ── FORM SUBMIT: Register via NS_Auth ────────────────────────
     const regForm = document.querySelector('form');
+    const formError = document.createElement('p');
+    formError.style.cssText = 'color:#ef4444; font-size:0.85rem; margin:-8px 0 12px; text-align:center; display:none;';
     if (regForm) {
+      regForm.insertBefore(formError, regForm.querySelector('button[type="submit"]'));
+
       regForm.addEventListener('submit', (e) => {
-        const pwd = document.getElementById('regPassword').value;
+        e.preventDefault();
+
+        const name       = document.getElementById('regName').value.trim();
+        const email      = document.getElementById('regEmail').value.trim();
+        const mobile     = document.getElementById('regMobile').value.trim();
+        const city       = document.getElementById('regCity').value;
+        const pwd        = document.getElementById('regPassword').value;
         const confirmPwd = document.getElementById('regConfirm').value;
-        if (pwd !== confirmPwd) {
-          e.preventDefault();
-          alert('Passwords do not match. Please try again.');
-          return false;
+
+        // Client-side validations
+        if (!name)  { showFormError('Full name is required.'); return; }
+        if (!email) { showFormError('Email address is required.'); return; }
+        if (!pwd)   { showFormError('Password is required.'); return; }
+        if (pwd !== confirmPwd) { showFormError('Passwords do not match. Please try again.'); return; }
+
+        // Register via auth module — creates session + stores user
+        const result = NS_Auth.register({ name, email, mobile, city, password: pwd });
+
+        if (result.success) {
+          // Redirect to dashboard — session is now established
+          window.location.href = 'dashboard.html';
+        } else {
+          showFormError(result.error || 'Registration failed. Please try again.');
         }
-        localStorage.setItem('userName', document.getElementById('regName').value);
       });
     }
 
-    // Simple Password Toggles
+    function showFormError(msg) {
+      formError.textContent = msg;
+      formError.style.display = 'block';
+    }
+
+    // ── GOOGLE BUTTON: Mock Google auth → register/login ─────────
+    const googleRegisterBtn = document.getElementById('googleRegisterBtn');
+    if (googleRegisterBtn) {
+      googleRegisterBtn.addEventListener('click', () => {
+        // Mock: auto-fill a Google account profile for demo purposes
+        // In a real app, this would use Google OAuth popup
+        const mockGoogleProfile = {
+          name:     'Google User',
+          email:    'googleuser_' + Date.now() + '@gmail.com',
+          mobile:   '',
+          city:     '',
+          password: 'google_oauth_' + Date.now()  // random — user won't use this to log in
+        };
+        const result = NS_Auth.register(mockGoogleProfile);
+        if (result.success) {
+          window.location.href = 'dashboard.html';
+        } else {
+          showFormError(result.error || 'Google sign-in failed. Please try the form.');
+        }
+      });
+    }
+
+    // ── PASSWORD TOGGLES ─────────────────────────────────────────
     const toggleBtns = document.querySelectorAll('.auth-pwd-toggle');
     toggleBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -271,7 +322,7 @@
       });
     });
 
-    // Location Detection
+    // ── LOCATION DETECTION ───────────────────────────────────────
     const detectLocationBtn = document.getElementById('detectLocationBtn');
     const locationStatus = document.getElementById('locationStatus');
     const regCity = document.getElementById('regCity');
@@ -295,15 +346,12 @@
               const { latitude, longitude } = position.coords;
               const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
               const data = await response.json();
-              
               const city = data.address.city || data.address.town || data.address.village || data.address.county || data.address.state || "";
               if (city) {
                 locationStatus.textContent = `Location detected: ${city}`;
                 locationStatus.style.color = "var(--auth-emerald)";
-                
                 const options = Array.from(regCity.options);
                 const matchedOption = options.find(opt => opt.text.toLowerCase().includes(city.toLowerCase()) || city.toLowerCase().includes(opt.text.toLowerCase()));
-                
                 if (matchedOption) {
                   regCity.value = matchedOption.value;
                 } else {
@@ -328,36 +376,25 @@
       });
     }
 
-    // Instructions Modal Logic
+    // ── INSTRUCTIONS MODAL ───────────────────────────────────────
     const instructionBtn = document.getElementById('instructionBtn');
     const instructionModal = document.getElementById('instructionModal');
     const closeInstructionBtn = document.getElementById('closeInstructionBtn');
     const gotItBtn = document.getElementById('gotItBtn');
 
-    if(instructionBtn && instructionModal) {
-      // Show automatically on page load
+    if (instructionBtn && instructionModal) {
       window.addEventListener('load', () => {
-        setTimeout(() => {
-          instructionModal.style.display = 'flex';
-        }, 300);
+        setTimeout(() => { instructionModal.style.display = 'flex'; }, 300);
       });
 
-      instructionBtn.addEventListener('click', () => {
-        instructionModal.style.display = 'flex';
-      });
-      
-      const closeModal = () => {
-        instructionModal.style.display = 'none';
-      };
+      instructionBtn.addEventListener('click', () => { instructionModal.style.display = 'flex'; });
 
+      const closeModal = () => { instructionModal.style.display = 'none'; };
       closeInstructionBtn.addEventListener('click', closeModal);
       gotItBtn.addEventListener('click', closeModal);
 
-      // Close when clicking outside
       window.addEventListener('click', (e) => {
-        if (e.target === instructionModal) {
-          closeModal();
-        }
+        if (e.target === instructionModal) closeModal();
       });
     }
   </script>

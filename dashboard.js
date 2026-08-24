@@ -9,6 +9,13 @@ const $$ = (sel) => [...document.querySelectorAll(sel)];
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ── AUTH GUARD (second layer — HTML-level guard in <head> is the primary) ──
+  // If NS_Auth is available and the user has no session, redirect immediately.
+  if (window.NS_Auth && !NS_Auth.getSession()) {
+    window.location.replace('register.html');
+    return;
+  }
+
   // ── MOCK DATA STORAGE (Local state for real-time actions) ──
   const state = {
     userXP: 420,
@@ -302,6 +309,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getStoredProfile() {
     try {
+      // Primary source: the authenticated session (set by auth.js)
+      if (window.NS_Auth) {
+        var sessionProfile = NS_Auth.getSession();
+        if (sessionProfile) return sessionProfile;
+      }
+      // Legacy fallback: old civic_user key (populated by auth.js _syncLegacyKey for compat)
       return JSON.parse(localStorage.getItem('civic_user')) || JSON.parse(localStorage.getItem('newStreetCitizenProfile')) || null;
     } catch {
       return null;
@@ -449,19 +462,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.showToast = showToast;
 
+  // Cached display name — set by initializeCitizenProfile(), used by the profile dropdown menu
+  let fullNameCache = '';
+
   function initializeCitizenProfile() {
     const profile = getStoredProfile();
-    if (!profile) return;
+    if (!profile) {
+      // No session — the requireAuth guard should have already redirected,
+      // but just in case, show neutral loading state.
+      $$('.dash-user-name').forEach(el => { el.textContent = 'Loading…'; });
+      $$('.dash-user-avatar, .profile-large-avatar').forEach(el => { el.textContent = '…'; });
+      return;
+    }
 
-    const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(' ').trim() || 'Rahul Sharma';
-    const initials = fullName.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase() || 'RS';
-    const city = profile.city || 'Vadodara';
-    const stateCode = profile.state === 'Gujarat' ? 'GJ' : (profile.state || 'GJ');
-    const address = profile.address || 'Alkapuri, Ward 6, Vadodara, Gujarat';
-    const location = deriveLocation(address);
+    // Resolve full name: NS_Auth session uses 'name'; legacy civic_user uses firstName/lastName
+    const fullName = (profile.name
+      || [profile.firstName, profile.lastName].filter(Boolean).join(' ')
+    ).trim() || 'Loading…';
 
+    // Cache so profile dropdown can reference without re-reading session
+    fullNameCache = fullName;
+
+    const initials = fullName !== 'Loading…'
+      ? fullName.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase()
+      : '…';
+
+    const city      = profile.city || '';
+    const stateCode = profile.state === 'Gujarat' ? 'GJ' : (profile.state || '');
+    const address   = profile.address || (profile.city ? profile.city + ', India' : '');
+    const location  = deriveLocation(address);
+
+    const firstNameDisplay = profile.firstName || fullName.split(' ')[0] || fullName;
     const welcome = $('#view-dashboard .view-header h1');
-    if (welcome) welcome.textContent = `Welcome back, ${profile.firstName || fullName.split(' ')[0]}`;
+    if (welcome) welcome.textContent = `Welcome back, ${firstNameDisplay}`;
 
     $$('.dash-user-name').forEach(el => { el.textContent = fullName; });
     $$('.dash-user-avatar, .profile-large-avatar').forEach(el => { el.textContent = initials; });
@@ -471,9 +504,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileAddress = $('#profileAddressValue');
     if (profileAddress) profileAddress.textContent = address;
     const navCity = $('#navCityLabel');
-    if (navCity) navCity.textContent = `${city}, ${stateCode}`;
+    if (navCity && city) navCity.textContent = `${city}${stateCode ? ', ' + stateCode : ''}`;
     const navWard = $('#navWardLabel');
-    if (navWard) navWard.textContent = `${location.ward} (${location.zone})`;
+    if (navWard && location.ward) navWard.textContent = `${location.ward} (${location.zone})`;
   }
 
   initializeCitizenProfile();
@@ -1614,7 +1647,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateGPSIndicator('searching', 'Locating...');
     watchId = navigator.geolocation.watchPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude, accuracy } = position.coords;
         currentGeoPos = { latitude, longitude, accuracy };
         const mapPos = geoToMapPosition(latitude, longitude);
@@ -1626,6 +1659,45 @@ document.addEventListener('DOMContentLoaded', () => {
           accuracy: accuracy,
           confidence: `±${Math.round(accuracy)}m`
         });
+
+        // Persist updated live location for other pages
+        try {
+          localStorage.setItem('ns_live_location', JSON.stringify({
+            latitude, longitude, accuracy,
+            updatedAt: new Date().toISOString()
+          }));
+        } catch (_) {}
+
+        // Reverse-geocode to get real city name and update nav label
+        try {
+          const res  = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
+            { headers: { 'Accept-Language': 'en' } }
+          );
+          const data = await res.json();
+          const city = (
+            data.address?.city ||
+            data.address?.town ||
+            data.address?.village ||
+            data.address?.county ||
+            data.address?.state_district ||
+            data.address?.state ||
+            null
+          );
+          if (city) {
+            const navCity = $('#navCityLabel');
+            if (navCity) navCity.textContent = `${city}`;
+            // update map status label too
+            updateUserLocationOnMap({
+              address: `${city} (GPS ±${Math.round(accuracy)}m)`,
+              ward: 'Ward 6', zone: 'Live GPS',
+              mapTop: mapPos.mapTop, mapLeft: mapPos.mapLeft,
+              geoLat: latitude, geoLng: longitude,
+              accuracy: accuracy,
+              confidence: `GPS ±${Math.round(accuracy)}m`
+            });
+          }
+        } catch (_) { /* Silently ignore geocoding failures */ }
       },
       (err) => {
         updateGPSIndicator('error', 'Denied');
@@ -2277,7 +2349,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="display:flex; gap:12px; margin-bottom:10px;">
               <div class="aadhaar-photo">👤</div>
               <div class="aadhaar-info">
-                <strong>Name:</strong> Rahul Sharma<br/>
+                <strong>Name:</strong> ${fullNameCache || 'Citizen'}<br/>
                 <strong>DOB:</strong> 15/04/1990<br/>
                 <strong>Gender:</strong> Male<br/>
                 <strong>Address:</strong> Alkapuri, Ward 6, Vadodara, GJ
@@ -2294,7 +2366,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="aadhaar-photo">👤</div>
               <div class="aadhaar-info">
                 <strong>License No:</strong> GJ-06-2015-0048291<br/>
-                <strong>Name:</strong> Rahul Sharma<br/>
+                <strong>Name:</strong> ${fullNameCache || 'Citizen'}<br/>
                 <strong>COV (Class of Vehicle):</strong> MCWG, LMV<br/>
                 <strong>Validity:</strong> 14/04/2035
               </div>
@@ -2589,7 +2661,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       profileMenu.innerHTML = `
         <div style="padding:14px; background:var(--primary-light); border-bottom:1px solid var(--border);">
-          <div style="font-weight:800; font-size:0.9rem;">Rahul Sharma</div>
+          <div style="font-weight:800; font-size:0.9rem;">${(window.NS_Auth && NS_Auth.getSession() && NS_Auth.getSession().name) || fullNameCache || 'You'}</div>
           <div style="font-size:0.7rem; color:var(--text-secondary);">CVC-GJ-48291 · ${state.userXP} XP</div>
         </div>
         <div style="padding:6px;">
@@ -2619,7 +2691,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = $('#profileLogoutBtn');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
-          if (confirm('End your New Street session?')) window.location.href = 'index.html';
+          if (confirm('End your New Street session?')) {
+            // Clear session via auth module then redirect
+            if (window.NS_Auth) NS_Auth.logout();
+            else window.location.href = 'index.html';
+          }
         });
       }
 
@@ -2636,7 +2712,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoutBtn = $('#sidebarLogout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      if (confirm('End your New Street session?')) window.location.href = 'index.html';
+      if (confirm('End your New Street session?')) {
+        // Clear session via auth module then redirect to landing page
+        if (window.NS_Auth) NS_Auth.logout();
+        else window.location.href = 'index.html';
+      }
     });
   }
 

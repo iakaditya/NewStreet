@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="auth.js"></script>
 </head>
 
 <body class="auth-body">
@@ -68,7 +69,7 @@
           <p class="auth-subtitle">Sign in to continue to New Street</p>
         </div>
 
-        <form action="dashboard.html" method="GET">
+        <form action="#" method="GET">
           <div class="auth-form-group">
             <input type="text" id="loginInput" class="auth-input" placeholder=" " required />
             <label class="auth-floating-label" for="loginInput">Mobile Number or Email</label>
@@ -114,7 +115,7 @@
 
           <div class="auth-divider">OR</div>
 
-          <button type="button" class="auth-btn-outline" onclick="window.location.href='dashboard.html'">
+          <button type="button" class="auth-btn-outline" id="googleLoginBtn">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
             Continue with Google
           </button>
@@ -125,9 +126,57 @@
   </main>
 
   <script>
-    // Simple Password Toggle
+    // ── AUTH: Skip login if already authenticated ─────────────────
+    if (window.NS_Auth) NS_Auth.redirectIfAuthed();
+
+    // ── FORM ERROR DISPLAY ────────────────────────────────────────
+    const loginForm = document.querySelector('form');
+    const loginError = document.createElement('p');
+    loginError.style.cssText = 'color:#ef4444; font-size:0.85rem; margin:-8px 0 12px; text-align:center; display:none;';
+    if (loginForm) {
+      loginForm.insertBefore(loginError, loginForm.querySelector('button[type="submit"]'));
+    }
+
+    function showLoginError(msg) {
+      loginError.textContent = msg;
+      loginError.style.display = 'block';
+    }
+
+    // ── FORM SUBMIT: Login via NS_Auth ────────────────────────────
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loginError.style.display = 'none';
+
+        const identifier = document.getElementById('loginInput').value.trim();
+        const password   = document.getElementById('passwordInput').value;
+
+        if (!identifier) { showLoginError('Please enter your email or mobile number.'); return; }
+        if (!password)   { showLoginError('Please enter your password.'); return; }
+
+        const result = NS_Auth.login(identifier, password);
+
+        if (result.success) {
+          window.location.href = 'dashboard.html';
+        } else {
+          showLoginError(result.error || 'Login failed. Please check your credentials.');
+        }
+      });
+    }
+
+    // ── GOOGLE LOGIN BUTTON ───────────────────────────────────────
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    if (googleLoginBtn) {
+      googleLoginBtn.addEventListener('click', () => {
+        // Mock: In a real app this would use Google OAuth flow.
+        // For demo, redirect to register to create a Google-linked account.
+        showLoginError('Google sign-in: please use the Register page to create a Google-linked account.');
+      });
+    }
+
+    // ── PASSWORD TOGGLE ───────────────────────────────────────────
     const toggleBtn = document.querySelector('.auth-pwd-toggle');
-    const pwdInput = document.getElementById('passwordInput');
+    const pwdInput  = document.getElementById('passwordInput');
     if (toggleBtn && pwdInput) {
       toggleBtn.addEventListener('click', () => {
         const type = pwdInput.getAttribute('type') === 'password' ? 'text' : 'password';

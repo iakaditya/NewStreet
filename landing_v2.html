@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="landing_v2.css" />
+  <script src="auth.js"></script>
 </head>
 
 <body>
@@ -38,7 +39,7 @@
           <span id="navLocationText">Vadodara</span>
         </button>
 
-        <a href="dashboard.html" class="btn-nav-outline">Dashboard</a>
+        <a href="#" class="btn-nav-outline" onclick="event.preventDefault(); NS_Auth.dashboardOrRegister();" aria-label="Open Dashboard">Dashboard</a>
         <a href="register.html" class="btn-nav-primary">Get Started →</a>
 
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
@@ -59,7 +60,7 @@
     <a href="#community">👥 Community Hub</a>
     <div
       style="display:flex;flex-direction:column;gap:10px;margin-top:10px;padding-top:14px;border-top:1px solid var(--border-light);">
-      <a href="dashboard.html" class="btn-nav-outline text-center">Open Dashboard</a>
+      <a href="#" onclick="event.preventDefault(); NS_Auth.dashboardOrRegister();" class="btn-nav-outline text-center">Open Dashboard</a>
       <a href="register.html" class="btn-nav-primary text-center">Get Started Free →</a>
     </div>
   </div>
@@ -75,18 +76,7 @@
     <div class="hero-content-wrap">
       <div class="hero-inner">
 
-        <!-- Location prompt -->
-        <div class="hero-location-prompt" id="heroLocationPrompt">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
-          <span id="heroLocationText">Where are you located?</span>
-          <button class="hero-detect-btn" id="heroDetectBtn">Detect My Location</button>
-          <span class="hero-location-divider">or</span>
-          <button class="hero-select-btn" id="heroSelectCityBtn"
-            onclick="document.getElementById('locationHub')?.scrollIntoView({behavior:'smooth'})">Select City</button>
-        </div>
+
 
         <!-- Main Headline -->
         <h1 class="hero-headline reveal">

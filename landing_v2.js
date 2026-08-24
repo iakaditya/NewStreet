@@ -112,38 +112,142 @@ document.addEventListener('DOMContentLoaded', () => {
   const servicesDynamicCity = document.getElementById('servicesDynamicCity');
   const treasuryDynamicCity = document.getElementById('treasuryDynamicCity');
 
+  // ── LIVE LOCATION ENGINE ──────────────────────────────────────
+  // Persists last known city in sessionStorage so it survives soft-navs
+  let _liveWatchId = null;
+
+  /** Update every city-dependent UI element on the landing page */
+  function applyLandingCity(city, { lat, lng, accuracy } = {}) {
+    if (!city) return;
+    // Nav label
+    if (navLocationText) navLocationText.textContent = city;
+    // City search input in the modal
+    if (citySearchInput) citySearchInput.value = city;
+    // Activate matching city pill (if it exists) — or clear all
+    cityPills.forEach(pill => {
+      pill.classList.toggle(
+        'active',
+        pill.dataset.city && pill.dataset.city.toLowerCase() === city.toLowerCase()
+      );
+    });
+    // Personalised banner
+    if (cityPersonalizedBanner) {
+      cityPersonalizedBanner.innerHTML = `<span>Switched to ${city} Database</span> <span>✓ Active</span>`;
+      cityPersonalizedBanner.classList.add('active');
+    }
+    if (servicesDynamicCity) servicesDynamicCity.textContent = `Services available in ${city}`;
+    if (treasuryDynamicCity) treasuryDynamicCity.textContent = `${city.toUpperCase()} · LIVE TREASURY`;
+    // Persist for this session
+    try { sessionStorage.setItem('ns_last_city', city); } catch (_) {}
+    // Persist coords for dashboard
+    if (lat != null && lng != null) {
+      try {
+        localStorage.setItem('ns_live_location', JSON.stringify({
+          latitude: lat, longitude: lng,
+          accuracy: accuracy || null,
+          updatedAt: new Date().toISOString()
+        }));
+      } catch (_) {}
+    }
+  }
+
+  /** Reverse-geocode coords → city name via Nominatim (free, no key needed) */
+  async function reverseGeocode(lat, lng) {
+    try {
+      const res  = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&addressdetails=1`,
+        { headers: { 'Accept-Language': 'en' } }
+      );
+      const data = await res.json();
+      return (
+        data.address?.city   ||
+        data.address?.town   ||
+        data.address?.village ||
+        data.address?.county ||
+        data.address?.state_district ||
+        data.address?.state  ||
+        null
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /** Start watching position — updates city on every GPS fix */
+  function startLiveCityTracking() {
+    if (!navigator.geolocation) {
+      if (btnGpsDetect) btnGpsDetect.innerHTML = '<span style="opacity:0.6">GPS not supported</span>';
+      return;
+    }
+    if (_liveWatchId !== null) return; // already running
+
+    // Show last known city instantly while we wait for fresh GPS
+    const saved = sessionStorage.getItem('ns_last_city');
+    if (saved && navLocationText) navLocationText.textContent = saved;
+
+    _liveWatchId = navigator.geolocation.watchPosition(
+      async (pos) => {
+        const { latitude: lat, longitude: lng, accuracy } = pos.coords;
+
+        // Update GPS button while resolving city name
+        if (btnGpsDetect) {
+          btnGpsDetect.innerHTML =
+            `<span style="color:var(--emerald)">📍 ${lat.toFixed(4)}, ${lng.toFixed(4)} · Resolving…</span>`;
+        }
+
+        const city = await reverseGeocode(lat, lng);
+        if (city) {
+          applyLandingCity(city, { lat, lng, accuracy });
+          if (btnGpsDetect) {
+            btnGpsDetect.innerHTML =
+              `<span style="color:var(--emerald)">📍 ${city} · ±${Math.round(accuracy)}m</span>`;
+          }
+        } else {
+          // Fallback: show raw coordinates if city name not resolved
+          if (navLocationText)
+            navLocationText.textContent = `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
+          if (btnGpsDetect) {
+            btnGpsDetect.innerHTML =
+              `<span style="color:var(--emerald)">📍 ${lat.toFixed(4)}, ${lng.toFixed(4)}</span>`;
+          }
+        }
+      },
+      (err) => {
+        // Permission denied or error
+        const msgs = {
+          1: 'Location permission denied',
+          2: 'Position unavailable',
+          3: 'Location request timed out'
+        };
+        if (btnGpsDetect)
+          btnGpsDetect.innerHTML = `<span style="opacity:0.6">⚠ ${msgs[err.code] || 'Location error'}</span>`;
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
+    );
+  }
+
+  // ── DETECT BUTTON: triggers permission prompt + starts tracking ─
   if (btnGpsDetect) {
     btnGpsDetect.addEventListener('click', () => {
-      const originalText = btnGpsDetect.innerHTML;
-      btnGpsDetect.innerHTML = '<span style="opacity:0.7">Detecting...</span>';
-
-      setTimeout(() => {
-        const city = "Vadodara";
-        if (citySearchInput) {
-          citySearchInput.value = city;
-        }
-        
-        // Try to activate the corresponding pill
-        cityPills.forEach(pill => pill.classList.remove('active'));
-        let foundPill = false;
-        cityPills.forEach(pill => {
-          if (pill.dataset.city && pill.dataset.city.toLowerCase() === city.toLowerCase()) {
-            pill.classList.add('active');
-            foundPill = true;
-          }
-        });
-        
-        btnGpsDetect.innerHTML = `<span style="color:var(--emerald)">📍 ${city} Detected</span>`;
-        if (navLocationText) navLocationText.textContent = city;
-        if (cityPersonalizedBanner) {
-            cityPersonalizedBanner.innerHTML = `<span>Switched to ${city} Database</span> <span>✓ Active</span>`;
-            cityPersonalizedBanner.classList.add('active');
-        }
-        if (servicesDynamicCity) servicesDynamicCity.textContent = `Services available in ${city}`;
-        if (treasuryDynamicCity) treasuryDynamicCity.textContent = `VMC ${city.toUpperCase()} · LIVE TREASURY`;
-      }, 800);
+      btnGpsDetect.innerHTML = '<span style="opacity:0.7">Requesting GPS…</span>';
+      // Calling navigator.geolocation.getCurrentPosition first forces the
+      // browser permission prompt immediately, then watchPosition takes over.
+      if (!navigator.geolocation) {
+        btnGpsDetect.innerHTML = '<span style="opacity:0.6">GPS not supported</span>';
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        () => { /* watchPosition will handle the update */ },
+        () => { /* watchPosition error handler will fire too */ },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+      startLiveCityTracking();
     });
   }
+
+  // Auto-start tracking silently on page load (no prompt until user clicks)
+  // If they already granted permission in a prior visit, this will work right away.
+  startLiveCityTracking();
 
   if (cityPills) {
       cityPills.forEach(pill => {
