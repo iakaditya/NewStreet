@@ -76,12 +76,16 @@
   display: flex;
   width: 100%;
   min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ── LEFT PANE (BRANDING) ────────────────────────────────── */
 .auth-left {
   flex: 0 0 50%;
-  position: relative;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -203,8 +207,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 40px;
+  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 /* Top Right Nav */
@@ -238,7 +245,7 @@
   width: 100%;
   max-width: 480px;
   border-radius: 24px;
-  padding: 48px;
+  padding: 40px 48px;
   box-shadow: var(--auth-shadow-current);
   border: 1px solid var(--auth-border);
   position: relative;
@@ -246,11 +253,13 @@
   animation: scale-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
   transform: translateY(20px) scale(0.95);
+  margin-top: 56px;
+  margin-bottom: 40px;
 }
 
 /* Form Header */
 .auth-header {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 .auth-title {
   font-size: 2rem;
@@ -267,7 +276,7 @@
 /* Floating Label Form Group */
 .auth-form-group {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .auth-input-icon {
   position: absolute;
@@ -397,7 +406,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 .auth-checkbox-label {
   display: flex;
@@ -453,7 +462,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 32px 0;
+  margin: 24px 0;
   color: var(--auth-text-secondary);
   font-size: 0.85rem;
   font-weight: 600;
@@ -515,17 +524,25 @@
 }
 
 @media (max-width: 900px) {
-  .auth-container { flex-direction: column; }
+  .auth-container {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
   
   .auth-left { 
     flex: none;
     min-height: 40vh;
+    height: 40vh;
+    position: relative;
   }
   .auth-left-content { padding: 40px; }
   .auth-trust-badge { display: none; }
   
   .auth-right {
     flex: 1;
+    height: auto;
+    overflow-y: visible;
     padding: 32px 24px;
     background: var(--auth-bg);
   }
@@ -541,6 +558,7 @@
     background: transparent;
     backdrop-filter: none;
     max-width: 100%;
+    margin-top: 0;
   }
   .auth-floating-label {
     background: var(--auth-bg) !important;
